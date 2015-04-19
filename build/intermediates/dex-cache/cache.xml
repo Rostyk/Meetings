@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="/Users/ross/Work/AndroidStudioProjects/Metings/app/build/intermediates/exploded-aar/com.google.android.gms/play-services/4.2.42/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="e5f81129dfb3d02df80126512bc98278ed2bb40a">
+        <dex dex="/Users/ross/Work/AndroidStudioProjects/Metings/app/build/intermediates/pre-dexed/debug/classes-ccf3ed7bd455149b30c8719fa5cdfb2d752071b0.jar" />
+    </item>
+    <item
+        jar="/Users/ross/Work/AndroidStudioProjects/EWSForAndroid/app/libs/commons-httpclient-3.1.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="964cd74171f427720480efdec40a7c7f6e58426a">
+        <dex dex="/Users/ross/Work/AndroidStudioProjects/EWSForAndroid/app/build/intermediates/pre-dexed/debug/commons-httpclient-3.1-d5eb92e6736676de8c6fa264425f7075fe7fac2d.jar" />
+    </item>
+    <item
+        jar="/Users/ross/.gradle/caches/modules-2/files-2.1/com.google.http-client/google-http-client-gson/1.17.0-rc/3696033c14cc5ce68fe3ac818bade2707df9c2cd/google-http-client-gson-1.17.0-rc.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="3696033c14cc5ce68fe3ac818bade2707df9c2cd">
+        <dex dex="/Users/ross/Work/AndroidStudioProjects/EWSForAndroid/app/build/intermediates/pre-dexed/debug/google-http-client-gson-1.17.0-rc-ffbb4a0fd8f5f91626de2ec26b33ed2a0f8b74a1.jar" />
+    </item>
+    <item
+        jar="/Users/ross/Work/AndroidStudioProjects/Metings/app/libs/commons-httpclient-3.1.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="964cd74171f427720480efdec40a7c7f6e58426a">
+        <dex dex="/Users/ross/Work/AndroidStudioProjects/Metings/app/build/intermediates/pre-dexed/debug/commons-httpclient-3.1-42b40be913bd6b5c3d519ca2366ff62205a5de8d.jar" />
+    </item>
+    <item
+        jar="/Users/ross/Work/AndroidStudioProjects/EWSForAndroid/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.0.0/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="d84409890828e07d344a3b9b1da545dba9897b51">
+        <dex dex="/Users/ross/Work/AndroidStudioProjects/EWSForAndroid/app/build/intermediates/pre-dexed/debug/classes-04cc0d760f7018f4bfbd0fd64181223b868675d9.jar" />
+    </item>
+    <item
+        jar="/Users/ross/.gradle/caches/modules-2/files-2.1/com.google.http-client/google-http-client-android/1.17.0-rc/f3fc9acc57c2a55fd17a421710f564b73dabda21/google-http-client-android-1.17.0-rc.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="f3fc9acc57c2a55fd17a421710f564b73dabda21">
+        <dex dex="/Users/ross/Work/AndroidStudioProjects/EWSForAndroid/app/build/intermediates/pre-dexed/debug/google-http-client-android-1.17.0-rc-50aadf106e4e072176c62b8b6f2844cbaa88983a.jar" />
+    </item>
+    <item
+        jar="/Users/ross/Work/AndroidStudioProjects/EWSForAndroid/app/libs/commons-codec-1.4.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="4216af16d38465bbab0f3dff8efa14204f7a399a">
+        <dex dex="/Users/ross/Work/AndroidStudioProjects/EWSForAndroid/app/build/intermediates/pre-dexed/debug/commons-codec-1.4-eadcdaad1a3734db6794c1e90cbdd987787fbc9c.jar" />
+    </item>
+    <item
+        jar="/Users/ross/.gradle/caches/modules-2/files-2.1/com.google.api-client/google-api-client-android/1.17.0-rc/cfef30e5d361e2fd2892eed93a183db48dcae153/google-api-client-android-1.17.0-rc.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="cfef30e5d361e2fd2892eed93a183db48dcae153">
+        <dex dex="/Users/ross/Work/AndroidStudioProjects/EWSForAndroid/app/build/intermediates/pre-dexed/debug/google-api-client-android-1.17.0-rc-3cb0bbf4ef46b298b320b04e93b0617032fe325f.jar" />
+    </item>
+    <item
+        jar="/Users/ross/.gradle/caches/modules-2/files-2.1/com.google.oauth-client/google-oauth-client/1.17.0-rc/76bcfba455c5a053d532bbac2cf30a2b2c341cf3/google-oauth-client-1.17.0-rc.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="76bcfba455c5a053d532bbac2cf30a2b2c341cf3">
+        <dex dex="/Users/ross/Work/AndroidStudioProjects/EWSForAndroid/app/build/intermediates/pre-dexed/debug/google-oauth-client-1.17.0-rc-3180a9a33f8847417b0c15ccec44e597cc61e416.jar" />
+    </item>
+    <item
+        jar="/Users/ross/.gradle/caches/modules-2/files-2.1/com.google.code.findbugs/jsr305/1.3.9/40719ea6961c0cb6afaeb6a921eaa1f6afd4cfdf/jsr305-1.3.9.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="40719ea6961c0cb6afaeb6a921eaa1f6afd4cfdf">
+        <dex dex="/Users/ross/Work/AndroidStudioProjects/EWSForAndroid/app/build/intermediates/pre-dexed/debug/jsr305-1.3.9-cca686c92041bfef8b210375809868cfb99110d0.jar" />
+    </item>
+    <item
+        jar="/Users/ross/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/22.0.0/support-annotations-22.0.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="685d0b2c590447e85284ed84712cb363ba04eff8">
+        <dex dex="/Users/ross/Work/AndroidStudioProjects/EWSForAndroid/app/build/intermediates/pre-dexed/debug/support-annotations-22.0.0-0a11758201ffc616caeddbf96deccd56c5e54f21.jar" />
+    </item>
+    <item
+        jar="/Users/ross/Work/AndroidStudioProjects/Metings/app/libs/commons-codec-1.4.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="4216af16d38465bbab0f3dff8efa14204f7a399a">
+        <dex dex="/Users/ross/Work/AndroidStudioProjects/Metings/app/build/intermediates/pre-dexed/debug/commons-codec-1.4-d9b4044422f913e529caa5570cbc564f31024499.jar" />
+    </item>
+    <item
+        jar="/Users/ross/Work/AndroidStudioProjects/Metings/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.0.0/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="d84409890828e07d344a3b9b1da545dba9897b51">
+        <dex dex="/Users/ross/Work/AndroidStudioProjects/Metings/app/build/intermediates/pre-dexed/debug/classes-fc584b39cc2aad26e08c93967af1ca343846e5c0.jar" />
+    </item>
+    <item
+        jar="/Users/ross/Work/AndroidStudioProjects/Metings/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.0.0/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="4e86306289ace4aa0cfec44a05ed2b410d36989d">
+        <dex dex="/Users/ross/Work/AndroidStudioProjects/Metings/app/build/intermediates/pre-dexed/debug/classes-5baabc9c175b2ddf9be9faea4f0b5dc47774cc7f.jar" />
+    </item>
+    <item
+        jar="/Users/ross/Work/AndroidStudioProjects/Metings/app/libs/jcifs-1.3.15.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="6e41e4b78a70637b62c0bb2e50965e72267c0004">
+        <dex dex="/Users/ross/Work/AndroidStudioProjects/Metings/app/build/intermediates/pre-dexed/debug/jcifs-1.3.15-01ed524af4eb6cd539f5562c2381e6ee009678b9.jar" />
+    </item>
+    <item
+        jar="/Users/ross/Work/AndroidStudioProjects/Metings/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.0.0/libs/internal_impl-22.0.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="b5b92f469d515a13d778900f6d50c03d12f35504">
+        <dex dex="/Users/ross/Work/AndroidStudioProjects/Metings/app/build/intermediates/pre-dexed/debug/internal_impl-22.0.0-6cd77f0a48fc0ebe5ea3bd1e149629d5d65299d1.jar" />
+    </item>
+    <item
+        jar="/Users/ross/Work/AndroidStudioProjects/EWSForAndroid/app/libs/jcifs-1.3.15.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="6e41e4b78a70637b62c0bb2e50965e72267c0004">
+        <dex dex="/Users/ross/Work/AndroidStudioProjects/EWSForAndroid/app/build/intermediates/pre-dexed/debug/jcifs-1.3.15-6ee75397f75f140f25e3b4284ec6ea0063379860.jar" />
+    </item>
+    <item
+        jar="/Users/ross/Work/AndroidStudioProjects/Metings/app/libs/volley.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="d4aaa36e04ee71a83444f8367c97a46fda662d2c">
+        <dex dex="/Users/ross/Work/AndroidStudioProjects/Metings/app/build/intermediates/pre-dexed/debug/volley-0a4e801d58fd7014d1d5455cbc836331f7f52c20.jar" />
+    </item>
+    <item
+        jar="/Users/ross/.gradle/caches/modules-2/files-2.1/com.google.apis/google-api-services-oauth2/v2-rev63-1.17.0-rc/107d863edad1a9b7639a44cafcb19535baf92255/google-api-services-oauth2-v2-rev63-1.17.0-rc.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="107d863edad1a9b7639a44cafcb19535baf92255">
+        <dex dex="/Users/ross/Work/AndroidStudioProjects/EWSForAndroid/app/build/intermediates/pre-dexed/debug/google-api-services-oauth2-v2-rev63-1.17.0-rc-d7a71f3a4cb1a3432723c30bddc9a32f3f015b0e.jar" />
+    </item>
+    <item
+        jar="/Users/ross/.gradle/caches/modules-2/files-2.1/com.google.apis/google-api-services-calendar/v3-rev75-1.17.0-rc/f922256c8a1668352bcdfd694b5b7bfe13610bfe/google-api-services-calendar-v3-rev75-1.17.0-rc.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="f922256c8a1668352bcdfd694b5b7bfe13610bfe">
+        <dex dex="/Users/ross/Work/AndroidStudioProjects/EWSForAndroid/app/build/intermediates/pre-dexed/debug/google-api-services-calendar-v3-rev75-1.17.0-rc-2d8bdec15622b4174812308907e8342cb2e2ebd9.jar" />
+    </item>
+    <item
+        jar="/Users/ross/.gradle/caches/modules-2/files-2.1/com.google.api-client/google-api-client/1.17.0-rc/f01974c9ec3e5570d8c75ecf7fce004e06757e03/google-api-client-1.17.0-rc.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="f01974c9ec3e5570d8c75ecf7fce004e06757e03">
+        <dex dex="/Users/ross/Work/AndroidStudioProjects/EWSForAndroid/app/build/intermediates/pre-dexed/debug/google-api-client-1.17.0-rc-c44909caa64e3ba25e006d55f1e89570358bebce.jar" />
+    </item>
+    <item
+        jar="/Users/ross/.gradle/caches/modules-2/files-2.1/com.google.http-client/google-http-client/1.17.0-rc/637da6cca16f4a97c4771137bce02e7c291e67af/google-http-client-1.17.0-rc.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="637da6cca16f4a97c4771137bce02e7c291e67af">
+        <dex dex="/Users/ross/Work/AndroidStudioProjects/EWSForAndroid/app/build/intermediates/pre-dexed/debug/google-http-client-1.17.0-rc-378cec3c638516142771d07712a67600ed386df3.jar" />
+    </item>
+    <item
+        jar="/Users/ross/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.1/2e66da15851f9f5b5079228f856c2f090ba98c38/gson-2.1.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="2e66da15851f9f5b5079228f856c2f090ba98c38">
+        <dex dex="/Users/ross/Work/AndroidStudioProjects/EWSForAndroid/app/build/intermediates/pre-dexed/debug/gson-2.1-6bd1fc6de39a0bb698c25b707d54ccf739a5ec47.jar" />
+    </item>
+    <item
+        jar="/Users/ross/Work/AndroidStudioProjects/EWSForAndroid/app/libs/volley.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="d4aaa36e04ee71a83444f8367c97a46fda662d2c">
+        <dex dex="/Users/ross/Work/AndroidStudioProjects/EWSForAndroid/app/build/intermediates/pre-dexed/debug/volley-12747107c572423a29af8c7037a98f8898556157.jar" />
+    </item>
+    <item
+        jar="/Users/ross/Work/AndroidStudioProjects/EWSForAndroid/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.0.0/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="4e86306289ace4aa0cfec44a05ed2b410d36989d">
+        <dex dex="/Users/ross/Work/AndroidStudioProjects/EWSForAndroid/app/build/intermediates/pre-dexed/debug/classes-bafc42710df7b75a8ae9b345d4610ae0fed55707.jar" />
+    </item>
+    <item
+        jar="/Users/ross/Work/AndroidStudioProjects/EWSForAndroid/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.0.0/libs/internal_impl-22.0.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="b5b92f469d515a13d778900f6d50c03d12f35504">
+        <dex dex="/Users/ross/Work/AndroidStudioProjects/EWSForAndroid/app/build/intermediates/pre-dexed/debug/internal_impl-22.0.0-b0bf5251a31770864f46b5b16c896e54794a910f.jar" />
+    </item>
+    <item
+        jar="/Users/ross/Work/AndroidStudioProjects/EWSForAndroid/app/build/intermediates/exploded-aar/com.google.android.gms/play-services/4.2.42/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="e5f81129dfb3d02df80126512bc98278ed2bb40a">
+        <dex dex="/Users/ross/Work/AndroidStudioProjects/EWSForAndroid/app/build/intermediates/pre-dexed/debug/classes-ee4c71e8b0eede1a33d836aa08a3823f4281de03.jar" />
+    </item>
+
+</items>
