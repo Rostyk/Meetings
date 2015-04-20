@@ -113,12 +113,6 @@ public class EventsListAdapter extends BaseAdapter{
             }
         }
 
-        if(contains) {
-            locationView.setText("In progress");
-        }
-        else {
-            locationView.setText(e.getLocation());
-        }
 
         //int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 86, activity.getResources().getDisplayMetrics());
         //convertView.setLayoutParams(new AbsListView.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, height));
@@ -151,12 +145,17 @@ public class EventsListAdapter extends BaseAdapter{
 
         // title
         titleView.setText(e.getSubject());
-
+        locationView.setText(e.getLocation());
 
         String startDate = e.getStartDate();
         String endDate = e.getEndDate();
         if(!e.getAllDay()) {
-            dateView.setText(startDate.substring(startDate.length() - 8, startDate.length() - 3) + " - " + endDate.substring(endDate.length() - 8, endDate.length() - 3));
+            if(contains) {
+                dateView.setText("In progress");
+            }
+            else {
+                dateView.setText(startDate.substring(startDate.length() - 8, startDate.length() - 3) + " - " + endDate.substring(endDate.length() - 8, endDate.length() - 3));
+            }
         }
         else {
             dateView.setText("");
