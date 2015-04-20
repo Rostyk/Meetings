@@ -201,6 +201,8 @@
     <eat-comment/>
     <dimen name="genre">13dip</dimen>
     <dimen name="rating">15dip</dimen>
+    <dimen name="settings_caption">20dip</dimen>
+    <dimen name="settings_option">22dip</dimen>
     <dimen name="title">17dp</dimen>
     <dimen name="year">12dip</dimen>
     <!-- From: file:/Users/ross/Work/AndroidStudioProjects/Meetings/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.0.0/res/values/values.xml -->

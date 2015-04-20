@@ -13,4 +13,7 @@
     <dimen name="details_attendees">23dip</dimen>
     <dimen name="details_calendar">23dip</dimen>
     <dimen name="details_description">23dip</dimen>
+
+    <dimen name="settings_caption">20dip</dimen>
+    <dimen name="settings_option">22dip</dimen>
 </resources>

@@ -1,16 +1,19 @@
 package com.exchange.ross.exchangeapp.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.exchange.ross.exchangeapp.R;
 import com.exchange.ross.exchangeapp.Utils.ApplicationContextProvider;
@@ -24,6 +27,7 @@ import java.util.Date;
 
 public class EventsActivity extends ActionBarActivity implements EventsFragment.OnFragmentInteractionListener  {
 
+    private Activity activity;
     private TextView topDateTextView;
     private TextView topMonthTextView;
     private TextView topDayOfWeekTextView;
@@ -36,6 +40,8 @@ public class EventsActivity extends ActionBarActivity implements EventsFragment.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_events);
+
+        this.activity = this;
 
         ApplicationContextProvider.setActivity(this);
         pagerAdapter = new MyPageAdapter(
@@ -72,8 +78,29 @@ public class EventsActivity extends ActionBarActivity implements EventsFragment.
                 EventsActivity.this.startActivity(settingsActivityIntent);
             }
         });
+
+
+
+        ImageButton syncButton = (ImageButton)findViewById(R.id.syncButton);
+        syncButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showToast();
+
+                Intent serviceIntent = new Intent(activity, TimeService.class);
+                serviceIntent.putExtra("ForceSync", true);
+                activity.startService(serviceIntent);
+            }
+        });
+
         //Start time service
         startService(new Intent(this, TimeService.class));
+    }
+
+    public void showToast() {
+        Toast toast = Toast.makeText(this,"Events will be synced within a minute", Toast.LENGTH_LONG);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
     }
 
     public void displayDate(int daySinceNow) {

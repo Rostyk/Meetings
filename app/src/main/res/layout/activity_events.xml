@@ -20,7 +20,6 @@
 
                 <LinearLayout
                     android:id="@+id/settingsButtonView"
-                    android:background="@color/blue_color"
                     android:padding="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
@@ -42,7 +41,7 @@
                 android:textColor="@color/white_color"
                 android:layout_marginTop="0dp"
                 android:fontFamily="sans-serif-thin"
-                android:paddingRight="60dp"
+                android:paddingRight="58dp"
                 android:gravity="center_horizontal"
                 android:textSize="76dp"
                 android:text="16"/>
@@ -82,6 +81,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="8dp"
                     android:layout_marginTop="10dp"
+                    android:id="@+id/syncButton"
                     android:background="@drawable/refresh"/>
                 </RelativeLayout>
 
