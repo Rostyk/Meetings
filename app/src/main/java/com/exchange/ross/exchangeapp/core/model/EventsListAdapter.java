@@ -112,11 +112,12 @@ public class EventsListAdapter extends BaseAdapter{
                 break;
             }
         }
+
         if(contains) {
-            convertView.setBackgroundColor(0xFFE5FFCC);
+            locationView.setText("In progress");
         }
         else {
-            convertView.setBackgroundResource(drawableResourceId);
+            locationView.setText(e.getLocation());
         }
 
         //int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 86, activity.getResources().getDisplayMetrics());
@@ -150,12 +151,17 @@ public class EventsListAdapter extends BaseAdapter{
 
         // title
         titleView.setText(e.getSubject());
-        locationView.setText(e.getLocation());
+
 
         String startDate = e.getStartDate();
         String endDate = e.getEndDate();
-        dateView.setText(startDate.substring(startDate.length() - 8, startDate.length() - 3) + " - " + endDate.substring(endDate.length() - 8, endDate.length() - 3));
-
+        if(!e.getAllDay()) {
+            dateView.setText(startDate.substring(startDate.length() - 8, startDate.length() - 3) + " - " + endDate.substring(endDate.length() - 8, endDate.length() - 3));
+        }
+        else {
+            dateView.setText("");
+        }
+        e.checkIfAllDayEvent();
         return convertView;
     }
 
@@ -170,10 +176,10 @@ public class EventsListAdapter extends BaseAdapter{
 
     private void setButtonImage(ImageButton button, Event e) {
         if(e.getMute()) {
-            button.setBackgroundResource(R.drawable.mute);
+            button.setBackgroundResource(R.drawable.unmute);
         }
         else {
-            button.setBackgroundResource(R.drawable.unmute);
+            button.setBackgroundResource(R.drawable.mute);
         }
     }
 }

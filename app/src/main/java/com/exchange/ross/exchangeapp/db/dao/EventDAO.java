@@ -46,6 +46,7 @@ public class EventDAO implements BaseDAO<Event>{
         initialValues.put("required_attendees", event.getRequiredAttendees());
         initialValues.put("optional_attendees", event.getOptionalAttendees());
         initialValues.put("calendarName", event.getCalendarName());
+        initialValues.put("all_day", event.getAllDay());
         long rows = database.insert(DATABASE_TABLE, null, initialValues);
         if(rows == -1) {
             Log.v("Error", "Row not inserted");
@@ -60,7 +61,6 @@ public class EventDAO implements BaseDAO<Event>{
 
     public void insertEvents(ArrayList<Event> events) {
         initDB();
-        Boolean open = database.isOpen();
         database.beginTransaction();
         try {
             for (Event event : events) {
@@ -122,6 +122,7 @@ public class EventDAO implements BaseDAO<Event>{
         values.put("required_attendees", event.getRequiredAttendees());
         values.put("optional_attendees", event.getOptionalAttendees());
         values.put("calendarName", event.getCalendarName());
+        values.put("all_day", event.getAllDay());
         values.put("_id", event.getId());
         // updating row
         long res = database.update(DATABASE_TABLE, values, "_id=" + "'" + event.getId() + "'", null);
@@ -193,6 +194,9 @@ public class EventDAO implements BaseDAO<Event>{
         Boolean mute = cursor.getInt(cursor
                 .getColumnIndex("mute")) > 0;
 
+        Boolean isAllDay = cursor.getInt(cursor
+                .getColumnIndex("all_day")) > 0;
+
         String modified = cursor.getString(cursor
                 .getColumnIndex("modified"));
 
@@ -212,6 +216,7 @@ public class EventDAO implements BaseDAO<Event>{
 
         Event event = new Event(id, subject, startDate, endDate, body, accountName);
         event.setMute(mute);
+        event.setAllDay(isAllDay);
         event.setModified(modified);
         event.setLocation(location);
         event.setRequiredAttendees(requiredAttendees);

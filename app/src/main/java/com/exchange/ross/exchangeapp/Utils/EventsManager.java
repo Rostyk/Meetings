@@ -19,6 +19,7 @@ import java.util.concurrent.TimeUnit;
  * Created by ross on 3/31/15.
  */
 public class EventsManager {
+    private Boolean listNeedsRefresh = false;
     private int index;
     private static EventsManager instance;
     private String selectedEventId;
@@ -153,6 +154,14 @@ public class EventsManager {
             this.cachedEvents.clear();
         }
         this.cachedEvents = cachedEvents;
+    }
+
+    public Boolean getListNeedsRefresh() {
+        return listNeedsRefresh;
+    }
+
+    public void setListNeedsRefresh(Boolean listNeedsRefresh) {
+        this.listNeedsRefresh = listNeedsRefresh;
     }
 
     public ArrayList<Event> getCachedEvents() {

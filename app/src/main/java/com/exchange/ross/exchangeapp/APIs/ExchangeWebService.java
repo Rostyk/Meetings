@@ -79,6 +79,7 @@ public class ExchangeWebService extends WebService {
                         String eventStartDateUTC = dateFormatter.format(appt.getStart());
                         String eventEndDateStrUTC = dateFormatter.format(appt.getEnd());
 
+                        Boolean isAllDay = appt.getIsAllDayEvent();
                         Date eventStartDate = getDate(eventStartDateUTC);
                         Date eventEndDate = getDate(eventEndDateStrUTC);
 
@@ -112,6 +113,7 @@ public class ExchangeWebService extends WebService {
                         }
 
                         Event event = new Event(id, subject, eventStartDateLocal, eventEndDateLocal,  body, creds.getUser());
+                        event.setAllDay(isAllDay);
                         event.setModified(modified);
                         event.setLocation(location);
                         event.setCalendarName("Main");

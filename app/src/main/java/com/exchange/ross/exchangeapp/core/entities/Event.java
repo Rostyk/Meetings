@@ -3,14 +3,18 @@ package com.exchange.ross.exchangeapp.core.entities;
 import android.text.BoringLayout;
 import android.util.Log;
 
+import com.exchange.ross.exchangeapp.Utils.DateUtils;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by ross on 3/21/15.
  */
 public class Event implements  Comparable<Event>{
     private String id;
+    private Boolean allDay;
     private String subject;
     private String location;
     private String startDate;
@@ -131,6 +135,14 @@ public class Event implements  Comparable<Event>{
         return calendarName;
     }
 
+    public Boolean getAllDay() {
+        return allDay;
+    }
+
+    public void setAllDay(Boolean allDay) {
+        this.allDay = allDay;
+    }
+
     public void setOptionalAttendees(String optionalAttendees) {
         this.optionalAttendees = optionalAttendees;
     }
@@ -186,5 +198,19 @@ public class Event implements  Comparable<Event>{
         }
 
         return null;
+    }
+
+    public void checkIfAllDayEvent() {
+        Date start = getStartDateInDate();
+        Date end = getEndDateInDate();
+
+        long hours = DateUtils.getDateDiff(start, end, TimeUnit.HOURS);
+
+        if(hours > 23) {
+            allDay = true;
+        }
+        else {
+            allDay = false;
+        }
     }
 }

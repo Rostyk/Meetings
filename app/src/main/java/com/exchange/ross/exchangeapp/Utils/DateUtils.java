@@ -6,6 +6,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by ross on 4/7/15.
@@ -62,5 +63,10 @@ public class DateUtils {
         DateFormat format = new SimpleDateFormat("MMMM yyyy");
         String monthYear = format.format(date);
         return monthYear;
+    }
+
+    public static long getDateDiff(Date date1, Date date2, TimeUnit timeUnit) {
+        long diffInMillies = date2.getTime() - date1.getTime();
+        return timeUnit.convert(diffInMillies,TimeUnit.MILLISECONDS);
     }
 }

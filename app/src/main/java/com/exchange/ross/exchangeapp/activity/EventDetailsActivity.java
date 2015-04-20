@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +28,11 @@ import java.util.List;
 
 public class EventDetailsActivity extends ActionBarActivity {
 
+    private int buttonResourceIdOn;
+    private int buttonResourceIdOff;
+    private ImageButton muteButton;
+
+    private Event event;
     private AccountsProxy accountsProxy;
     private List<WebService> accountList;
     private int number;
@@ -68,7 +74,7 @@ public class EventDetailsActivity extends ActionBarActivity {
         this.accountList = accountsProxy.getAllAccounts();
 
         String id = EventsManager.sharedManager().getSelectedEventId();
-        Event event = EventsProxy.sharedProxy().getEventBuId(id);
+        event = EventsProxy.sharedProxy().getEventBuId(id);
 
         Typeface light = Typefaces.get(getApplicationContext(), "robotolight");
         Typeface thin =  Typefaces.get(getApplicationContext(), "robotothin");
@@ -79,6 +85,14 @@ public class EventDetailsActivity extends ActionBarActivity {
         TextView meetingAttendeesTextView = (TextView)findViewById(R.id.meetingAttendeesTextView);
         TextView meetingCalendarTextView = (TextView)findViewById(R.id.meetingCalendarTextView);
         TextView meetingDescriptionTextView = (TextView)findViewById(R.id.meetingDescriptionTextView);
+
+
+        ImageView meetingTimeImageView = (ImageView)findViewById(R.id.meetingTimeImage);
+        ImageView meetingLocationImageView = (ImageView)findViewById(R.id.meetingLocationImage);
+        ImageView meetingAttendeesImageView = (ImageView)findViewById(R.id.meetingAttendeesImage);
+        ImageView meetingCalendarImageView = (ImageView)findViewById(R.id.meetingCalendarImage);
+        ImageView meetingDescriptionImageView = (ImageView)findViewById(R.id.meetingDescriptionImage);
+
         meetingSubjectTextView.setTypeface(light);
         meetingTimeTextView.setTypeface(thin);
         meetingLocationTextView.setTypeface(thin);
@@ -92,21 +106,20 @@ public class EventDetailsActivity extends ActionBarActivity {
         int bgResourceId = ApplicationContextProvider.getsContext().getResources().getIdentifier("descriptiontop" + (number%6 + 1), "drawable", ApplicationContextProvider.getsContext().getPackageName());
         topView.setBackgroundResource(bgResourceId);
 
-        int buttonResourceId =  ApplicationContextProvider.getsContext().getResources().getIdentifier("description_button" + (number%6 + 1) + "_off", "drawable", ApplicationContextProvider.getsContext().getPackageName());
-        ImageButton muteBtton = (ImageButton)findViewById(R.id.descriptionMuteButton);
-        muteBtton.setBackgroundResource(buttonResourceId);
+        buttonResourceIdOn =  ApplicationContextProvider.getsContext().getResources().getIdentifier("description_button" + (number%6 + 1) + "_on", "drawable", ApplicationContextProvider.getsContext().getPackageName());
+        buttonResourceIdOff =  ApplicationContextProvider.getsContext().getResources().getIdentifier("description_button" + (number%6 + 1) + "_off", "drawable", ApplicationContextProvider.getsContext().getPackageName());
 
-        final ImageButton descriptionMuteButton = (ImageButton)findViewById(R.id.descriptionMuteButton);
-        descriptionMuteButton.setOnClickListener(new View.OnClickListener() {
+        muteButton = (ImageButton)findViewById(R.id.descriptionMuteButton);
+
+        checkMuteButtonImage();
+        muteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Clicked",
-                        Toast.LENGTH_LONG).show();
+                muteButtonClicked();
             }
         });
         meetingSubjectTextView.setText(event.getSubject());
         meetingTimeTextView.setText(DateUtils.meetingTimeFromEvent(event));
-        meetingLocationTextView.setText(event.getLocation());
 
         String attendees = "";
         if(event.getRequiredAttendees() != null)
@@ -115,9 +128,25 @@ public class EventDetailsActivity extends ActionBarActivity {
             if(event.getOptionalAttendees().length() > 1)
               attendees = attendees + "\n" + event.getOptionalAttendees();
 
-        meetingAttendeesTextView.setText(attendees);
+
+        if(event.getLocation() != null && event.getLocation().length() > 0) {
+            meetingLocationTextView.setText(event.getLocation());
+        }
+        else {
+            meetingLocationTextView.setVisibility(View.GONE);
+            meetingLocationImageView.setVisibility(View.GONE);
+        }
+
+        if(attendees.length() > 0) {
+            meetingAttendeesTextView.setText(attendees);
+        }
+        else {
+            meetingAttendeesTextView.setVisibility(View.GONE);
+            meetingAttendeesImageView.setVisibility(View.GONE);
+        }
+
+
         meetingCalendarTextView.setText(event.getCalendarName());
-        meetingDescriptionTextView.setText(event.getBody());
 
         ServiceType type = getServiceType(event);
 
@@ -137,8 +166,10 @@ public class EventDetailsActivity extends ActionBarActivity {
                 hideBodyView = true;
         }
 
-        if(hideBodyView)
+        if(hideBodyView) {
+            meetingDescriptionImageView.setVisibility(View.GONE);
             meetingDescriptionTextView.setVisibility(View.GONE);
+        }
     }
 
     private ServiceType getServiceType(Event event) {
@@ -149,6 +180,24 @@ public class EventDetailsActivity extends ActionBarActivity {
         }
 
         return ServiceType.SERVICE_UNKNOWN;
+    }
+
+    public void muteButtonClicked() {
+        Boolean muted = event.getMute();
+        muted = !muted;
+        event.setMute(muted);
+        EventsProxy.sharedProxy().updateEvent(event);
+        checkMuteButtonImage();
+        EventsManager.sharedManager().setListNeedsRefresh(true);
+    }
+
+    public void checkMuteButtonImage() {
+        if(event.getMute()) {
+            muteButton.setBackgroundResource(buttonResourceIdOn);
+        }
+        else {
+            muteButton.setBackgroundResource(buttonResourceIdOff);
+        }
     }
 
 }

@@ -117,10 +117,8 @@ public class EventsFragment extends android.support.v4.app.Fragment {
     }
 
     public void setupEvents() {
-
-
-        EventsActivity activity = (EventsActivity)getActivity();
-        activity.displayDate(position);
+        EventsActivity eventsActivity = (EventsActivity)activity;
+        eventsActivity.displayDate(position);
 
         //if(loaded)
             //return;
@@ -149,10 +147,8 @@ public class EventsFragment extends android.support.v4.app.Fragment {
     private void _setupEvents(ArrayList<Event> events) {
 
             eventList = (ArrayList<Event>)events;
-            adapter = new EventsListAdapter((LayoutInflater)ApplicationContextProvider.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE), eventList, getActivity().getApplicationContext());
+            adapter = new EventsListAdapter((LayoutInflater)this.activity.getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE), eventList, this.activity.getApplicationContext());
             adapter.setActivity(activity);
-
-
 
             listView.setAdapter(adapter);
             adapter.notifyDataSetChanged();
@@ -195,7 +191,7 @@ public class EventsFragment extends android.support.v4.app.Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position,
                                     long id) {
-                Intent intent = new Intent(getActivity(), EventDetailsActivity.class);
+                Intent intent = new Intent(activity, EventDetailsActivity.class);
                 intent.putExtra("number", position);
                 Event selectedEvent = (Event)eventList.get(position);
                 EventsManager.sharedManager().setSelectedEventId(selectedEvent.getId());
@@ -239,7 +235,7 @@ public class EventsFragment extends android.support.v4.app.Fragment {
         registered = true;
         IntentFilter filter = new IntentFilter(TimeService.TIMER_BR);
         filter.addAction(TimeService.SYNC_NEW_EVENTS_BR);
-        LocalBroadcastManager.getInstance(ApplicationContextProvider.getContext()).registerReceiver(br,filter);
+        LocalBroadcastManager.getInstance(this.activity.getApplicationContext()).registerReceiver(br,filter);
     }
 
     @Override
@@ -248,7 +244,7 @@ public class EventsFragment extends android.support.v4.app.Fragment {
         mListener = null;
 
         registered = false;
-        LocalBroadcastManager.getInstance(ApplicationContextProvider.getContext()).unregisterReceiver(
+        LocalBroadcastManager.getInstance(this.activity.getApplicationContext()).unregisterReceiver(
                 br);
     }
 
@@ -258,14 +254,18 @@ public class EventsFragment extends android.support.v4.app.Fragment {
 
         if(paused) {
             this.paused = false;
-           // updateEventsUI();
+        }
+
+        if(EventsManager.sharedManager().getListNeedsRefresh()) {
+            EventsManager.sharedManager().setListNeedsRefresh(false);
+            updateEventsUI();
         }
 
         this.paused = false;
 
         IntentFilter filter = new IntentFilter(TimeService.TIMER_BR);
         filter.addAction(TimeService.SYNC_NEW_EVENTS_BR);
-        getActivity().getApplicationContext().registerReceiver(br, filter);
+        this.activity.getApplicationContext().registerReceiver(br, filter);
     }
 
     @Override
