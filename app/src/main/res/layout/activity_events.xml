@@ -17,22 +17,32 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:layout_marginLeft="6dp"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="10dp"
-                android:background="@drawable/settings_button"/>
+
+                <LinearLayout
+                    android:id="@+id/settingsButtonView"
+                    android:background="@color/blue_color"
+                    android:padding="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                     <ImageButton
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_marginTop="4dp"
+                         android:layout_marginLeft="6dp"
+                         android:layout_alignParentRight="true"
+                         android:layout_marginRight="10dp"
+                         android:id="@+id/settingsButton"
+                         android:background="@drawable/settings_button"/>
+                    </LinearLayout>
             <TextView
                 android:id="@+id/topDateTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white_color"
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="0dp"
                 android:fontFamily="sans-serif-thin"
-                android:paddingRight="36dp"
+                android:paddingRight="60dp"
                 android:gravity="center_horizontal"
                 android:textSize="76dp"
                 android:text="16"/>

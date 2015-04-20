@@ -26,6 +26,7 @@
     <eat-comment/>
     <color name="bg_color">#EEEEF0</color>
     <color name="black_color">#000000</color>
+    <color name="blue_color">#0000ff</color>
     <!-- From: file:/Users/ross/Work/AndroidStudioProjects/Meetings/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.0.0/res/values/values.xml -->
     <eat-comment/>
     <color name="bright_foreground_disabled_material_dark">#80ffffff</color>
@@ -237,9 +238,6 @@
     <string name="abc_shareactionprovider_share_with">Share with</string>
     <string name="abc_shareactionprovider_share_with_application">Share with %s</string>
     <string name="abc_toolbar_collapse_description">Collapse</string>
-    <!-- From: file:/Users/ross/Work/AndroidStudioProjects/Meetings/app/src/main/res/values/strings.xml -->
-    <eat-comment/>
-    <string name="action_settings">Settings</string>
     <!-- From: file:/Users/ross/Work/AndroidStudioProjects/Meetings/app/src/main/res/values/strings_activity_exchange_login.xml -->
     <eat-comment/>
     <string name="action_sign_in">Sign in or register</string>
