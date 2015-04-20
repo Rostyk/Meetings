@@ -56,70 +56,72 @@ public class WebServiceExchangeGetAppointmentsOperation extends AsyncTask<Operat
         OperationCredentials credential = credentialses[0];
         ArrayList<Event> events = new ArrayList<>();
         try {
-             ArrayList<String> calendarNames = new ArrayList<String>();
-             ExchangeService service = new ExchangeService();
-             ExchangeCredentials credentials = new WebCredentials("oleksandr.gorbenko", "#WolF_stu123456789", "eleks-software");
-             service.setCredentials(credentials);
-             try {
-                    service.setUrl(new URI("https://webmail.eleks.com/EWS/Exchange.asmx"));
-                 }
-             catch (URISyntaxException e) {
-                    e.printStackTrace();
-                 }
-             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-             Date startDate = formatter.parse("2015-01-01 12:00:00");
-             Date endDate = formatter.parse("2015-07-01 13:00:00");
-             CalendarFolder cf=CalendarFolder.bind(service, WellKnownFolderName.Calendar);
-             FindItemsResults<Appointment> findResults = cf.findAppointments(new CalendarView(startDate, endDate));
-             for (Appointment appt : findResults.getItems()) {
-                    appt.load();
-                    if(appt.getBody() != null)  {
-                        SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                        String eventStartDateUTC = dateFormatter.format(appt.getStart());
-                        String eventEndDateStrUTC = dateFormatter.format(appt.getEnd());
+            ArrayList<String> calendarNames = new ArrayList<String>();
+            ExchangeService service = new ExchangeService();
+            ExchangeCredentials credentials = new WebCredentials("oleksandr.gorbenko", "#WolF_stu123456789", "eleks-software");
+            service.setCredentials(credentials);
+            try {
+                service.setUrl(new URI("https://webmail.eleks.com/EWS/Exchange.asmx"));
+            }
+            catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date startDate = formatter.parse("2015-01-01 12:00:00");
+            Date endDate = formatter.parse("2015-07-01 13:00:00");
+            CalendarFolder cf=CalendarFolder.bind(service, WellKnownFolderName.Calendar);
+            FindItemsResults<Appointment> findResults = cf.findAppointments(new CalendarView(startDate, endDate));
+            for (Appointment appt : findResults.getItems()) {
+                appt.load();
+                if(appt.getBody() != null)  {
+                    SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    String eventStartDateUTC = dateFormatter.format(appt.getStart());
+                    String eventEndDateStrUTC = dateFormatter.format(appt.getEnd());
 
-                        Date eventStartDate = getDate(eventStartDateUTC);
-                        Date eventEndDate = getDate(eventEndDateStrUTC);
+                    Boolean isAllDay = appt.getIsAllDayEvent();
+                    Date eventStartDate = getDate(eventStartDateUTC);
+                    Date eventEndDate = getDate(eventEndDateStrUTC);
 
-                        String eventStartDateLocal = dateFormatter.format(eventStartDate);
-                        String eventEndDateLocal = dateFormatter.format(eventEndDate);
+                    String eventStartDateLocal = dateFormatter.format(eventStartDate);
+                    String eventEndDateLocal = dateFormatter.format(eventEndDate);
 
-                        String id = appt.getId().toString();
-                        String modified = dateFormatter.format(appt.getLastModifiedTime());
-                        String body = MessageBody.getStringFromMessageBody(appt.getBody());
-                        String subject = appt.getSubject();
-                        String location = appt.getLocation();
-                        AttendeeCollection requiredGuys = appt.getRequiredAttendees();
-                        AttendeeCollection optionalGuys = appt.getOptionalAttendees();
+                    String id = appt.getId().toString();
+                    String modified = dateFormatter.format(appt.getLastModifiedTime());
+                    String body = MessageBody.getStringFromMessageBody(appt.getBody());
+                    String subject = appt.getSubject();
+                    String location = appt.getLocation();
+                    AttendeeCollection requiredGuys = appt.getRequiredAttendees();
+                    AttendeeCollection optionalGuys = appt.getOptionalAttendees();
 
-                        String requiredGuysStr = "";
-                        String optionalGuysStr = "";
-                        if(requiredGuys != null) {
-                            for (int i=0; i<requiredGuys.getCount(); i++) {
-                                Attendee attendee = requiredGuys.getPropertyAtIndex(i);
-                                String delimiter = (i==requiredGuys.getCount() -1 ) ? "" : ";";
-                                requiredGuysStr = requiredGuysStr + attendee.getName() + delimiter;
-                            }
+                    String requiredGuysStr = "";
+                    String optionalGuysStr = "";
+                    if(requiredGuys != null) {
+                        for (int i=0; i<requiredGuys.getCount(); i++) {
+                            Attendee attendee = requiredGuys.getPropertyAtIndex(i);
+                            String delimiter = (i==requiredGuys.getCount() -1 ) ? "" : ";";
+                            requiredGuysStr = requiredGuysStr + attendee.getName() + delimiter;
                         }
-
-                        if(optionalGuys != null) {
-                            for (int i=0; i<optionalGuys.getCount(); i++) {
-                                Attendee attendee = optionalGuys.getPropertyAtIndex(i);
-                                String delimiter = (i==optionalGuys.getCount() -1 ) ? "" : ";";
-                                optionalGuysStr = optionalGuysStr + attendee.getName() + delimiter;
-                            }
-                        }
-
-                        Event event = new Event(id, subject, eventStartDateLocal, eventEndDateLocal,  body, credential.getUser());
-                        event.setModified(modified);
-                        event.setLocation(location);
-                        event.setCalendarName("Main");
-                        event.setRequiredAttendees(requiredGuysStr);
-                        event.setOptionalAttendees(optionalGuysStr);
-
-                        events.add(event);
                     }
-             }
+
+                    if(optionalGuys != null) {
+                        for (int i=0; i<optionalGuys.getCount(); i++) {
+                            Attendee attendee = optionalGuys.getPropertyAtIndex(i);
+                            String delimiter = (i==optionalGuys.getCount() -1 ) ? "" : ";";
+                            optionalGuysStr = optionalGuysStr + attendee.getName() + delimiter;
+                        }
+                    }
+
+                    Event event = new Event(id, subject, eventStartDateLocal, eventEndDateLocal,  body, credential.getUser());
+                    event.setAllDay(isAllDay);
+                    event.setModified(modified);
+                    event.setLocation(location);
+                    event.setCalendarName("Main");
+                    event.setRequiredAttendees(requiredGuysStr);
+                    event.setOptionalAttendees(optionalGuysStr);
+
+                    events.add(event);
+                }
+            }
         }
         catch(Exception e) {
               events = EventsProxy.sharedProxy().getAllEvents();

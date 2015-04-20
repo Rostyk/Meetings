@@ -68,7 +68,6 @@ public class WebServiceGoogleGetEventsOperation extends AsyncTask<OperationCrede
         ArrayList<Event> events = new ArrayList<Event>();
         String pageToken = null;
         do {
-
             Events calendarEvents = client.events().list(calendarId).setSingleEvents(true).setPageToken(pageToken).execute();
             List<com.google.api.services.calendar.model.Event> items = calendarEvents.getItems();
             Event entityEvent = null;
@@ -121,6 +120,7 @@ public class WebServiceGoogleGetEventsOperation extends AsyncTask<OperationCrede
                     entityEvent.setCalendarName(calendarId);
                     entityEvent.setRequiredAttendees(requiredGuysStr);
                     entityEvent.setOptionalAttendees(optionalGuysStr);
+                    entityEvent.checkIfAllDayEvent();
                     events.add(entityEvent);
                 }
             }

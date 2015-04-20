@@ -170,6 +170,7 @@ public class EventDetailsActivity extends ActionBarActivity {
             meetingDescriptionImageView.setVisibility(View.GONE);
             meetingDescriptionTextView.setVisibility(View.GONE);
         }
+
     }
 
     private ServiceType getServiceType(Event event) {

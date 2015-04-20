@@ -113,6 +113,8 @@ public class EventsListAdapter extends BaseAdapter{
             }
         }
 
+        convertView.setBackgroundResource(drawableResourceId);
+
 
         //int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 86, activity.getResources().getDisplayMetrics());
         //convertView.setLayoutParams(new AbsListView.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, height));

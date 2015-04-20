@@ -105,10 +105,9 @@ public class EventsManager {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(ApplicationContextProvider.getContext());
             double minutesElapsed = getDateDiff(event.getStartDateInDate(), new Date(), TimeUnit.MINUTES);
             double duration = getDateDiff(event.getStartDateInDate(),event.getEndDateInDate(), TimeUnit.MINUTES);
-            int drawable;
 
             double progress = (minutesElapsed*1.0 / duration*1.0);
-            int res = 100 - (int)(progress * 100.0);
+            int res = 0 + (int)(progress * 100.0);
             int drawableResourceId = ApplicationContextProvider.getsContext().getResources().getIdentifier("progress" + res + "", "drawable", ApplicationContextProvider.getsContext().getPackageName());
 
 
