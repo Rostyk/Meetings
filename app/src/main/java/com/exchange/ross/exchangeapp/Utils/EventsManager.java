@@ -114,7 +114,7 @@ public class EventsManager {
             Notification notification = builder
                     .setSmallIcon(drawableResourceId)
                     .setContentTitle(event.getSubject())
-                    .setContentText("Meeting started: " + minutesElapsed + " mintues elapsed of " + duration)
+                    .setContentText("Meeting started: " + minutesElapsed + " minutes elapsed of " + duration)
                     .build();
             NotificationManager notificationManager = (NotificationManager)ApplicationContextProvider.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
             notificationManager.notify(notificationId , notification);

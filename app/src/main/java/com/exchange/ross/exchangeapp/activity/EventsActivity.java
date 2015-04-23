@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.exchange.ross.exchangeapp.R;
 import com.exchange.ross.exchangeapp.Utils.ApplicationContextProvider;
 import com.exchange.ross.exchangeapp.Utils.DateUtils;
+import com.exchange.ross.exchangeapp.Utils.PurchaseManager;
 import com.exchange.ross.exchangeapp.Utils.Typefaces;
 import com.exchange.ross.exchangeapp.core.service.TimeService;
 import com.exchange.ross.exchangeapp.core.model.MyPageAdapter;
@@ -79,6 +80,8 @@ public class EventsActivity extends ActionBarActivity implements EventsFragment.
             }
         });
 
+        PurchaseManager manager = PurchaseManager.sharedManager();
+        manager.init(getApplicationContext());
 
 
         ImageButton syncButton = (ImageButton)findViewById(R.id.syncButton);
@@ -87,9 +90,13 @@ public class EventsActivity extends ActionBarActivity implements EventsFragment.
             public void onClick(View v) {
                 showToast();
 
+                PurchaseManager manager = PurchaseManager.sharedManager();
+                manager.buy(activity);
+
+                /*
                 Intent serviceIntent = new Intent(activity, TimeService.class);
                 serviceIntent.putExtra("ForceSync", true);
-                activity.startService(serviceIntent);
+                activity.startService(serviceIntent);*/
             }
         });
 
@@ -101,6 +108,17 @@ public class EventsActivity extends ActionBarActivity implements EventsFragment.
         Toast toast = Toast.makeText(this,"Events will be synced within a minute", Toast.LENGTH_LONG);
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode,
+                                    Intent data)
+    {
+        PurchaseManager manager = PurchaseManager.sharedManager();
+        if (!manager.mHelper.handleActivityResult(requestCode,
+                resultCode, data)) {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     public void displayDate(int daySinceNow) {
@@ -134,6 +152,9 @@ public class EventsActivity extends ActionBarActivity implements EventsFragment.
     @Override
     public void onDestroy() {
         super.onDestroy();
+        PurchaseManager manager = PurchaseManager.sharedManager();
+        if (manager.mHelper != null) manager.mHelper.dispose();
+          manager.mHelper = null;
         stopService(new Intent(this, TimeService.class));
     }
 

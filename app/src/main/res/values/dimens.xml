@@ -15,5 +15,5 @@
     <dimen name="details_description">23dip</dimen>
 
     <dimen name="settings_caption">20dip</dimen>
-    <dimen name="settings_option">22dip</dimen>
+    <dimen name="settings_option">16dip</dimen>
 </resources>
