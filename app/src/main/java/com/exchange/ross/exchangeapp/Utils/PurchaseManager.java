@@ -7,6 +7,7 @@ import android.view.ContextMenu;
 
 import com.exchange.ross.exchangeapp.Utils.billing.IabHelper;
 import com.exchange.ross.exchangeapp.Utils.billing.IabResult;
+import com.exchange.ross.exchangeapp.Utils.billing.Inventory;
 import com.exchange.ross.exchangeapp.Utils.billing.Purchase;
 
 /**
@@ -63,12 +64,24 @@ public class PurchaseManager {
                 Log.v("Purchase", "Already owned");
             }
 
+            mHelper.consumeAsync(purchase, mConsumeFinishListener);
+
             if (result.isFailure()) {
                 return;
             }
-
-
         }
 
+    };
+
+    IabHelper.OnConsumeFinishedListener mConsumeFinishListener = new IabHelper.OnConsumeFinishedListener() {
+        @Override
+        public void onConsumeFinished(Purchase purchase, IabResult result) {
+            if(result.isFailure()) {
+
+            }
+            else {
+                Log.v("Purchase", "consumed success");
+            }
+        }
     };
 }

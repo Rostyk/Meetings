@@ -138,6 +138,7 @@ public class TimeService extends Service {
     public void onDestroy() {
         super.onDestroy();
         timer.cancel();
+        syncTimer.cancel();
     }
 
 }
