@@ -37,6 +37,11 @@ public class WHDatabaseHelper extends SQLiteOpenHelper
         onCreate(database);
     }
 
+    public void clear() {
+        getWritableDatabase().execSQL("DELETE FROM Events");
+        getWritableDatabase().execSQL("DELETE FROM Accounts");
+    }
+
     @Override
     public SQLiteDatabase getWritableDatabase() {
         return super.getWritableDatabase();

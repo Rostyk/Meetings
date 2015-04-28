@@ -37,4 +37,8 @@ public  class WebService {
     public void getEvents(OperationCompleted completed, int id) {
         // should be overridden and ideally throw an exception
     }
+
+    public  void terminate() {
+
+    }
 }

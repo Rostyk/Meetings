@@ -1,7 +1,9 @@
 package com.exchange.ross.exchangeapp.activity;
 
 import android.accounts.AccountManager;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v7.app.ActionBarActivity;
@@ -15,7 +17,9 @@ import android.widget.TextView;
 
 import com.exchange.ross.exchangeapp.APIs.GoogleWebService;
 import com.exchange.ross.exchangeapp.APIs.operations.OperationCompleted;
+import com.exchange.ross.exchangeapp.APIs.operations.SyncEventCompleted;
 import com.exchange.ross.exchangeapp.R;
+import com.exchange.ross.exchangeapp.Utils.EventsManager;
 import com.exchange.ross.exchangeapp.core.entities.Event;
 import com.exchange.ross.exchangeapp.db.AccountsProxy;
 import com.exchange.ross.exchangeapp.db.EventsProxy;
@@ -31,6 +35,7 @@ import java.util.Collections;
 
 
 public class AddNewAccountActivity extends ActionBarActivity implements View.OnClickListener {
+    private Boolean isAddingExtraAcount = false;
     private ProgressDialog progress;
     private GoogleWebService service;
     static final int GOOGLE_CHOOSE_ACCOUNT_ACTIVITY = 1;
@@ -46,7 +51,13 @@ public class AddNewAccountActivity extends ActionBarActivity implements View.OnC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_account);
 
+        checkIfAddingExtraAccount();
         setupView();
+    }
+
+    public void checkIfAddingExtraAccount(){
+        Intent intent = getIntent();
+        isAddingExtraAcount = intent.getBooleanExtra("AddingExtraAccount", false);
     }
 
     public void setupView() {
@@ -101,7 +112,13 @@ public class AddNewAccountActivity extends ActionBarActivity implements View.OnC
         if (requestCode == GOOGLE_CHOOSE_ACCOUNT_ACTIVITY && resultCode == RESULT_OK) {
             accountName = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
 
-            getEvents();
+            if(AccountsProxy.sharedProxy().isUnique(accountName)) {
+                getEvents();
+            }
+            else {
+                showDuplicateWarning();
+            }
+
         }
     }
 
@@ -112,34 +129,36 @@ public class AddNewAccountActivity extends ActionBarActivity implements View.OnC
         progress.show();
 
         service = new GoogleWebService("", accountName, "", "", getApplicationContext(), AddNewAccountActivity.this);
-        service.getEvents(new OperationCompleted() {
-            @Override
-            public void onOperationCompleted(Object result, int id) {
-                if(id == exGetEventsOperation) {
-                    ArrayList<Event> events = (ArrayList<Event> )result;
 
-                    for (Event event : events) {
-                        Log.d("EX", event.getBody());
-                        Log.d("EX", event.getSubject());
-                        Log.d("EX", event.getStartDate());
-                        Log.d("EX", event.getEndDate());
-                        Log.d("EX", "----------");
+        if(isAddingExtraAcount) {
+            saveAccount(service);
+            EventsManager.sharedManager().sync(accountName, new SyncEventCompleted() {
+                @Override
+                public void onSyncEventsCompleted(Boolean success) {
+                    finish();
+                }
+            });
+        }
+        else {
+            service.getEvents(new OperationCompleted() {
+                @Override
+                public void onOperationCompleted(Object result, int id) {
+                    if(id == exGetEventsOperation) {
+                        ArrayList<Event> events = (ArrayList<Event> )result;
+                        saveEvents(events);
+                        saveAccount(service);
+                        progress.dismiss();
+                        openEventsActivity();
                     }
 
-                    saveEvents(events);
-                    saveAccount(service);
-                    openEventsActivity();
                 }
-
-            }
-        }, exGetEventsOperation);
+            }, exGetEventsOperation);
+        }
     }
 
     public void saveAccount(GoogleWebService service) {
         AccountsProxy proxy = AccountsProxy.sharedProxy();
         proxy.addAccount(service);
-
-        progress.dismiss();
     }
 
     public void saveEvents(ArrayList<com.exchange.ross.exchangeapp.core.entities.Event> events) {
@@ -155,6 +174,20 @@ public class AddNewAccountActivity extends ActionBarActivity implements View.OnC
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        progress.dismiss();
         service.terminate();
+    }
+
+    public void showDuplicateWarning() {
+        new AlertDialog.Builder(this)
+                .setTitle("")
+                .setMessage("This account is already linked")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // continue with delete
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 }

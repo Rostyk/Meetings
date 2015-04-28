@@ -12,7 +12,6 @@ import android.util.Log;
 
 import com.exchange.ross.exchangeapp.APIs.operations.OperationCompleted;
 import com.exchange.ross.exchangeapp.APIs.operations.OperationCredentials;
-import com.exchange.ross.exchangeapp.APIs.operations.WebServiceGoogleGetEventsOperation;
 import com.exchange.ross.exchangeapp.Utils.ApplicationContextProvider;
 import com.exchange.ross.exchangeapp.core.entities.Event;
 import com.exchange.ross.exchangeapp.db.EventsProxy;
@@ -33,6 +32,7 @@ import com.google.api.services.calendar.model.EventDateTime;
 import com.google.api.services.calendar.model.Events;
 
 import java.io.IOException;
+import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -62,6 +62,32 @@ public class GoogleWebService extends WebService {
         this.activity = activity;
     }
 
+    //-------------------------------------------------------------------------------
+
+    public class WebServiceGoogleGetEventsOperation extends AsyncTask<OperationCredentials, Float, ArrayList<Event>> {
+        private OperationCompleted listener;
+        private URI uri;
+        private int id;
+        private final String STATUS_CANCELLED = "cancelled";
+
+        public WebServiceGoogleGetEventsOperation(OperationCompleted listener, int id) {
+            this.listener = listener;
+            this.id = id;
+        }
+
+        protected ArrayList<Event> doInBackground(OperationCredentials... credentialses) {
+            return fetchEventsFromAllCalendars();
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<Event> events) {
+            super.onPostExecute(events);
+            if(!terminated)
+                listener.onOperationCompleted(events, this.id);
+        }
+    }
+    //-------------------------------------------------------------------------------
+
     public void getEvents(OperationCompleted completed, int id) {
         accountName = getCredentials().getUser();
         this.completed = completed;
@@ -76,9 +102,9 @@ public class GoogleWebService extends WebService {
     void getAndUseAuthTokenInAsyncTask(final Account account) {
 
         if(Looper.myLooper() == Looper.getMainLooper()) {
-            new Handler(Looper.getMainLooper()).post(new Runnable() {
-                @Override
-                public void run() {
+            //new Handler(Looper.getMainLooper()).post(new Runnable() {
+                //@Override
+                //public void run() {
 
                     AsyncTask<Account, String, String> task = new AsyncTask<Account, String, String>() {
                         ProgressDialog progressDlg;
@@ -119,16 +145,15 @@ public class GoogleWebService extends WebService {
                                 progressDlg.dismiss();
                         }
                     };
-                    task.execute(account);
+                    task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, account);
                 }
 
-            });
-        }
+           // });
+        //}
         else {
             getAccessToken(account);
             fetchEvents();
         }
-
     }
 
     private String getAccessToken(Account account) {
@@ -169,32 +194,38 @@ public class GoogleWebService extends WebService {
                 operation.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, creds);
             }
             else {
-                ArrayList<Event> allEvents = new ArrayList<Event>();
-                try{
-                    com.google.api.services.calendar.Calendar client = ApplicationContextProvider.getClient();
-
-                    // Iterate through entries in calendar list
-                    String cpageToken = null;
-                    do {
-                        CalendarList calendarList = client.calendarList().list().setPageToken(cpageToken).execute();
-                        List<CalendarListEntry> items = calendarList.getItems();
-
-                        for (CalendarListEntry calendarListEntry : items) {
-                            String calendarId = calendarListEntry.getId();
-                            ArrayList<Event> events = getEventsFromCalendarById(calendarId, client, creds);
-                            allEvents.addAll(events);
-                        }
-                        cpageToken = calendarList.getNextPageToken();
-                    } while (cpageToken != null);
-                }
-                catch(Exception e) {
-                    allEvents = EventsProxy.sharedProxy().getAllEvents();
-                    e.printStackTrace();
-                }
-
-                completed.onOperationCompleted(allEvents,id);
+                ArrayList<Event> events = fetchEventsFromAllCalendars();
+                if(!terminated)
+                    completed.onOperationCompleted(events, id);
             }
         }
+    }
+
+    public ArrayList<Event> fetchEventsFromAllCalendars() {
+        ArrayList<Event> allEvents = new ArrayList<Event>();
+        try{
+            com.google.api.services.calendar.Calendar client = ApplicationContextProvider.getClient();
+
+            // Iterate through entries in calendar list
+            String cpageToken = null;
+            do {
+                CalendarList calendarList = client.calendarList().list().setPageToken(cpageToken).execute();
+                List<CalendarListEntry> items = calendarList.getItems();
+
+                for (CalendarListEntry calendarListEntry : items) {
+                    String calendarId = calendarListEntry.getId();
+                    ArrayList<Event> events = getEventsFromCalendarById(calendarId, client, this.getCredentials());
+                    allEvents.addAll(events);
+                }
+                cpageToken = calendarList.getNextPageToken();
+            } while (cpageToken != null);
+        }
+        catch(Exception e) {
+            allEvents = EventsProxy.sharedProxy().getAllEvents();
+            e.printStackTrace();
+        }
+
+       return allEvents;
     }
 
     private ArrayList<Event> getEventsFromCalendarById(String calendarId, com.google.api.services.calendar.Calendar client, OperationCredentials credentials) throws IOException {
@@ -287,6 +318,7 @@ public class GoogleWebService extends WebService {
         return formatter.format(endDate);
     }
 
+    @Override
     public void terminate() {
         activity = null;
         terminated = true;

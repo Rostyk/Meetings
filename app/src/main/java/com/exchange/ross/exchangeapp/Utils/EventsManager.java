@@ -2,11 +2,18 @@ package com.exchange.ross.exchangeapp.Utils;
 
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.LocalBroadcastManager;
 
+import com.exchange.ross.exchangeapp.APIs.operations.SyncEventCompleted;
 import com.exchange.ross.exchangeapp.core.entities.Event;
+import com.exchange.ross.exchangeapp.core.service.TimeService;
+import com.exchange.ross.exchangeapp.db.DatabaseManager;
 import com.exchange.ross.exchangeapp.db.EventsProxy;
 
 import java.text.SimpleDateFormat;
@@ -19,6 +26,13 @@ import java.util.concurrent.TimeUnit;
  * Created by ross on 3/31/15.
  */
 public class EventsManager {
+    public static final String KILL_SERVICE = "com.ross.exchangeapp.kill_service";
+    public static final String START_SERVICE = "com.ross.exchangeapp.start_service";
+    public static final String FORCE_SYNC_EVENTS = "com.ross.exchange.force_sync";
+    private Intent killServiceIntent = new Intent(KILL_SERVICE);
+    private Intent restartServiceIntent = new Intent(START_SERVICE);
+    private Intent forceSyncEventsIntent = new Intent(FORCE_SYNC_EVENTS);
+    private SyncEventCompleted syncEventsCompleted;
     private Boolean listNeedsRefresh = false;
     private int index;
     private static EventsManager instance;
@@ -35,7 +49,13 @@ public class EventsManager {
     }
 
     private EventsManager() {
+       registerReceiver();
+    }
 
+    public void registerReceiver() {
+        IntentFilter filter = new IntentFilter(TimeService.TIMER_BR);
+        filter.addAction(TimeService.SYNC_NEW_EVENTS_BR);
+        LocalBroadcastManager.getInstance(ApplicationContextProvider.getsContext()).registerReceiver(eventsSyncBroadcastReceiver, filter);
     }
 
     public ArrayList<Event> eventsForDaySinceNow(int daySinceToday, ArrayList<Event>events) {
@@ -162,6 +182,37 @@ public class EventsManager {
     public void setListNeedsRefresh(Boolean listNeedsRefresh) {
         this.listNeedsRefresh = listNeedsRefresh;
     }
+
+    public void unlinkAllAccounts() {
+        DatabaseManager.unlink();
+    }
+
+    public void suspendSyncService() {
+        LocalBroadcastManager.getInstance(ApplicationContextProvider.getContext()).sendBroadcast(killServiceIntent);
+    }
+
+    public void restartSyncService() {
+        LocalBroadcastManager.getInstance(ApplicationContextProvider.getContext()).sendBroadcast(restartServiceIntent);
+    }
+
+    public void sync(String account, SyncEventCompleted completion) {
+        syncEventsCompleted = completion;
+        forceSyncEventsIntent.putExtra("Account", account);
+        LocalBroadcastManager.getInstance(ApplicationContextProvider.getContext()).sendBroadcast(forceSyncEventsIntent);
+    }
+
+    private BroadcastReceiver eventsSyncBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(intent.getAction().equals(TimeService.SYNC_NEW_EVENTS_BR)) {
+                if(syncEventsCompleted != null) {
+                    syncEventsCompleted.onSyncEventsCompleted(true);
+                    syncEventsCompleted = null;
+                }
+
+            }
+        }
+    };
 
     public ArrayList<Event> getCachedEvents() {
         return cachedEvents;

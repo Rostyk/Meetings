@@ -1,5 +1,6 @@
 package com.exchange.ross.exchangeapp.activity;
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -12,6 +13,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.exchange.ross.exchangeapp.R;
+import com.exchange.ross.exchangeapp.Utils.EventsManager;
+import com.exchange.ross.exchangeapp.Utils.PurchaseManager;
 import com.exchange.ross.exchangeapp.Utils.Settings;
 import com.exchange.ross.exchangeapp.Utils.Typefaces;
 
@@ -35,6 +38,7 @@ public class SettingsActivity extends ActionBarActivity {
         });
 
         setupSwitchesHandlers();
+        setupAccountsSettingsButton();
     }
 
 
@@ -128,12 +132,36 @@ public class SettingsActivity extends ActionBarActivity {
 
 
 
-         TextView soundTextView = (TextView)findViewById(R.id.settingSoundTextView);
-         soundTextView.setTypeface(light);
-         TextView meetingTextView = (TextView)findViewById(R.id.settingMeetingTextView);
-         meetingTextView.setTypeface(light);
-         TextView notificationTextView = (TextView)findViewById(R.id.settingNotificationTextView);
-         notificationTextView.setTypeface(light);
+        TextView soundTextView = (TextView)findViewById(R.id.settingSoundTextView);
+        soundTextView.setTypeface(light);
+        TextView meetingTextView = (TextView)findViewById(R.id.settingMeetingTextView);
+        meetingTextView.setTypeface(light);
+        TextView notificationTextView = (TextView)findViewById(R.id.settingNotificationTextView);
+        notificationTextView.setTypeface(light);
+    }
 
+    public void setupAccountsSettingsButton() {
+        ImageButton linkAccountButton = (ImageButton)findViewById(R.id.settingsLinkAccountButton);
+        linkAccountButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent addNewAccountIntent = new Intent(SettingsActivity.this, AddNewAccountActivity.class);
+                addNewAccountIntent.putExtra("AddingExtraAccount", true);
+                startActivity(addNewAccountIntent);
+            }
+        });
+
+        ImageButton unlinkAccountsButton = (ImageButton)findViewById(R.id.settingsUnLinkAccountsButton);
+        unlinkAccountsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                EventsManager.sharedManager().unlinkAllAccounts();
+
+                Intent intent = new Intent(getApplicationContext(), AddNewAccountActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        });
     }
 }

@@ -49,4 +49,8 @@ public class DatabaseManager {
             mDatabase.close();
         }
     }
+
+    public static synchronized void unlink() {
+        mDatabaseHelper.clear();
+    }
 }

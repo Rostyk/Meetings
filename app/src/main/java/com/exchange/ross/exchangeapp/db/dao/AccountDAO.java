@@ -90,6 +90,15 @@ public class AccountDAO implements BaseDAO<WebService> {
     
      }
 
+    public Boolean isUnique(String account) {
+        initDB();
+        Cursor cursor = database.rawQuery("SELECT * FROM Accounts WHERE user = '" + account + "'", null);
+        Boolean isUnique = (cursor.getCount() == 0);
+        cursor.close();
+        closeDB();
+        return isUnique;
+    }
+
     private void initDB() {
         database = DatabaseManager.getInstance().openDatabase();
     }

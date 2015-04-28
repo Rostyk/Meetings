@@ -1,9 +1,13 @@
 package com.exchange.ross.exchangeapp.activity;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Typeface;
 import android.net.Uri;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -18,6 +22,7 @@ import android.widget.Toast;
 import com.exchange.ross.exchangeapp.R;
 import com.exchange.ross.exchangeapp.Utils.ApplicationContextProvider;
 import com.exchange.ross.exchangeapp.Utils.DateUtils;
+import com.exchange.ross.exchangeapp.Utils.EventsManager;
 import com.exchange.ross.exchangeapp.Utils.PurchaseManager;
 import com.exchange.ross.exchangeapp.Utils.Typefaces;
 import com.exchange.ross.exchangeapp.core.service.TimeService;
@@ -34,8 +39,7 @@ public class EventsActivity extends ActionBarActivity implements EventsFragment.
     private TextView topDayOfWeekTextView;
     private MyPageAdapter pagerAdapter;
     private ViewPager mViewPager;
-    Boolean dontLoadList = false;
-    private int positionCurrent = 0;
+    private Intent serviceIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,14 +104,23 @@ public class EventsActivity extends ActionBarActivity implements EventsFragment.
             }
         });
 
+        registerServiceBroadcast();
         //Start time service
-        startService(new Intent(this, TimeService.class));
+        serviceIntent = new Intent(this, TimeService.class);
+        startService(serviceIntent);
     }
 
     public void showToast() {
         Toast toast = Toast.makeText(this,"Events will be synced within a minute", Toast.LENGTH_LONG);
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
+    }
+
+    public void registerServiceBroadcast() {
+        IntentFilter filter = new IntentFilter(EventsManager.KILL_SERVICE);
+        filter.addAction(EventsManager.FORCE_SYNC_EVENTS);
+        filter.addAction(EventsManager.START_SERVICE);
+        LocalBroadcastManager.getInstance(this.activity.getApplicationContext()).registerReceiver(serviceStateReceiver,filter);
     }
 
     @Override
@@ -148,14 +161,14 @@ public class EventsActivity extends ActionBarActivity implements EventsFragment.
         return super.onOptionsItemSelected(item);
     }
 
-
     @Override
     public void onDestroy() {
         super.onDestroy();
+        LocalBroadcastManager.getInstance(this.activity.getApplicationContext()).unregisterReceiver(serviceStateReceiver);
         PurchaseManager manager = PurchaseManager.sharedManager();
         if (manager.mHelper != null) manager.mHelper.dispose();
           manager.mHelper = null;
-        stopService(new Intent(this, TimeService.class));
+        stopService(serviceIntent);
     }
 
     public void onBackPressed() {
@@ -164,6 +177,26 @@ public class EventsActivity extends ActionBarActivity implements EventsFragment.
         i.addCategory(Intent.CATEGORY_HOME);
         this.startActivity(i);
     }
+
+    private BroadcastReceiver serviceStateReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(intent.getAction().equals(EventsManager.KILL_SERVICE)) {
+                stopService(serviceIntent);
+            }
+            if(intent.getAction().equals(EventsManager.START_SERVICE)) {
+                serviceIntent = new Intent(activity, TimeService.class);
+                startService(serviceIntent);
+            }
+            if(intent.getAction().equals(EventsManager.FORCE_SYNC_EVENTS)) {
+                Intent serviceIntent = new Intent(activity, TimeService.class);
+                String account = intent.getStringExtra("Account");
+                serviceIntent.putExtra("ForceSync", true);
+                serviceIntent.putExtra("Account", account);
+                activity.startService(serviceIntent);
+            }
+        }
+    };
 
     @Override
     public void onFragmentInteraction(Uri uri) {

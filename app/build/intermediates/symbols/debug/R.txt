@@ -613,12 +613,12 @@ int id icon 0x7f090029
 int id ifRoom 0x7f09001b
 int id ignoreAllDaySwitch 0x7f090070
 int id image 0x7f090026
-int id list 0x7f090074
-int id listDate 0x7f090079
-int id listLocation 0x7f090078
+int id list 0x7f090076
+int id listDate 0x7f09007b
+int id listLocation 0x7f09007a
 int id listMode 0x7f090009
 int id listSwitch 0x7f090072
-int id listTitle 0x7f090077
+int id listTitle 0x7f090079
 int id list_item 0x7f090028
 int id login 0x7f090066
 int id login_form 0x7f09005e
@@ -649,7 +649,7 @@ int id plus_sign_out_buttons 0x7f09005f
 int id progress_circular 0x7f090005
 int id progress_horizontal 0x7f090006
 int id radio 0x7f09002e
-int id row 0x7f090075
+int id row 0x7f090077
 int id satellite 0x7f090017
 int id search_badge 0x7f090038
 int id search_bar 0x7f090037
@@ -667,7 +667,9 @@ int id settingSoundTextView 0x7f09006b
 int id settingsBackButton 0x7f090069
 int id settingsButton 0x7f090057
 int id settingsButtonView 0x7f090056
+int id settingsLinkAccountButton 0x7f090074
 int id settingsTopTextView 0x7f09006a
+int id settingsUnLinkAccountsButton 0x7f090075
 int id shortcut 0x7f09002d
 int id showCustom 0x7f09000f
 int id showHome 0x7f090010
@@ -680,7 +682,7 @@ int id submit_area 0x7f09003f
 int id syncButton 0x7f09005b
 int id tabMode 0x7f09000b
 int id terrain 0x7f090018
-int id thumbnail 0x7f090076
+int id thumbnail 0x7f090078
 int id timerSwitch 0x7f090073
 int id title 0x7f09002a
 int id topDateTextView 0x7f090058

@@ -41,4 +41,8 @@ public class AccountsProxy {
         accountDAO.delete(account);
     }
 
+    public Boolean isUnique(String account) {
+        return accountDAO.isUnique(account);
+    }
+
 }

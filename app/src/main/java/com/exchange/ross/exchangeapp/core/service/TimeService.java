@@ -25,11 +25,12 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class TimeService extends Service {
+    ArrayList<WebService> services;
     private ScheduledExecutorService worker =
             Executors.newSingleThreadScheduledExecutor();
     private final int exGetEventsOperation = 19;
-    private static Timer syncTimer = new Timer();
-    private static Timer timer = new Timer();
+    private static Timer syncTimer;
+    private static Timer timer;
     private Context ctx;
     public static final String TIMER_BR = "com.ross.exchangeapp.timer";
     public static final String SYNC_NEW_EVENTS_BR = "com.ross.exchnageapp.new_events";
@@ -49,22 +50,34 @@ public class TimeService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if(intent.getBooleanExtra("ForceSync", false)) {
-            syncEvents();
+            String accountName = intent.getStringExtra("Account");
+            syncEvents(accountName);
         }
         return START_STICKY;
     }
 
     private void startService() {
-        syncTimer.scheduleAtFixedRate(new syncEventsTask(), 10000, 60000);
-        timer.scheduleAtFixedRate(new checkEventsTask(), 1000, 90000);
+        scheduleTimers();
+    }
+
+    public void scheduleTimers() {
+        if(syncTimer != null)
+           syncTimer.cancel();
+        if(timer != null)
+           timer.cancel();
+
+        syncTimer = new Timer();
+        timer = new Timer();
+        syncTimer.schedule (new syncEventsTask(), 120000);
+        timer.schedule(new checkEventsTask(), 90000);
     }
 
     private class checkEventsTask extends TimerTask {
         public void run() {
             checkEvents();
         }
-
     }
+
     private void checkEvents() {
         ApplicationContextProvider.setApplicationContext(getApplicationContext());
         DatabaseManager.initializeInstance(new WHDatabaseHelper(getApplicationContext()));
@@ -75,46 +88,50 @@ public class TimeService extends Service {
 
     private class syncEventsTask extends TimerTask {
         public void run() {
-            syncEvents();
+            //null for all accounts
+            syncEvents(null);
         }
     }
 
-    private void syncEvents() {
-
+    private void syncEvents(String account) {
+        scheduleTimers();
         ApplicationContextProvider.setApplicationContext(getApplicationContext());
         DatabaseManager.initializeInstance(new WHDatabaseHelper(getApplicationContext()));
 
-        ArrayList<WebService> services = AccountsProxy.sharedProxy().getAllAccounts();
+        services = AccountsProxy.sharedProxy().getAllAccounts();
+        if(account != null) {
+            services = filter(services, account);
+        }
         if(services.size() > 0) {
-            WebService service = services.get(0);
+            for (final WebService service : services) {
+                service.getEvents(new OperationCompleted() {
+                    @Override
+                    public void onOperationCompleted(Object result, int id) {
+                        if(id == exGetEventsOperation) {
+                            ArrayList<Event> events = (ArrayList<Event> )result;
 
-            service.getEvents(new OperationCompleted() {
-                @Override
-                public void onOperationCompleted(Object result, int id) {
-                    if(id == exGetEventsOperation) {
-                        ArrayList<Event> events = (ArrayList<Event> )result;
-
-                        //Save new events which are not in the database
-                        EventsProxy proxy = EventsProxy.sharedProxy();
-
-
-                        ArrayList<ArrayList<Event>> syncEvents = EventsProxy.sharedProxy().getSyncEvents(events);
-
-                        ArrayList<Event> itemsToInsert = syncEvents.get(0);
-                        ArrayList<Event> itemsToUpdate = syncEvents.get(1);
-                        ArrayList<Event> itemsToRemove = syncEvents.get(2);
+                            //Save new events which are not in the database
+                            EventsProxy proxy = EventsProxy.sharedProxy();
 
 
-                        sync(itemsToInsert, itemsToUpdate, itemsToRemove);
+                            ArrayList<ArrayList<Event>> syncEvents = EventsProxy.sharedProxy().getSyncEvents(events);
 
-                        for(ArrayList<Event> s : syncEvents) {
-                            s.clear();
+                            ArrayList<Event> itemsToInsert = syncEvents.get(0);
+                            ArrayList<Event> itemsToUpdate = syncEvents.get(1);
+                            ArrayList<Event> itemsToRemove = syncEvents.get(2);
+
+                            String syncedAccount = service.getCredentials().getUser();
+                            sync(itemsToInsert, itemsToUpdate, itemsToRemove);
+
+                            for(ArrayList<Event> s : syncEvents) {
+                                s.clear();
+                            }
+                            events.clear();
                         }
-                        events.clear();
-                    }
 
-                }
-            }, exGetEventsOperation);
+                    }
+                }, exGetEventsOperation);
+            }
         }
     }
 
@@ -135,10 +152,25 @@ public class TimeService extends Service {
         worker.schedule(task, 1, TimeUnit.SECONDS);
     }
 
+    public ArrayList<WebService> filter(ArrayList<WebService> services, String account) {
+        ArrayList<WebService> filteredList = new ArrayList<WebService>();
+
+        for (WebService s : services) {
+            if (s.getCredentials().getUser().equals(account)) {
+                filteredList.add(s);
+            }
+        }
+
+        return filteredList;
+    }
+
     public void onDestroy() {
         super.onDestroy();
         timer.cancel();
         syncTimer.cancel();
+        for(WebService service: services) {
+            service.terminate();
+        }
     }
 
 }

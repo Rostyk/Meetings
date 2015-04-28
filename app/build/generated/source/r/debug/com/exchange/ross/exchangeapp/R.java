@@ -1706,12 +1706,12 @@ containing a value of this type.
         public static final int ifRoom=0x7f09001b;
         public static final int ignoreAllDaySwitch=0x7f090070;
         public static final int image=0x7f090026;
-        public static final int list=0x7f090074;
-        public static final int listDate=0x7f090079;
-        public static final int listLocation=0x7f090078;
+        public static final int list=0x7f090076;
+        public static final int listDate=0x7f09007b;
+        public static final int listLocation=0x7f09007a;
         public static final int listMode=0x7f090009;
         public static final int listSwitch=0x7f090072;
-        public static final int listTitle=0x7f090077;
+        public static final int listTitle=0x7f090079;
         public static final int list_item=0x7f090028;
         public static final int login=0x7f090066;
         public static final int login_form=0x7f09005e;
@@ -1742,7 +1742,7 @@ containing a value of this type.
         public static final int progress_circular=0x7f090005;
         public static final int progress_horizontal=0x7f090006;
         public static final int radio=0x7f09002e;
-        public static final int row=0x7f090075;
+        public static final int row=0x7f090077;
         public static final int satellite=0x7f090017;
         public static final int search_badge=0x7f090038;
         public static final int search_bar=0x7f090037;
@@ -1760,7 +1760,9 @@ containing a value of this type.
         public static final int settingsBackButton=0x7f090069;
         public static final int settingsButton=0x7f090057;
         public static final int settingsButtonView=0x7f090056;
+        public static final int settingsLinkAccountButton=0x7f090074;
         public static final int settingsTopTextView=0x7f09006a;
+        public static final int settingsUnLinkAccountsButton=0x7f090075;
         public static final int shortcut=0x7f09002d;
         public static final int showCustom=0x7f09000f;
         public static final int showHome=0x7f090010;
@@ -1773,7 +1775,7 @@ containing a value of this type.
         public static final int syncButton=0x7f09005b;
         public static final int tabMode=0x7f09000b;
         public static final int terrain=0x7f090018;
-        public static final int thumbnail=0x7f090076;
+        public static final int thumbnail=0x7f090078;
         public static final int timerSwitch=0x7f090073;
         public static final int title=0x7f09002a;
         public static final int topDateTextView=0x7f090058;
