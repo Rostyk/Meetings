@@ -14,6 +14,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class Event implements  Comparable<Event>{
     private String id;
+    private Boolean busy;
     private Boolean allDay;
     private String subject;
     private String location;
@@ -45,9 +46,6 @@ public class Event implements  Comparable<Event>{
 
         String accountNameValue = (accountName != null) ? (accountName) : ("");
         this.accountName = accountNameValue;
-
-        // by default all events mute the device
-        this.mute = true;
     }
 
     public String getSubject() {
@@ -139,6 +137,14 @@ public class Event implements  Comparable<Event>{
         return allDay;
     }
 
+    public Boolean getBusy() {
+        return busy;
+    }
+
+    public void setBusy(Boolean busy) {
+        this.busy = busy;
+    }
+
     public void setAllDay(Boolean allDay) {
         this.allDay = allDay;
     }
@@ -158,10 +164,18 @@ public class Event implements  Comparable<Event>{
     @Override
     public int compareTo(Event event) {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        if(!getAllDay() && event.getAllDay()) {
+            return -1;
+        }
+
+        if(getAllDay() && !event.getAllDay()) {
+            return 1;
+        }
+
         try {
             Date date1 = formatter.parse(getStartDate());
             Date date2 = formatter.parse(event.getStartDate());
-            return date2.compareTo(date1);
+            return date1.compareTo(date2);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -172,7 +186,7 @@ public class Event implements  Comparable<Event>{
     @Override
     public boolean equals(Object o) {
         Event event = (Event)o;
-        Boolean result = id.equals(event.getId());
+        Boolean result = id.equals(event.getId()) && accountName.equals(event.getAccountName());
         return result;
     }
 
@@ -206,7 +220,7 @@ public class Event implements  Comparable<Event>{
 
         long hours = DateUtils.getDateDiff(start, end, TimeUnit.HOURS);
 
-        if(hours > 23) {
+        if(hours == 24) {
             allDay = true;
         }
         else {

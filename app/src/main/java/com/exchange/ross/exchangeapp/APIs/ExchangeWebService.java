@@ -10,6 +10,8 @@ import java.util.TimeZone;
 
 import com.exchange.ross.exchangeapp.APIs.operations.OperationCompleted;
 import com.exchange.ross.exchangeapp.APIs.operations.OperationCredentials;
+import com.exchange.ross.exchangeapp.Utils.DateUtils;
+import com.exchange.ross.exchangeapp.Utils.Settings;
 import com.exchange.ross.exchangeapp.core.entities.Event;
 import com.exchange.ross.exchangeapp.db.EventsProxy;
 import com.exchange.ross.exchangeapp.db.ServiceType;
@@ -25,7 +27,9 @@ import microsoft.exchange.webservices.data.CalendarView;
 import microsoft.exchange.webservices.data.ExchangeCredentials;
 import microsoft.exchange.webservices.data.ExchangeService;
 import microsoft.exchange.webservices.data.FindItemsResults;
+import microsoft.exchange.webservices.data.LegacyFreeBusyStatus;
 import microsoft.exchange.webservices.data.MessageBody;
+import microsoft.exchange.webservices.data.ServiceLocalException;
 import microsoft.exchange.webservices.data.WebCredentials;
 import microsoft.exchange.webservices.data.WellKnownFolderName;
 
@@ -34,7 +38,7 @@ import microsoft.exchange.webservices.data.WellKnownFolderName;
  */
 
 public class ExchangeWebService extends WebService {
-    private Boolean terminated;
+    private Boolean terminated = false;
     public ExchangeWebService(String url, String user, String password, String domain) {
         super(url, user, password, domain);
         setServiceType(ServiceType.MICROSOFT_EXCHANGE);
@@ -59,9 +63,10 @@ public class ExchangeWebService extends WebService {
         @Override
         protected void onPostExecute(ArrayList<Event> events) {
             super.onPostExecute(events);
-
             if(!terminated)
                listener.onOperationCompleted(events, this.id);
+            else
+               listener.onOperationCompleted(null, this.id);
         }
     }
 
@@ -76,8 +81,7 @@ public class ExchangeWebService extends WebService {
         }
         else {
             ArrayList<Event> events = fetchEventsFromAllCalendars();
-            if(!terminated)
-                completed.onOperationCompleted(events, operationId);
+            completed.onOperationCompleted(events, operationId);
         }
 
     }
@@ -87,17 +91,16 @@ public class ExchangeWebService extends WebService {
         try {
             ArrayList<String> calendarNames = new ArrayList<String>();
             ExchangeService service = new ExchangeService();
-            ExchangeCredentials credentials = new WebCredentials("oleksandr.gorbenko", "#WolF_stu123456789", "eleks-software");
+            ExchangeCredentials credentials = new WebCredentials(getCredentials().getUser(), getCredentials().getPassword(), getCredentials().getDomain());
             service.setCredentials(credentials);
             try {
-                service.setUrl(new URI("https://webmail.eleks.com/EWS/Exchange.asmx"));
+                service.setUrl(new URI(getCredentials().getUrl()));
             }
             catch (URISyntaxException e) {
                 e.printStackTrace();
             }
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            Date startDate = formatter.parse("2015-01-01 12:00:00");
-            Date endDate = formatter.parse("2015-07-01 13:00:00");
+            Date startDate = DateUtils.dateWithDaySinceNow(-2);
+            Date endDate = DateUtils.dateWithDaySinceNow(32);
             CalendarFolder cf=CalendarFolder.bind(service, WellKnownFolderName.Calendar);
             FindItemsResults<Appointment> findResults = cf.findAppointments(new CalendarView(startDate, endDate));
             for (Appointment appt : findResults.getItems()) {
@@ -106,6 +109,21 @@ public class ExchangeWebService extends WebService {
                     SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     String eventStartDateUTC = dateFormatter.format(appt.getStart());
                     String eventEndDateStrUTC = dateFormatter.format(appt.getEnd());
+                    Boolean mute = false;
+                    Boolean busy = false;
+                    try {
+                        if(appt.getLegacyFreeBusyStatus() == LegacyFreeBusyStatus.Busy) {
+                            busy = true;
+
+                            //if we set mute busy events in settings this event should be automatically muted
+                            if(Settings.sharedSettings().getSilentOnStatusBusy()) {
+                                mute = true;
+                            }
+                        }
+                    }
+                    catch(ServiceLocalException exception) {
+                        busy = false;
+                    }
 
                     Boolean isAllDay = appt.getIsAllDayEvent();
                     Date eventStartDate = getDate(eventStartDateUTC);
@@ -142,19 +160,21 @@ public class ExchangeWebService extends WebService {
 
                     Event event = new Event(id, subject, eventStartDateLocal, eventEndDateLocal,  body, this.getCredentials().getUser());
                     event.setAllDay(isAllDay);
+                    event.setBusy(busy);
                     event.setModified(modified);
                     event.setLocation(location);
                     event.setCalendarName("Main");
                     event.setRequiredAttendees(requiredGuysStr);
                     event.setOptionalAttendees(optionalGuysStr);
-
+                    event.setMute(mute);
                     events.add(event);
                 }
             }
         }
         catch(Exception e) {
-            events = EventsProxy.sharedProxy().getAllEvents();
-            e.printStackTrace();
+            events = null;
+            if(e != null)
+               e.printStackTrace();
         }
 
         return events;

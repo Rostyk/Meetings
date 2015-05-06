@@ -53,7 +53,7 @@ public class GoogleWebService extends WebService {
     final HttpTransport transport = AndroidHttp.newCompatibleTransport();
     final com.google.api.client.json.JsonFactory jsonFactory = GsonFactory.getDefaultInstance();
     private Context context;
-    private com.google.api.services.calendar.Calendar client;
+    private com.google.api.services.calendar.Calendar client = null;
 
     public GoogleWebService(String url, String user, String password, String domain, Context applicationContext, Activity activity) {
         super(url, user, password, domain);
@@ -82,8 +82,8 @@ public class GoogleWebService extends WebService {
         @Override
         protected void onPostExecute(ArrayList<Event> events) {
             super.onPostExecute(events);
-            if(!terminated)
-                listener.onOperationCompleted(events, this.id);
+            listener.onOperationCompleted(events, this.id);
+
         }
     }
     //-------------------------------------------------------------------------------
@@ -96,6 +96,9 @@ public class GoogleWebService extends WebService {
         if(!terminated) {
             GoogleAccountManager gam = new GoogleAccountManager(context);
             getAndUseAuthTokenInAsyncTask(gam.getAccountByName(accountName));
+        }
+        else {
+            completed.onOperationCompleted(null, id);
         }
     }
 
@@ -171,22 +174,23 @@ public class GoogleWebService extends WebService {
             return null;
         } catch (IOException e) {
             e.printStackTrace();
+            String sss =  e.getStackTrace().toString();
+            String check = sss;
             return null;
         }
     }
 
     public void fetchEvents() {
-        if(!terminated) {
             credential = GoogleAccountCredential.usingOAuth2(context, Collections.singleton(CalendarScopes.CALENDAR));
             credential.setSelectedAccountName(accountName);
             // Calendar client
             client = ApplicationContextProvider.getClient();
-            if(client == null) {
+            //if(client == null) {
                 client = new com.google.api.services.calendar.Calendar.Builder(
                         transport, jsonFactory, credential).setApplicationName("Google-CalendarAndroidSample/1.0")
                         .build();
-                ApplicationContextProvider.setClient(client);
-            }
+                //ApplicationContextProvider.setClient(client);
+            //}
 
             final OperationCredentials creds = this.getCredentials();
             if(Looper.myLooper() == Looper.getMainLooper()) {
@@ -197,15 +201,14 @@ public class GoogleWebService extends WebService {
                 ArrayList<Event> events = fetchEventsFromAllCalendars();
                 if(!terminated)
                     completed.onOperationCompleted(events, id);
+                else
+                    completed.onOperationCompleted(null, id);
             }
-        }
     }
 
     public ArrayList<Event> fetchEventsFromAllCalendars() {
         ArrayList<Event> allEvents = new ArrayList<Event>();
         try{
-            com.google.api.services.calendar.Calendar client = ApplicationContextProvider.getClient();
-
             // Iterate through entries in calendar list
             String cpageToken = null;
             do {
@@ -221,7 +224,7 @@ public class GoogleWebService extends WebService {
             } while (cpageToken != null);
         }
         catch(Exception e) {
-            allEvents = EventsProxy.sharedProxy().getAllEvents();
+            allEvents = null;
             e.printStackTrace();
         }
 
@@ -238,6 +241,7 @@ public class GoogleWebService extends WebService {
             for (com.google.api.services.calendar.model.Event event : items) {
                 String id = event.getId();
                 Log.v("EVENTS_ID", id);
+
                 if(!event.getStatus().equalsIgnoreCase(STATUS_CANCELLED)) {
                     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     java.util.Date modifiedDate = new java.util.Date((long)event.getUpdated().getValue());
@@ -246,6 +250,7 @@ public class GoogleWebService extends WebService {
                     String subject = event.getSummary();
                     String body = event.getDescription();
                     String location = event.getLocation();
+                    Boolean busy = false;
 
                     String startStr = getStartDateTimeStr(event);
                     String endStr = getEndDateTimeStr(event);
@@ -280,6 +285,7 @@ public class GoogleWebService extends WebService {
                     }
                     entityEvent = new Event(id, subject, start, end, body, credentials.getUser());
                     entityEvent.setModified(modified);
+                    entityEvent.setBusy(busy);
                     entityEvent.setLocation(location);
                     entityEvent.setCalendarName(calendarId);
                     entityEvent.setRequiredAttendees(requiredGuysStr);

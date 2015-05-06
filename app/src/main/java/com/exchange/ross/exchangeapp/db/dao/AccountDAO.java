@@ -3,6 +3,7 @@ package com.exchange.ross.exchangeapp.db.dao;
 import java.util.ArrayList;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -49,11 +50,11 @@ public class AccountDAO implements BaseDAO<WebService> {
 	
 	public void delete(WebService service) {
         initDB();
-		database.delete(DATABASE_TABLE, "url=" + "'" + service.getCredentials().getUrl() + "'", null);
+		database.delete(DATABASE_TABLE, "user=" + "'" + service.getCredentials().getUser() + "'", null);
         closeDB();
     }
     
-	public Iterable<WebService> getAll() {
+	public Iterable<WebService> getAll(Context context) {
         initDB();
 		Cursor cursor = database.rawQuery("select * from " + DATABASE_TABLE,null);
 		ArrayList<WebService> allAccounts = new ArrayList<WebService>();
@@ -75,7 +76,7 @@ public class AccountDAO implements BaseDAO<WebService> {
 
                         WebService service;
                         if(url.length() == 0) {
-                            service = new GoogleWebService(url, user, password, domain, ApplicationContextProvider.getContext(), null);
+                            service = new GoogleWebService(url, user, password, domain, context, null);
                         }
                         else {
                             service = new ExchangeWebService(url, user, password, domain);
@@ -89,6 +90,44 @@ public class AccountDAO implements BaseDAO<WebService> {
 		return allAccounts;
     
      }
+
+
+    public Iterable<WebService> getAll() {
+        initDB();
+        Cursor cursor = database.rawQuery("select * from " + DATABASE_TABLE,null);
+        ArrayList<WebService> allAccounts = new ArrayList<WebService>();
+        if (cursor.moveToFirst()) {
+            while (cursor.isAfterLast() == false) {
+
+                //Parse url
+                String url = cursor.getString(cursor
+                        .getColumnIndex("url"));
+
+                String user = cursor.getString(cursor
+                        .getColumnIndex("user"));
+
+                String domain = cursor.getString(cursor
+                        .getColumnIndex("domain"));
+
+                String password = cursor.getString(cursor
+                        .getColumnIndex("password"));
+
+                WebService service;
+                if(url.length() == 0) {
+                    service = new GoogleWebService(url, user, password, domain, ApplicationContextProvider.getContext(), null);
+                }
+                else {
+                    service = new ExchangeWebService(url, user, password, domain);
+                }
+                allAccounts.add(service);
+                cursor.moveToNext();
+            }
+        }
+        cursor.close();
+        closeDB();
+        return allAccounts;
+
+    }
 
     public Boolean isUnique(String account) {
         initDB();

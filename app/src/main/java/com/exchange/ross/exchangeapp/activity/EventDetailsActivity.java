@@ -17,6 +17,7 @@ import com.exchange.ross.exchangeapp.APIs.WebService;
 import com.exchange.ross.exchangeapp.R;
 import com.exchange.ross.exchangeapp.Utils.ApplicationContextProvider;
 import com.exchange.ross.exchangeapp.Utils.DateUtils;
+import com.exchange.ross.exchangeapp.Utils.Settings;
 import com.exchange.ross.exchangeapp.Utils.Typefaces;
 import com.exchange.ross.exchangeapp.core.entities.Event;
 import com.exchange.ross.exchangeapp.Utils.EventsManager;
@@ -65,7 +66,7 @@ public class EventDetailsActivity extends ActionBarActivity {
 
     private void setupDetailsView() {
         this.accountsProxy = AccountsProxy.sharedProxy();
-        this.accountList = accountsProxy.getAllAccounts();
+        this.accountList = accountsProxy.getAllAccounts(getApplicationContext());
 
         String id = EventsManager.sharedManager().getSelectedEventId();
         event = EventsProxy.sharedProxy().getEventBuId(id);
@@ -113,7 +114,15 @@ public class EventDetailsActivity extends ActionBarActivity {
             }
         });
         meetingSubjectTextView.setText(event.getSubject());
-        meetingTimeTextView.setText(DateUtils.meetingTimeFromEvent(event));
+
+        event.checkIfAllDayEvent();
+        if(event.getAllDay()) {
+            meetingTimeTextView.setText("All day");
+        }
+        else {
+            meetingTimeTextView.setText(DateUtils.meetingTimeFromEvent(event));
+        }
+
 
         String attendees = "";
         if(event.getRequiredAttendees() != null)
@@ -178,6 +187,8 @@ public class EventDetailsActivity extends ActionBarActivity {
     }
 
     public void muteButtonClicked() {
+        Settings.sharedSettings().setInvolvesEvensListReloadByChangingStatusBusy(false);
+        Settings.sharedSettings().setInvolvesEvensListReloadByChangingIgnoreAllDayEvents(false);
         Boolean muted = event.getMute();
         muted = !muted;
         event.setMute(muted);
@@ -188,10 +199,10 @@ public class EventDetailsActivity extends ActionBarActivity {
 
     public void checkMuteButtonImage() {
         if(event.getMute()) {
-            muteButton.setBackgroundResource(buttonResourceIdOn);
+            muteButton.setBackgroundResource(buttonResourceIdOff);
         }
         else {
-            muteButton.setBackgroundResource(buttonResourceIdOff);
+            muteButton.setBackgroundResource(buttonResourceIdOn);
         }
     }
 

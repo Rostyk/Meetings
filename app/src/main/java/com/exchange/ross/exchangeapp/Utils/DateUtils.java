@@ -69,4 +69,10 @@ public class DateUtils {
         long diffInMillies = date2.getTime() - date1.getTime();
         return timeUnit.convert(diffInMillies,TimeUnit.MILLISECONDS);
     }
+
+    public static Date dateWithDaySinceNow(int numberOfDays) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_MONTH, numberOfDays);
+        return calendar.getTime();
+    }
 }

@@ -15,7 +15,7 @@ public class WHDatabaseHelper extends SQLiteOpenHelper
     private static final String DATABASE_NAME = "WHDB";
     private static final int DATABASE_VERSION = 2;
     // Database creation sql statement
-    private static final String DATABASE_CREATE1 = "CREATE TABLE IF NOT EXISTS Events (_id VARCHAR PRIMARY KEY, subject VARCHAR, location VARCHAR, required_attendees VARCHAR, optional_attendees VARCHAR, calendarName, start_date VARCHAR, end_date VARCHAR, body VARCHAR, account VARCHAR, modified VARCHAR, all_day INTEGER, mute INTEGER)";
+    private static final String DATABASE_CREATE1 = "CREATE TABLE IF NOT EXISTS Events (_id VARCHAR PRIMARY KEY, subject VARCHAR, location VARCHAR, required_attendees VARCHAR, optional_attendees VARCHAR, calendarName, start_date VARCHAR, end_date VARCHAR, body VARCHAR, account VARCHAR, modified VARCHAR, busy INTEGER, all_day INTEGER, mute INTEGER)";
     private static final String DATABASE_CREATE2 = "CREATE TABLE IF NOT EXISTS Accounts (url VARCHAR, user VARCHAR, password VARCHAR, domain VARCHAR, token VARCHAR)";
 
     // Method is called during creation of the database

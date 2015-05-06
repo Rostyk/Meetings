@@ -47,6 +47,7 @@ public class EventDAO implements BaseDAO<Event>{
         initialValues.put("optional_attendees", event.getOptionalAttendees());
         initialValues.put("calendarName", event.getCalendarName());
         initialValues.put("all_day", event.getAllDay());
+        initialValues.put("busy", event.getBusy());
         long rows = database.insert(DATABASE_TABLE, null, initialValues);
         if(rows == -1) {
             Log.v("Error", "Row not inserted");
@@ -123,6 +124,7 @@ public class EventDAO implements BaseDAO<Event>{
         values.put("optional_attendees", event.getOptionalAttendees());
         values.put("calendarName", event.getCalendarName());
         values.put("all_day", event.getAllDay());
+        values.put("busy", event.getBusy());
         values.put("_id", event.getId());
         // updating row
         long res = database.update(DATABASE_TABLE, values, "_id=" + "'" + event.getId() + "'", null);
@@ -175,6 +177,32 @@ public class EventDAO implements BaseDAO<Event>{
 
     }
 
+    public Iterable<Event> getAll(String accountName) {
+        initDB();
+
+        //ArrayList<Event> cached = EventsManager.sharedManager().getCachedEvents();
+        //if(cached != null) {
+        //return cached;
+        //}
+
+        Cursor cursor = database.rawQuery("select * from " + DATABASE_TABLE + " WHERE account = '" + accountName + "'", null);
+        ArrayList<Event> allEvents = new ArrayList<Event>();
+        if (cursor.moveToFirst()) {
+            while (cursor.isAfterLast() == false) {
+                Event event = getEventFromCursor(cursor);
+                allEvents.add(event);
+                cursor.moveToNext();
+            }
+        }
+        cursor.close();
+        closeDB();
+        //Collections.sort(allEvents);
+
+        //EventsManager.sharedManager().setCachedEvents(allEvents);
+        return allEvents;
+
+    }
+
     private Event getEventFromCursor(Cursor cursor) {
         String subject = cursor.getString(cursor
                 .getColumnIndex("subject"));
@@ -197,6 +225,9 @@ public class EventDAO implements BaseDAO<Event>{
         Boolean isAllDay = cursor.getInt(cursor
                 .getColumnIndex("all_day")) > 0;
 
+        Boolean busy = cursor.getInt(cursor
+                .getColumnIndex("busy")) > 0;
+
         String modified = cursor.getString(cursor
                 .getColumnIndex("modified"));
 
@@ -217,6 +248,7 @@ public class EventDAO implements BaseDAO<Event>{
         Event event = new Event(id, subject, startDate, endDate, body, accountName);
         event.setMute(mute);
         event.setAllDay(isAllDay);
+        event.setBusy(busy);
         event.setModified(modified);
         event.setLocation(location);
         event.setRequiredAttendees(requiredAttendees);

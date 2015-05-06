@@ -1,29 +1,42 @@
 package com.exchange.ross.exchangeapp.activity;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.exchange.ross.exchangeapp.APIs.WebService;
 import com.exchange.ross.exchangeapp.R;
 import com.exchange.ross.exchangeapp.Utils.EventsManager;
 import com.exchange.ross.exchangeapp.Utils.PurchaseManager;
 import com.exchange.ross.exchangeapp.Utils.Settings;
 import com.exchange.ross.exchangeapp.Utils.Typefaces;
+import com.exchange.ross.exchangeapp.Utils.billing.OnPurchased;
+import com.exchange.ross.exchangeapp.db.AccountsProxy;
+
+import java.util.ArrayList;
 
 public class SettingsActivity extends ActionBarActivity {
-
+    private ArrayList<RelativeLayout> accountViews = new ArrayList<RelativeLayout>();
+    private Activity activity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+        activity = this;
 
         Typeface thin = Typefaces.get(getApplicationContext(), "robotothin");
         TextView settingsTopTextView = (TextView)findViewById(R.id.settingsTopTextView);
@@ -39,6 +52,13 @@ public class SettingsActivity extends ActionBarActivity {
 
         setupSwitchesHandlers();
         setupAccountsSettingsButton();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        setupLinkedAccountsSection();
     }
 
 
@@ -61,8 +81,8 @@ public class SettingsActivity extends ActionBarActivity {
     public void setupSwitchesHandlers() {
          Typeface light = Typefaces.get(getApplicationContext(), "robotolight");
 
-         Switch soundSwitch = (Switch)findViewById(R.id.soundSwitch);
-         soundSwitch.setTypeface(light);
+         //Switch soundSwitch = (Switch)findViewById(R.id.soundSwitch);
+         //soundSwitch.setTypeface(light);
 
          Switch vibrationSwitch = (Switch)findViewById(R.id.vibrationSwitch);
          vibrationSwitch.setTypeface(light);
@@ -80,14 +100,15 @@ public class SettingsActivity extends ActionBarActivity {
          listSwitch.setTypeface(light);
 
          final Settings settings = Settings.sharedSettings();
-         settings.setContext(getApplicationContext());
+
+        /*
          soundSwitch.setChecked(settings.getSound());
          soundSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
              @Override
              public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                  settings.setSound(isChecked);
              }
-         });
+         });*/
 
          vibrationSwitch.setChecked(settings.getVibration());
          vibrationSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -129,39 +150,89 @@ public class SettingsActivity extends ActionBarActivity {
             }
         });
 
-
-
-
         TextView soundTextView = (TextView)findViewById(R.id.settingSoundTextView);
         soundTextView.setTypeface(light);
         TextView meetingTextView = (TextView)findViewById(R.id.settingMeetingTextView);
         meetingTextView.setTypeface(light);
         TextView notificationTextView = (TextView)findViewById(R.id.settingNotificationTextView);
         notificationTextView.setTypeface(light);
+
+        TextView settingAddNewAccountTextView = (TextView)findViewById(R.id.settingAddNewAccountTextView);
+        TextView settingRemoveAllAccountsTextView = (TextView)findViewById(R.id.settingRemoveAllAccountsTextView);
+        settingAddNewAccountTextView.setTypeface(light);
+        settingRemoveAllAccountsTextView.setTypeface(light);
+
+        TextView settingAccountTextView = (TextView)findViewById(R.id.settingAccountsTextView);
+        settingAccountTextView.setTypeface(light);
+
+        TextView settingManageAccountsTextView = (TextView)findViewById(R.id.settingManageAccountsTextView);
+        settingManageAccountsTextView.setTypeface(light);
+        setupLinkedAccountsSection();
+    }
+
+    public void setupLinkedAccountsSection() {
+        Context context = getApplicationContext();
+        LayoutInflater inflater = LayoutInflater.from(context);
+        ScrollView scrollView = (ScrollView)findViewById(R.id.settingsScrollView);
+
+        LinearLayout containingLayout = (LinearLayout)scrollView.findViewById(R.id.containingView);
+        LinearLayout settingsLinkedAccountsView = (LinearLayout)containingLayout.findViewById(R.id.settingsLinkedAccountsView);
+
+        //remove already existing views
+        for(RelativeLayout layout : accountViews) {
+            settingsLinkedAccountsView.removeView(layout);
+        }
+
+        ArrayList<WebService> accounts =  AccountsProxy.sharedProxy().getAllAccounts(getApplicationContext());
+        for(WebService account : accounts) {
+            RelativeLayout accountLayout = (RelativeLayout) inflater.inflate(R.layout.account_view, null, false);
+            settingsLinkedAccountsView.addView(accountLayout);
+            accountViews.add(accountLayout);
+            TextView accountTextView = (TextView)accountLayout.findViewById(R.id.settingsAccountTextView);
+            accountTextView.setText(account.getCredentials().getUser());
+        }
     }
 
     public void setupAccountsSettingsButton() {
-        ImageButton linkAccountButton = (ImageButton)findViewById(R.id.settingsLinkAccountButton);
-        linkAccountButton.setOnClickListener(new View.OnClickListener() {
+        View linkAccountView = findViewById(R.id.settingsAddAccountView);
+        linkAccountView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent addNewAccountIntent = new Intent(SettingsActivity.this, AddNewAccountActivity.class);
-                addNewAccountIntent.putExtra("AddingExtraAccount", true);
-                startActivity(addNewAccountIntent);
+                if(PurchaseManager.sharedManager().getAlreadyOwned()) {
+                    addNewAccount();
+                }
+                else {
+                    PurchaseManager manager = PurchaseManager.sharedManager();
+                    manager.buy(new OnPurchased() {
+                        @Override
+                        public void onPurchaseComplete(Boolean success) {
+                            addNewAccount();
+                        }
+                    }, activity);
+                }
+
             }
         });
 
-        ImageButton unlinkAccountsButton = (ImageButton)findViewById(R.id.settingsUnLinkAccountsButton);
-        unlinkAccountsButton.setOnClickListener(new View.OnClickListener() {
+        View unlinkAccountsView = findViewById(R.id.settingsRemoveAllAccountsView);
+        unlinkAccountsView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 EventsManager.sharedManager().unlinkAllAccounts();
 
-                Intent intent = new Intent(getApplicationContext(), AddNewAccountActivity.class);
+                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }
         });
     }
+
+    public void addNewAccount() {
+        Intent addNewAccountIntent = new Intent(SettingsActivity.this, AddNewAccountActivity.class);
+        addNewAccountIntent.putExtra("AddingExtraAccount", true);
+        startActivity(addNewAccountIntent);
+    }
+
 }
+

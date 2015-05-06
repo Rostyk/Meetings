@@ -49,8 +49,8 @@ public class EventsProxy {
         return todayEvents;
     }*/
 
-    public ArrayList<ArrayList<Event>> getSyncEvents(ArrayList<Event> events) {
-        ArrayList<Event> alreadyStoredEvents = (ArrayList<Event>)eventDAO.getAll();
+    public ArrayList<ArrayList<Event>> getSyncEvents(ArrayList<Event> events, String accountName) {
+        ArrayList<Event> alreadyStoredEvents = (ArrayList<Event>)eventDAO.getAll(accountName);
         ArrayList<Event> uniqueEvents = new ArrayList<Event>();
         ArrayList<Event> eventsToUpdate = new ArrayList<Event>();
         ArrayList<Event> eventsToRemove = new ArrayList<Event>();

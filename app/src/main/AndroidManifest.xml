@@ -24,6 +24,7 @@
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
 
     <application
         android:allowBackup="true"
@@ -69,7 +70,11 @@
 
         <service
             android:name=".core.service.TimeService"
-            android:enabled="true">
+            android:enabled="true"
+            android:process=":meetings_background">
+            <intent-filter>
+                <action android:name="com.ross.TimeService" />
+            </intent-filter>
         </service>
 
         <activity

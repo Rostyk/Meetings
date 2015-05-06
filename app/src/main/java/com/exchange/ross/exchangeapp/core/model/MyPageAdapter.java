@@ -23,7 +23,7 @@ public class MyPageAdapter extends FragmentStatePagerAdapter implements ViewPage
     private Boolean firstPageLoad = true;
     private Activity activity;
     private int positionCurrent;
-    private boolean dontLoadList;
+    private boolean dontLoadList = false;
     public MyPageAdapter(android.support.v4.app.FragmentManager fm) {
         super(fm);
     }
@@ -114,7 +114,7 @@ public class MyPageAdapter extends FragmentStatePagerAdapter implements ViewPage
         if( positionOffset == 0 && positionOffsetPixels == 0 ) {
             dontLoadList = false;
 
-            if (position == 0 && firstPageLoad) {
+            if (position == 1 && firstPageLoad) {
                 loadList();
                 firstPageLoad = false;
             }

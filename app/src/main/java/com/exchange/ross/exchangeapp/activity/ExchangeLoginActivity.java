@@ -5,9 +5,11 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.ContentResolver;
 import android.content.CursorLoader;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
@@ -17,6 +19,7 @@ import android.os.Build.VERSION;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -33,7 +36,11 @@ import android.widget.TextView;
 import com.exchange.ross.exchangeapp.APIs.ExchangeWebService;
 import com.exchange.ross.exchangeapp.APIs.GoogleWebService;
 import com.exchange.ross.exchangeapp.APIs.operations.OperationCompleted;
+import com.exchange.ross.exchangeapp.APIs.operations.SyncEventCompleted;
+import com.exchange.ross.exchangeapp.Utils.ApplicationContextProvider;
+import com.exchange.ross.exchangeapp.Utils.EventsManager;
 import com.exchange.ross.exchangeapp.core.entities.Event;
+import com.exchange.ross.exchangeapp.core.service.TimeService;
 import com.exchange.ross.exchangeapp.db.AccountsProxy;
 import com.exchange.ross.exchangeapp.db.EventsProxy;
 import com.google.android.gms.common.ConnectionResult;
@@ -75,6 +82,7 @@ public class ExchangeLoginActivity extends ActionBarActivity {
     private SignInButton mPlusSignInButton;
     private View mSignOutButtons;
     private View mLoginFormView;
+    private Boolean isAddingExtraAcount = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +117,14 @@ public class ExchangeLoginActivity extends ActionBarActivity {
         mProgressView = findViewById(R.id.login_progress);
         mEmailLoginFormView = findViewById(R.id.email_login_form);
         mSignOutButtons = findViewById(R.id.plus_sign_out_buttons);
+
+        checkIfAddingExtraAccount();
+    }
+
+
+    public void checkIfAddingExtraAccount(){
+        Intent intent = getIntent();
+        isAddingExtraAcount = intent.getBooleanExtra("AddingExtraAccount", false);
     }
 
     /**
@@ -164,34 +180,41 @@ public class ExchangeLoginActivity extends ActionBarActivity {
         String[] parts = userAndDomain.split("\\\\");
 
         if(parts.length == 2) {
-            String user = parts[1];
+            final String user = parts[1];
             String domain = parts[0];
             String password = mPasswordView.getText().toString();
 
             final ExchangeWebService service = new ExchangeWebService(mURLView.getText().toString(), user, password, domain);
-            service.getEvents(new OperationCompleted() {
-                @Override
-                public void onOperationCompleted(Object result, int id) {
-                    if(id == exGetEvetsOperation) {
-                        ArrayList<Event> events = (ArrayList<Event> )result;
+                service.getEvents(new OperationCompleted() {
+                    @Override
+                    public void onOperationCompleted(Object result, int id) {
+                        if (id == exGetEvetsOperation && result != null) {
+                            if (isAddingExtraAcount) {
+                                saveEvents((ArrayList<Event>) result);
+                                updateFragmentsUI();
+                                finish();
+                            }
+                            else {
+                                ArrayList<Event> events = (ArrayList<Event>) result;
+                                saveAccount(service);
+                                saveEvents(events);
+                                openEventsActivity();
+                            }
 
-                        for (Event event : events) {
-                            Log.d("EX", event.getBody());
-                            Log.d("EX", event.getSubject());
-                            Log.d("EX", event.getStartDate());
-                            Log.d("EX", event.getEndDate());
-                            Log.d("EX", "----------");
                         }
-
-                        saveAccount(service);
-                        saveEvents(events);
-                        openEventsActivity();
-
+                        else if (result == null) {
+                            removeAccount(service);
+                            finish();
+                        }
+                        showProgress(false);
                     }
-                    showProgress(false);
-                }
-            }, exGetEvetsOperation);
+                }, exGetEvetsOperation);
         }
+    }
+
+    public void updateFragmentsUI() {
+        Intent newEventsIntent = new Intent(TimeService.SYNC_NEW_EVENTS_BR);
+        LocalBroadcastManager.getInstance(ApplicationContextProvider.getContext()).sendBroadcast(newEventsIntent);
     }
 
     public void onOperationCompleted(ArrayList<Event> events, int id) {
@@ -253,6 +276,11 @@ public class ExchangeLoginActivity extends ActionBarActivity {
         proxy.addAccount(service);
     }
 
+    public void removeAccount(ExchangeWebService service) {
+        AccountsProxy proxy = AccountsProxy.sharedProxy();
+        proxy.removeAccount(service);
+    }
+
     public void saveEvents(ArrayList<com.exchange.ross.exchangeapp.core.entities.Event> events) {
         EventsProxy proxy = EventsProxy.sharedProxy();
         proxy.insertEvents(events);
@@ -261,6 +289,19 @@ public class ExchangeLoginActivity extends ActionBarActivity {
     public void openEventsActivity() {
         Intent eventsActivityIntent = new Intent(ExchangeLoginActivity.this, EventsActivity.class);
         ExchangeLoginActivity.this.startActivity(eventsActivityIntent);
+    }
+
+    public void showWarning(String message) {
+        new AlertDialog.Builder(this)
+                .setTitle("")
+                .setMessage(message)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // continue with delete
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 
 }

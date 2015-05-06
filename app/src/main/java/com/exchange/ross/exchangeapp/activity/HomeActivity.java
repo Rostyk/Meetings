@@ -27,7 +27,7 @@ public class HomeActivity extends ActionBarActivity {
 
     public void start() {
         //no accounts linked
-        if(AccountsProxy.sharedProxy().getAllAccounts().size() == 0) {
+        if(AccountsProxy.sharedProxy().getAllAccounts(getApplicationContext()).size() == 0) {
             Intent addNewAccountIntent = new Intent(HomeActivity.this, AddNewAccountActivity.class);
             HomeActivity.this.startActivity(addNewAccountIntent);
         }

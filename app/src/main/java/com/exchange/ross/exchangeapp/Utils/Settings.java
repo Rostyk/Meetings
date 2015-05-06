@@ -9,6 +9,9 @@ import android.content.SharedPreferences;
 public class Settings {
     private static Settings instance;
 
+    private Boolean involvesEvensListReloadByChangingStatusBusy = false;
+    private Boolean involvesEvensListReloadByChangingIgnoreAllDayEvents = false;
+
     private Boolean sound = false;
     private String kSound = "sound";
     private Boolean vibration  = false;
@@ -67,12 +70,30 @@ public class Settings {
 
     public void setIgnoreAllDayEvent(Boolean ignoreAllDayEvent) {
         this.ignoreAllDayEvent = ignoreAllDayEvent;
+        this.involvesEvensListReloadByChangingIgnoreAllDayEvents = true;
         preferences.edit().putBoolean(kIgnoreAllDayEvent, ignoreAllDayEvent).apply();
     }
 
     public void setSilentOnStatusBusy(Boolean silentOnStatusBusy) {
         this.silentOnStatusBusy = silentOnStatusBusy;
+        this.involvesEvensListReloadByChangingStatusBusy = true;
         preferences.edit().putBoolean(kSilentOnStatusBusy, silentOnStatusBusy).apply();
+    }
+
+    public Boolean getInvolvesEvensListReloadByChangingStatusBusy() {
+        return involvesEvensListReloadByChangingStatusBusy;
+    }
+
+    public void setInvolvesEvensListReloadByChangingStatusBusy(Boolean involvesEvensListReload) {
+        this.involvesEvensListReloadByChangingStatusBusy = involvesEvensListReload;
+    }
+
+    public Boolean getInvolvesEvensListReloadByChangingIgnoreAllDayEvents() {
+        return involvesEvensListReloadByChangingIgnoreAllDayEvents;
+    }
+
+    public void setInvolvesEvensListReloadByChangingIgnoreAllDayEvents(Boolean involvesEvensListReloadByChangingIgnoreAllDayEvents) {
+        this.involvesEvensListReloadByChangingIgnoreAllDayEvents = involvesEvensListReloadByChangingIgnoreAllDayEvents;
     }
 
     public void setListMeetingsForDay(Boolean listMeetingsForDay) {
@@ -108,10 +129,10 @@ public class Settings {
 
     private void getAllSettings() {
         this.sound = preferences.getBoolean(kSound, false);
-        this.vibration = preferences.getBoolean(kVibration, false);
-        this.ignoreAllDayEvent = preferences.getBoolean(kIgnoreAllDayEvent, false);
+        this.vibration = preferences.getBoolean(kVibration, true);
+        this.ignoreAllDayEvent = preferences.getBoolean(kIgnoreAllDayEvent, true);
         this.silentOnStatusBusy = preferences.getBoolean(kSilentOnStatusBusy, false);
-        this.listMeetingsForDay = preferences.getBoolean(kListMeetingsForDay, false);
-        this.timer = preferences.getBoolean(kTimer, false);
+        this.listMeetingsForDay = preferences.getBoolean(kListMeetingsForDay, true);
+        this.timer = preferences.getBoolean(kTimer, true);
     }
 }

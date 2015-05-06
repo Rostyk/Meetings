@@ -1,6 +1,7 @@
 package com.exchange.ross.exchangeapp.db;
 
 import android.accounts.Account;
+import android.content.Context;
 
 import com.exchange.ross.exchangeapp.APIs.WebService;
 import com.exchange.ross.exchangeapp.core.entities.Event;
@@ -25,8 +26,8 @@ public class AccountsProxy {
     	}
     }
 
-    public ArrayList<WebService> getAllAccounts() {
-        return (ArrayList<WebService>) accountDAO.getAll();
+    public ArrayList<WebService> getAllAccounts(Context context) {
+        return (ArrayList<WebService>) accountDAO.getAll(context);
     }
 
     public void addAccount(WebService account) {
@@ -37,7 +38,7 @@ public class AccountsProxy {
         accountDAO.update(account);
     }
 
-    public void removeEvent(WebService account) {
+    public void removeAccount(WebService account) {
         accountDAO.delete(account);
     }
 

@@ -2,22 +2,26 @@ package com.exchange.ross.exchangeapp.Utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.ContextMenu;
 
 import com.exchange.ross.exchangeapp.Utils.billing.IabHelper;
 import com.exchange.ross.exchangeapp.Utils.billing.IabResult;
 import com.exchange.ross.exchangeapp.Utils.billing.Inventory;
+import com.exchange.ross.exchangeapp.Utils.billing.OnPurchased;
 import com.exchange.ross.exchangeapp.Utils.billing.Purchase;
 
 /**
  * Created by ross on 4/23/15.
  */
 public class PurchaseManager {
-
+    private OnPurchased purchased;
+    private String kAlreadyOwned = "kAlreadyOwned";
+    private Boolean alreadyOwned;
     private static final String TAG =
             "billings";
-
+    private SharedPreferences preferences;
     static final String ITEM_SKU = "android.test.purchased";
     public IabHelper mHelper;
 
@@ -30,6 +34,11 @@ public class PurchaseManager {
     }
 
     public void init(Context context) {
+
+        preferences = context.getSharedPreferences(
+                "com.example.app", Context.MODE_PRIVATE);
+        getPreferences();
+
         String base64EncodedPublicKey =
                 "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAp6Y6lfvOv7vIXtBmz3ZqGCM6QffjWD5giQxWAGAYI9Dp1mzKgb2chE8sP7exzVfJXHnfvELDv9TtX9Y3qpOx0Ekg5cWGjCZ/MChY8Oy5Hq9fyAvh5ohzPIOQjlcLJuJeAWRDeenjMnQsQkkCIvfkuyeokwTr3w+qKvexqUcERBedfrEzV5My6YOajMXa3ypZnxC7LkO2QpgH0I72gdmaZAZ2wQLDGzZw3k7XpJy8rOiEqLbsAuVje/Tvtq/xuStgNEEbY21QKby7OlZ9PccAuAAgvLixL9tOihdz+awDxiMeHeZBkmCJt9AL7Y6voyH83I+3jZvjJWAjzLdq+G9kgwIDAQAB";
 
@@ -49,7 +58,8 @@ public class PurchaseManager {
                                    });
     }
 
-    public void buy(Activity activity) {
+    public void buy(OnPurchased purchased, Activity activity) {
+        this.purchased = purchased;
         mHelper.launchPurchaseFlow(activity, ITEM_SKU, 10001,
                 mPurchaseFinishedListener, "mypurchasetoken");
     }
@@ -61,14 +71,21 @@ public class PurchaseManager {
 
             int res = result.getResponse();
             if(res == 7) {
-                Log.v("Purchase", "Already owned");
-            }
+                alreadyOwned = true;
 
-            mHelper.consumeAsync(purchase, mConsumeFinishListener);
+                if(purchase != null)
+                    mHelper.consumeAsync(purchase, mConsumeFinishListener);
+
+                alreadyOwned = true;
+                purchased.onPurchaseComplete(true);
+            }
 
             if (result.isFailure()) {
-                return;
+               return;
             }
+
+            alreadyOwned = true;
+            purchased.onPurchaseComplete(true);
         }
 
     };
@@ -84,4 +101,17 @@ public class PurchaseManager {
             }
         }
     };
+
+    private void getPreferences() {
+        this.alreadyOwned = preferences.getBoolean(kAlreadyOwned, false);
+    }
+
+    public Boolean getAlreadyOwned() {
+        return alreadyOwned;
+    }
+
+    public void setAlreadyOwned(Boolean alreadyOwned) {
+        this.alreadyOwned = alreadyOwned;
+        preferences.edit().putBoolean(kAlreadyOwned, alreadyOwned).apply();
+    }
 }

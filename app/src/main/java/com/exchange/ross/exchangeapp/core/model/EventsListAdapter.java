@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.exchange.ross.exchangeapp.APIs.WebService;
 import com.exchange.ross.exchangeapp.Utils.ApplicationContextProvider;
 import com.exchange.ross.exchangeapp.Utils.EventsManager;
+import com.exchange.ross.exchangeapp.Utils.Settings;
 import com.exchange.ross.exchangeapp.Utils.Typefaces;
 import com.exchange.ross.exchangeapp.core.entities.Event;
 import com.exchange.ross.exchangeapp.R;
@@ -38,15 +39,11 @@ public class EventsListAdapter extends BaseAdapter{
     }
 
     private List<Event> eventItems;
-    private List<WebService> accountList;
-    private AccountsProxy accountsProxy;
 
     public EventsListAdapter(LayoutInflater inflater, List<Event> eventItems, Context context) {
         this.context = context;
         this.inflater = inflater;
         this.eventItems = eventItems;
-        this.accountsProxy = AccountsProxy.sharedProxy();
-        this.accountList = accountsProxy.getAllAccounts();
     }
 
     public void setActivity(Activity activity) {
@@ -120,7 +117,6 @@ public class EventsListAdapter extends BaseAdapter{
         //convertView.setLayoutParams(new AbsListView.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, height));
         //convertView.requestLayout();
 
-        setButtonImage(holder.ib, e);
         holder.ib.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -132,9 +128,9 @@ public class EventsListAdapter extends BaseAdapter{
             }
         });
 
-        ServiceType type = getServiceType(e);
+        //ServiceType type = getServiceType(e);
 
-        setButtonImage(holder.ib, e);
+        setInitialButtonImage(holder.ib, e);
         /*
         if(activity != null) {
             Typeface robotoFaceLight = Typeface.createFromAsset(activity.getAssets(),"fonts/robotolight.ttf");
@@ -160,12 +156,13 @@ public class EventsListAdapter extends BaseAdapter{
             }
         }
         else {
-            dateView.setText("");
+            dateView.setText("All day");
         }
         e.checkIfAllDayEvent();
         return convertView;
     }
 
+    /*
     private ServiceType getServiceType(Event event) {
         for(WebService account : accountList) {
             if(event.getAccountName().equalsIgnoreCase(account.getCredentials().getUser())) {
@@ -173,14 +170,38 @@ public class EventsListAdapter extends BaseAdapter{
             }
         }
         return ServiceType.SERVICE_UNKNOWN;
-    }
+    }*/
 
     private void setButtonImage(ImageButton button, Event e) {
+        Settings.sharedSettings().setInvolvesEvensListReloadByChangingStatusBusy(false);
+        Settings.sharedSettings().setInvolvesEvensListReloadByChangingIgnoreAllDayEvents(false);
         if(e.getMute()) {
-            button.setBackgroundResource(R.drawable.unmute);
+            button.setBackgroundResource(R.drawable.mute);
         }
         else {
+            button.setBackgroundResource(R.drawable.unmute);
+        }
+    }
+
+    private void setInitialButtonImage(ImageButton button, Event e) {
+        e.checkIfAllDayEvent();
+        if((e.getAllDay() && Settings.sharedSettings().getIgnoreAllDayEvent()) && Settings.sharedSettings().getInvolvesEvensListReloadByChangingIgnoreAllDayEvents()) {
+            button.setBackgroundResource(R.drawable.unmute);
+            e.setMute(false);
+            EventsProxy.sharedProxy().updateEvent(e);
+        }
+        else if((e.getBusy() && Settings.sharedSettings().getSilentOnStatusBusy()) && Settings.sharedSettings().getInvolvesEvensListReloadByChangingStatusBusy()) {
             button.setBackgroundResource(R.drawable.mute);
+            e.setMute(true);
+            EventsProxy.sharedProxy().updateEvent(e);
+        }
+        else {
+            if(e.getMute()) {
+                button.setBackgroundResource(R.drawable.mute);
+            }
+            else {
+                button.setBackgroundResource(R.drawable.unmute);
+            }
         }
     }
 }

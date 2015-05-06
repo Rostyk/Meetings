@@ -20,6 +20,7 @@ import com.exchange.ross.exchangeapp.APIs.operations.OperationCompleted;
 import com.exchange.ross.exchangeapp.Utils.ApplicationContextProvider;
 import com.exchange.ross.exchangeapp.R;
 import com.exchange.ross.exchangeapp.Utils.DateUtils;
+import com.exchange.ross.exchangeapp.Utils.Settings;
 import com.exchange.ross.exchangeapp.activity.EventDetailsActivity;
 import com.exchange.ross.exchangeapp.activity.EventsActivity;
 import com.exchange.ross.exchangeapp.core.entities.Event;
@@ -117,9 +118,6 @@ public class EventsFragment extends android.support.v4.app.Fragment {
     }
 
     public void setupEvents() {
-        EventsActivity eventsActivity = (EventsActivity)activity;
-        eventsActivity.displayDate(position);
-
         //if(loaded)
             //return;
         //showPreload();
@@ -145,7 +143,6 @@ public class EventsFragment extends android.support.v4.app.Fragment {
     }
 
     private void _setupEvents(ArrayList<Event> events) {
-
             eventList = (ArrayList<Event>)events;
             adapter = new EventsListAdapter((LayoutInflater)this.activity.getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE), eventList, this.activity.getApplicationContext());
             adapter.setActivity(activity);
@@ -160,11 +157,9 @@ public class EventsFragment extends android.support.v4.app.Fragment {
     private BroadcastReceiver br = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            //if(intent.getAction().equalsIgnoreCase(TimeService.SYNC_NEW_EVENTS_BR)) {
-                updateEventsUI();
+                if(intent.getAction().equalsIgnoreCase(TimeService.SYNC_NEW_EVENTS_BR))
+                   updateEventsUI();
             }
-
-        //}
     };
 
     public void updateEventsUI() {
@@ -172,6 +167,7 @@ public class EventsFragment extends android.support.v4.app.Fragment {
         EventsProxy.sharedProxy().getAllEventsInBackground(new OperationCompleted() {
             @Override
             public void onOperationCompleted(Object result, int id) {
+                eventList = (ArrayList<Event>)result;
                 if(adapter != null) {
                     adapter.setEventItems((ArrayList<Event>)result);
                 }
@@ -203,8 +199,8 @@ public class EventsFragment extends android.support.v4.app.Fragment {
     private void updateListView() {
         if(adapter != null) {
             adapter.notifyDataSetChanged();
-            setupListViewSelection();
         }
+        setupListViewSelection();
     }
 
 
@@ -213,6 +209,15 @@ public class EventsFragment extends android.support.v4.app.Fragment {
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
+        }
+    }
+
+    @Override
+    public void setMenuVisibility(final boolean visible) {
+        super.setMenuVisibility(visible);
+        if (visible) {
+            EventsActivity eventsActivity = (EventsActivity)activity;
+            eventsActivity.displayDate(position);
         }
     }
 
@@ -256,7 +261,7 @@ public class EventsFragment extends android.support.v4.app.Fragment {
             this.paused = false;
         }
 
-        if(EventsManager.sharedManager().getListNeedsRefresh()) {
+        if(EventsManager.sharedManager().getListNeedsRefresh() || Settings.sharedSettings().getInvolvesEvensListReloadByChangingStatusBusy() || Settings.sharedSettings().getInvolvesEvensListReloadByChangingIgnoreAllDayEvents()) {
             EventsManager.sharedManager().setListNeedsRefresh(false);
             updateEventsUI();
         }

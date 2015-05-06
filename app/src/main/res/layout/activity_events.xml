@@ -17,23 +17,18 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
-                <LinearLayout
-                    android:id="@+id/settingsButtonView"
-                    android:padding="10dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
                      <ImageButton
                          android:layout_width="wrap_content"
                          android:layout_height="wrap_content"
-                         android:layout_marginTop="4dp"
-                         android:layout_marginLeft="6dp"
+                         android:layout_marginTop="1dp"
+                         android:layout_marginLeft="1dp"
                          android:layout_alignParentRight="true"
                          android:layout_marginRight="10dp"
                          android:id="@+id/settingsButton"
-                         android:background="@drawable/settings_button"/>
-                    </LinearLayout>
+                         android:padding="18dp"
+
+                         android:src="@drawable/settings_button"
+                         android:background="#0000"/>
             <TextView
                 android:id="@+id/topDateTextView"
                 android:layout_width="match_parent"

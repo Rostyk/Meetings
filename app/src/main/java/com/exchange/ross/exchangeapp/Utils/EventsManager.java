@@ -19,6 +19,8 @@ import com.exchange.ross.exchangeapp.db.EventsProxy;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import com.exchange.ross.exchangeapp.R;
+
+import java.util.Collections;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -26,9 +28,11 @@ import java.util.concurrent.TimeUnit;
  * Created by ross on 3/31/15.
  */
 public class EventsManager {
+    private ArrayList<String> displayedNotificationIDs = new ArrayList<String>();
     public static final String KILL_SERVICE = "com.ross.exchangeapp.kill_service";
     public static final String START_SERVICE = "com.ross.exchangeapp.start_service";
     public static final String FORCE_SYNC_EVENTS = "com.ross.exchange.force_sync";
+    public static final String FORCE_SYNC_EVENTS_IN_SERVICE = "com.ross.exchange.force_sync_in_service";
     private Intent killServiceIntent = new Intent(KILL_SERVICE);
     private Intent restartServiceIntent = new Intent(START_SERVICE);
     private Intent forceSyncEventsIntent = new Intent(FORCE_SYNC_EVENTS);
@@ -69,7 +73,7 @@ public class EventsManager {
                 filteredEvents.add(event);
             }
         }
-
+        sort(filteredEvents);
         return filteredEvents;
     }
 
@@ -91,34 +95,57 @@ public class EventsManager {
             Date startDate = event.getStartDateInDate();
             Date endDate = event.getEndDateInDate();
             if (isWithinRange(now, startDate, endDate)) {
-                ongoingEvents.add(event);
+                event.checkIfAllDayEvent();
+                if(!event.getAllDay())
+                   ongoingEvents.add(event);
             }
         }
         notifyStatus(ongoingEvents);
-        checkMuteState(ongoingEvents.size() > 0);
-    }
 
-    private void checkMuteState(Boolean mute) {
-        Context context = ApplicationContextProvider.getContext();
-        if(context != null) {
-            AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-            if(mute) {
-                audioManager.setMode(AudioManager.MODE_IN_CALL);
-                audioManager.setStreamSolo(AudioManager.STREAM_VOICE_CALL, true);
-                muted = true;
-            }
-            else {
-                if(muted) {
-                    audioManager.setStreamSolo(AudioManager.STREAM_VOICE_CALL, false);
-                    audioManager.setMode(AudioManager.MODE_NORMAL );
-                    muted = false;
-                }
+        Boolean needsMute = false;
+        for(Event event : ongoingEvents) {
+            if(event.getMute()) {
+                needsMute = true;
             }
         }
 
+        checkMuteState(needsMute);
+    }
+
+    private void checkMuteState(Boolean mute) {
+        SoundManager soundManager = SoundManager.sharedManager();
+            if(mute) {
+                    soundManager.mute(mute);
+                    muted = true;
+            }
+            else {
+                if(muted) {
+                    soundManager.mute(mute);
+
+                    muted = false;
+                }
+            }
     }
 
     public void notifyStatus(ArrayList<Event> events) {
+        NotificationManager notificationManager = (NotificationManager)ApplicationContextProvider.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+
+        //Remove ongoing meetings which passed already
+        if(displayedNotificationIDs.size() > events.size()) {
+           ArrayList<String> notificationsToCancel = new  ArrayList<String>();
+           for(String id : displayedNotificationIDs) {
+               Boolean matches = false;
+               for (Event event : events) {
+                    if(event.getId().equals(id))
+                        matches = true;
+               }
+               if(!matches)
+                   notificationsToCancel.add(id);
+           }
+           for(String id : notificationsToCancel) {
+               notificationManager.cancel(id.hashCode());
+           }
+        }
         for(Event event : events) {
             int notificationId = event.getId().hashCode();
             index++;
@@ -136,8 +163,9 @@ public class EventsManager {
                     .setContentTitle(event.getSubject())
                     .setContentText("Meeting started: " + minutesElapsed + " minutes elapsed of " + duration)
                     .build();
-            NotificationManager notificationManager = (NotificationManager)ApplicationContextProvider.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
             notificationManager.notify(notificationId , notification);
+            displayedNotificationIDs.clear();
+            displayedNotificationIDs.add(event.getId());
         }
     }
 
@@ -201,14 +229,17 @@ public class EventsManager {
         LocalBroadcastManager.getInstance(ApplicationContextProvider.getContext()).sendBroadcast(forceSyncEventsIntent);
     }
 
+    public void syncCompleted(Boolean success) {
+        if(syncEventsCompleted != null) {
+            syncEventsCompleted.onSyncEventsCompleted(success);
+            syncEventsCompleted = null;
+        }
+    }
+
     private BroadcastReceiver eventsSyncBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             if(intent.getAction().equals(TimeService.SYNC_NEW_EVENTS_BR)) {
-                if(syncEventsCompleted != null) {
-                    syncEventsCompleted.onSyncEventsCompleted(true);
-                    syncEventsCompleted = null;
-                }
 
             }
         }
@@ -216,5 +247,12 @@ public class EventsManager {
 
     public ArrayList<Event> getCachedEvents() {
         return cachedEvents;
+    }
+
+    public void sort(ArrayList<Event> events) {
+        for(Event event : events) {
+            event.checkIfAllDayEvent();
+        }
+        Collections.sort(events);
     }
 }

@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,8 +20,10 @@ import com.exchange.ross.exchangeapp.APIs.GoogleWebService;
 import com.exchange.ross.exchangeapp.APIs.operations.OperationCompleted;
 import com.exchange.ross.exchangeapp.APIs.operations.SyncEventCompleted;
 import com.exchange.ross.exchangeapp.R;
+import com.exchange.ross.exchangeapp.Utils.ApplicationContextProvider;
 import com.exchange.ross.exchangeapp.Utils.EventsManager;
 import com.exchange.ross.exchangeapp.core.entities.Event;
+import com.exchange.ross.exchangeapp.core.service.TimeService;
 import com.exchange.ross.exchangeapp.db.AccountsProxy;
 import com.exchange.ross.exchangeapp.db.EventsProxy;
 import com.google.api.client.extensions.android.http.AndroidHttp;
@@ -79,6 +82,7 @@ public class AddNewAccountActivity extends ActionBarActivity implements View.OnC
     public void onClick(View view) {
         if(view.getId() == R.id.exchangeButton || view.getId() == R.id.office365Button) {
             Intent exchangeLoginIntent = new Intent(AddNewAccountActivity.this, ExchangeLoginActivity.class);
+            exchangeLoginIntent.putExtra("AddingExtraAccount", isAddingExtraAcount);
             AddNewAccountActivity.this.startActivity(exchangeLoginIntent);
         }
         if(view.getId() == R.id.googleButton) {
@@ -116,7 +120,7 @@ public class AddNewAccountActivity extends ActionBarActivity implements View.OnC
                 getEvents();
             }
             else {
-                showDuplicateWarning();
+                showWarning("This account is already linked");
             }
 
         }
@@ -130,35 +134,48 @@ public class AddNewAccountActivity extends ActionBarActivity implements View.OnC
 
         service = new GoogleWebService("", accountName, "", "", getApplicationContext(), AddNewAccountActivity.this);
 
-        if(isAddingExtraAcount) {
-            saveAccount(service);
-            EventsManager.sharedManager().sync(accountName, new SyncEventCompleted() {
-                @Override
-                public void onSyncEventsCompleted(Boolean success) {
-                    finish();
-                }
-            });
-        }
-        else {
             service.getEvents(new OperationCompleted() {
                 @Override
                 public void onOperationCompleted(Object result, int id) {
-                    if(id == exGetEventsOperation) {
-                        ArrayList<Event> events = (ArrayList<Event> )result;
-                        saveEvents(events);
-                        saveAccount(service);
-                        progress.dismiss();
-                        openEventsActivity();
+                    if(id == exGetEventsOperation && result != null) {
+                        if(isAddingExtraAcount) {
+                            saveEvents((ArrayList<Event>) result);
+                            saveAccount(service);
+                            updateFragmentsUI();
+                            finish();
+                        }
+                        else {
+                            ArrayList<Event> events = (ArrayList<Event> )result;
+                            saveEvents(events);
+                            saveAccount(service);
+                            progress.dismiss();
+                            openEventsActivity();
+                        }
                     }
-
+                    else if(result == null) {
+                        if(isAddingExtraAcount) {
+                            removeAccount(service);
+                            finish();
+                        }
+                        showWarning("Can't link this account");
+                    }
                 }
             }, exGetEventsOperation);
-        }
+    }
+
+    public void updateFragmentsUI() {
+        Intent newEventsIntent = new Intent(TimeService.SYNC_NEW_EVENTS_BR);
+        LocalBroadcastManager.getInstance(ApplicationContextProvider.getContext()).sendBroadcast(newEventsIntent);
     }
 
     public void saveAccount(GoogleWebService service) {
         AccountsProxy proxy = AccountsProxy.sharedProxy();
         proxy.addAccount(service);
+    }
+
+    public void removeAccount(GoogleWebService service) {
+        AccountsProxy proxy = AccountsProxy.sharedProxy();
+        proxy.removeAccount(service);
     }
 
     public void saveEvents(ArrayList<com.exchange.ross.exchangeapp.core.entities.Event> events) {
@@ -174,14 +191,29 @@ public class AddNewAccountActivity extends ActionBarActivity implements View.OnC
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        progress.dismiss();
-        service.terminate();
+        if(progress != null)
+           progress.dismiss();
+
+        if(service != null)
+           service.terminate();
     }
 
-    public void showDuplicateWarning() {
+    public void onBackPressed() {
+        if(isAddingExtraAcount) {
+            finish();
+        }
+        else {
+            Intent i = new Intent();
+            i.setAction(Intent.ACTION_MAIN);
+            i.addCategory(Intent.CATEGORY_HOME);
+            this.startActivity(i);
+        }
+    }
+
+    public void showWarning(String message) {
         new AlertDialog.Builder(this)
                 .setTitle("")
-                .setMessage("This account is already linked")
+                .setMessage(message)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // continue with delete
