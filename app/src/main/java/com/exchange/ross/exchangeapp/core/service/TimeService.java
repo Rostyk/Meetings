@@ -17,6 +17,7 @@ import com.exchange.ross.exchangeapp.APIs.operations.SyncEventCompleted;
 import com.exchange.ross.exchangeapp.ISync;
 import com.exchange.ross.exchangeapp.IUpdateUIStart;
 import com.exchange.ross.exchangeapp.Utils.ApplicationContextProvider;
+import com.exchange.ross.exchangeapp.Utils.Settings;
 import com.exchange.ross.exchangeapp.core.entities.Event;
 import com.exchange.ross.exchangeapp.Utils.EventsManager;
 import com.exchange.ross.exchangeapp.db.AccountsProxy;
@@ -68,6 +69,11 @@ public class TimeService extends Service {
         public void attachUIUpdate(IUpdateUIStart uiUpdater) {
             fragmentsUiUpdater = uiUpdater;
         }
+
+        @Override
+        public void sync(String accountName) {
+            scheduleSyncTimer(1000);
+        }
     };
 
     @Override
@@ -76,25 +82,26 @@ public class TimeService extends Service {
     }
 
     private void startService() {
-        scheduleTimers();
+        scheduleSyncTimer(560000);
+        scheduleOngoingTimer();
+        Settings.sharedSettings().setContext(this);
     }
 
-    public void scheduleTimers() {
+    public void scheduleSyncTimer(int time) {
         if(syncTimer != null)
            syncTimer.cancel();
-        if(timer != null)
-           timer.cancel();
 
         syncTimer = new Timer();
-        timer = new Timer();
-        if(time == 0)
-           syncTimer.schedule (new syncEventsTask(), 12000);
-        else
-            syncTimer.schedule (new syncEventsTask(), 560000);
-
-        time++;
-        timer.schedule(new checkEventsTask(), 20000);
+        syncTimer.schedule (new syncEventsTask(), time);
     }
+
+    public void scheduleOngoingTimer() {
+        if(timer != null)
+            timer.cancel();
+        timer = new Timer();
+        timer.schedule(new checkEventsTask(), 30000);
+    }
+
 
     private class checkEventsTask extends TimerTask {
         public void run() {
@@ -103,6 +110,7 @@ public class TimeService extends Service {
     }
 
     private void checkEvents() {
+        scheduleOngoingTimer();
         ApplicationContextProvider.setApplicationContext(getApplicationContext());
         DatabaseManager.initializeInstance(new WHDatabaseHelper(getApplicationContext()));
 
@@ -113,14 +121,14 @@ public class TimeService extends Service {
     private class syncEventsTask extends TimerTask {
         public void run() {
             //null for all accounts
-            syncEvents(null, false);
+            syncEvents(null);
         }
     }
 
-    private void syncEvents(String account, Boolean force) {
-        scheduleTimers();
-        ApplicationContextProvider.setApplicationContext(getApplicationContext());
-        DatabaseManager.initializeInstance(new WHDatabaseHelper(getApplicationContext()));
+    private void syncEvents(String account) {
+        scheduleSyncTimer(560000);
+        ApplicationContextProvider.setApplicationContext(this);
+        DatabaseManager.initializeInstance(new WHDatabaseHelper(this));
 
         services = AccountsProxy.sharedProxy().getAllAccounts(this);
 
@@ -166,7 +174,8 @@ public class TimeService extends Service {
     public void updateUI(final String accountName) {
         EventsManager.sharedManager().countOngoingEvents();
         try {
-            fragmentsUiUpdater.updateUI();
+            if(fragmentsUiUpdater != null)
+               fragmentsUiUpdater.updateUI();
         }
         catch (RemoteException e) {
             e.printStackTrace();

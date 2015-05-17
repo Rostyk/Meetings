@@ -21,7 +21,7 @@
         android:id="@+id/listTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="30dp"
+        android:layout_marginRight="70dp"
         android:layout_marginLeft="8dp"
         android:ellipsize="middle"
         android:maxLines="1"

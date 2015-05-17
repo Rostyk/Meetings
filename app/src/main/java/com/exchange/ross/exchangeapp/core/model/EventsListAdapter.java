@@ -131,15 +131,7 @@ public class EventsListAdapter extends BaseAdapter{
         //ServiceType type = getServiceType(e);
 
         setInitialButtonImage(holder.ib, e);
-        /*
-        if(activity != null) {
-            Typeface robotoFaceLight = Typeface.createFromAsset(activity.getAssets(),"fonts/robotolight.ttf");
-            titleView.setTypeface(robotoFaceLight);
 
-            Typeface robotoFaceThin = Typeface.createFromAsset(activity.getAssets(),"fonts/robotothin.ttf");
-            locationView.setTypeface(robotoFaceThin);
-            dateView.setTypeface(robotoFaceThin);
-        }*/
 
         // title
         titleView.setText(e.getSubject());
@@ -161,16 +153,6 @@ public class EventsListAdapter extends BaseAdapter{
         e.checkIfAllDayEvent();
         return convertView;
     }
-
-    /*
-    private ServiceType getServiceType(Event event) {
-        for(WebService account : accountList) {
-            if(event.getAccountName().equalsIgnoreCase(account.getCredentials().getUser())) {
-                 return account.getServiceType();
-            }
-        }
-        return ServiceType.SERVICE_UNKNOWN;
-    }*/
 
     private void setButtonImage(ImageButton button, Event e) {
         Settings.sharedSettings().setInvolvesEvensListReloadByChangingStatusBusy(false);

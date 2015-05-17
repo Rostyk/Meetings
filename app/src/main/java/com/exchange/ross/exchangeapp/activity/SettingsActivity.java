@@ -99,46 +99,38 @@ public class SettingsActivity extends ActionBarActivity {
          Switch listSwitch = (Switch)findViewById(R.id.listSwitch);
          listSwitch.setTypeface(light);
 
-         final Settings settings = Settings.sharedSettings();
+        final Settings settings = Settings.sharedSettings();
 
-        /*
-         soundSwitch.setChecked(settings.getSound());
-         soundSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-             @Override
-             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                 settings.setSound(isChecked);
-             }
-         });*/
 
-         vibrationSwitch.setChecked(settings.getVibration());
-         vibrationSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        vibrationSwitch.setChecked(Settings.getVibration());
+        vibrationSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                settings.setVibration(isChecked);
-            }
-         });
+                Settings.setVibration(isChecked);
+        }
+        });
 
-        statusBusySwitch.setChecked(settings.getSilentOnStatusBusy());
+        statusBusySwitch.setChecked(Settings.getSilentOnStatusBusy());
         statusBusySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                settings.setSilentOnStatusBusy(isChecked);
+                Settings.setSilentOnStatusBusy(isChecked);
             }
         });
 
-        ignoreAllDaySwitch.setChecked(settings.getIgnoreAllDayEvent());
+        ignoreAllDaySwitch.setChecked(Settings.getIgnoreAllDayEvent());
         ignoreAllDaySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                settings.setIgnoreAllDayEvent(isChecked);
+                Settings.setIgnoreAllDayEvent(isChecked);
             }
         });
 
-        listSwitch.setChecked(settings.getListMeetingsForDay());
+        listSwitch.setChecked(Settings.getListMeetingsForDay());
         listSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                settings.setListMeetingsForDay(isChecked);
+                Settings.setListMeetingsForDay(isChecked);
             }
         });
 
@@ -146,7 +138,7 @@ public class SettingsActivity extends ActionBarActivity {
         timerSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                settings.setTimer(isChecked);
+                Settings.setTimer(isChecked);
             }
         });
 

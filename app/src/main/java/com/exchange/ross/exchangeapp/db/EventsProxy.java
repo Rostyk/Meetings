@@ -42,12 +42,18 @@ public class EventsProxy {
         return (ArrayList<Event>)eventDAO.getAll();
     }
 
-   /*
+
     public ArrayList<Event> getAllEvents(int daySinceNow) {
         ArrayList<Event> allEvents = (ArrayList<Event>)eventDAO.getAll();
         ArrayList<Event> todayEvents = EventsManager.sharedManager().eventsForDaySinceNow(daySinceNow, allEvents);
         return todayEvents;
-    }*/
+    }
+
+    public ArrayList<Event> getAllEvents(int startRange, int endRange) {
+        ArrayList<Event> allEvents = (ArrayList<Event>)eventDAO.getAll();
+        ArrayList<Event> todayEvents = EventsManager.sharedManager().eventsForDaySinceNow(startRange, endRange, allEvents);
+        return todayEvents;
+    }
 
     public ArrayList<ArrayList<Event>> getSyncEvents(ArrayList<Event> events, String accountName) {
         ArrayList<Event> alreadyStoredEvents = (ArrayList<Event>)eventDAO.getAll(accountName);

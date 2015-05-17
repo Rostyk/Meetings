@@ -123,14 +123,12 @@ public class EventDetailsActivity extends ActionBarActivity {
             meetingTimeTextView.setText(DateUtils.meetingTimeFromEvent(event));
         }
 
-
         String attendees = "";
         if(event.getRequiredAttendees() != null)
             attendees = event.getRequiredAttendees();
         if(event.getOptionalAttendees() != null)
             if(event.getOptionalAttendees().length() > 1)
               attendees = attendees + "\n" + event.getOptionalAttendees();
-
 
         if(event.getLocation() != null && event.getLocation().length() > 0) {
             meetingLocationTextView.setText(event.getLocation());
@@ -148,9 +146,7 @@ public class EventDetailsActivity extends ActionBarActivity {
             meetingAttendeesImageView.setVisibility(View.GONE);
         }
 
-
         meetingCalendarTextView.setText(event.getCalendarName());
-
         ServiceType type = getServiceType(event);
 
         Boolean hideBodyView = false;
@@ -205,5 +201,4 @@ public class EventDetailsActivity extends ActionBarActivity {
             muteButton.setBackgroundResource(buttonResourceIdOn);
         }
     }
-
 }

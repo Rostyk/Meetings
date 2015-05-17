@@ -109,14 +109,20 @@ public class EventsActivity extends ActionBarActivity implements EventsFragment.
         manager.init(getApplicationContext());
 
 
-        ImageButton syncButton = (ImageButton)findViewById(R.id.syncButton);
+        final ImageButton syncButton = (ImageButton)findViewById(R.id.syncButton);
         syncButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showToast();
-                Intent serviceIntent = new Intent(activity, TimeService.class);
-                serviceIntent.putExtra("ForceSync", true);
-                activity.startService(serviceIntent);
+                try {
+                    if(syncService != null)
+                       syncService.sync(null);
+                }
+                catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+
+
             }
         });
         Settings.sharedSettings().setContext(getApplicationContext());
@@ -131,9 +137,6 @@ public class EventsActivity extends ActionBarActivity implements EventsFragment.
             public void onServiceDisconnected(ComponentName name) {
                 // TODO Auto-generated method stub
                 syncService = null;
-                Toast.makeText(getApplicationContext(), "Service Disconnected",
-                        Toast.LENGTH_SHORT).show();
-
             }
 
             @Override
@@ -146,11 +149,6 @@ public class EventsActivity extends ActionBarActivity implements EventsFragment.
                 catch (RemoteException exception) {
                     exception.printStackTrace();
                 }
-
-                Toast.makeText(getApplicationContext(),
-                        "Addition Service Connected", Toast.LENGTH_SHORT)
-                        .show();
-
             }
         };
         if (syncService == null) {
@@ -171,7 +169,7 @@ public class EventsActivity extends ActionBarActivity implements EventsFragment.
     };
 
     public void showToast() {
-        Toast toast = Toast.makeText(this,"Events will be synced within a minute", Toast.LENGTH_LONG);
+        Toast toast = Toast.makeText(this,getString(R.string.events_will_be_synced_soon), Toast.LENGTH_LONG);
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
     }
@@ -224,7 +222,13 @@ public class EventsActivity extends ActionBarActivity implements EventsFragment.
     @Override
     public void onDestroy() {
         super.onDestroy();
-        unbindService(syncServiceConnection);
+        try {
+            unbindService(syncServiceConnection);
+        }
+        catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+
         LocalBroadcastManager.getInstance(this.activity.getApplicationContext()).unregisterReceiver(serviceStateReceiver);
         PurchaseManager manager = PurchaseManager.sharedManager();
         if (manager.mHelper != null) manager.mHelper.dispose();

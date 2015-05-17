@@ -181,6 +181,11 @@ public class ExchangeLoginActivity extends ActionBarActivity {
 
         if(parts.length == 2) {
             final String user = parts[1];
+
+            if(!AccountsProxy.sharedProxy().isUnique(user)) {
+                showWarning(getString(R.string.account_already_linked));
+                return;
+            }
             String domain = parts[0];
             String password = mPasswordView.getText().toString();
 
@@ -190,6 +195,7 @@ public class ExchangeLoginActivity extends ActionBarActivity {
                     public void onOperationCompleted(Object result, int id) {
                         if (id == exGetEvetsOperation && result != null) {
                             if (isAddingExtraAcount) {
+                                saveAccount(service);
                                 saveEvents((ArrayList<Event>) result);
                                 updateFragmentsUI();
                                 finish();

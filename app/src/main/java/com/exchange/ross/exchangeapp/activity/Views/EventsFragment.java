@@ -118,16 +118,7 @@ public class EventsFragment extends android.support.v4.app.Fragment {
     }
 
     public void setupEvents() {
-        //if(loaded)
-            //return;
-        //showPreload();
         int daySinceNow = this.position;
-        //ArrayList<Event> cached = EventsManager.sharedManager().getCachedEvents();
-        //if(cached != null) {
-            //ArrayList<Event> eventsForDay = EventsManager.sharedManager().eventsForDaySinceNow(daySinceNow, cached);
-            //_setupEvents(eventsForDay);
-        //}
-        //else {
 
             EventsProxy.sharedProxy().getAllEventsInBackground(new OperationCompleted() {
                 @Override
@@ -139,11 +130,11 @@ public class EventsFragment extends android.support.v4.app.Fragment {
                     }
                 }
             },this.position);
-        //}
     }
 
     private void _setupEvents(ArrayList<Event> events) {
             eventList = (ArrayList<Event>)events;
+            EventsManager.sharedManager().countOngoingEvents();
             adapter = new EventsListAdapter((LayoutInflater)this.activity.getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE), eventList, this.activity.getApplicationContext());
             adapter.setActivity(activity);
 
@@ -151,7 +142,6 @@ public class EventsFragment extends android.support.v4.app.Fragment {
             adapter.notifyDataSetChanged();
             setupListViewSelection();
             loaded = true;
-       // }
     }
 
     private BroadcastReceiver br = new BroadcastReceiver() {
@@ -163,10 +153,8 @@ public class EventsFragment extends android.support.v4.app.Fragment {
     };
 
     public void updateEventsUI() {
-        //ArrayList<Event> result = EventsProxy.sharedProxy().getAllEvents(position);
-        EventsProxy.sharedProxy().getAllEventsInBackground(new OperationCompleted() {
-            @Override
-            public void onOperationCompleted(Object result, int id) {
+        EventsManager.sharedManager().countOngoingEvents();
+        ArrayList<Event>result = EventsProxy.sharedProxy().getAllEvents(position);
                 eventList = (ArrayList<Event>)result;
                 if(adapter != null) {
                     adapter.setEventItems((ArrayList<Event>)result);
@@ -177,8 +165,6 @@ public class EventsFragment extends android.support.v4.app.Fragment {
                     }
                 }
                 updateListView();
-            }
-        },position);
     }
 
     private void setupListViewSelection() {
@@ -285,35 +271,9 @@ public class EventsFragment extends android.support.v4.app.Fragment {
         }
     }
 
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
-    }
-
-
-    private void showPreload() {
-        if(activity != null) {
-            progress = new ProgressDialog(activity);
-            progress.setTitle("Please wait");
-            progress.setMessage("Syncing events");
-            progress.show();
-        }
-    }
-
-    private void hidePreload() {
-        if(progress != null)
-          progress.dismiss();
     }
 
 }

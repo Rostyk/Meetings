@@ -38,9 +38,10 @@ import java.util.Collections;
 
 
 public class AddNewAccountActivity extends ActionBarActivity implements View.OnClickListener {
+    private Boolean isAddingExchange = false;
     private Boolean isAddingExtraAcount = false;
-    private ProgressDialog progress;
-    private GoogleWebService service;
+    private ProgressDialog progress = null;
+    private GoogleWebService service = null;
     static final int GOOGLE_CHOOSE_ACCOUNT_ACTIVITY = 1;
     private GoogleAccountCredential credential;
     private final int exGetEventsOperation = 11;
@@ -49,6 +50,14 @@ public class AddNewAccountActivity extends ActionBarActivity implements View.OnC
     final com.google.api.client.json.JsonFactory jsonFactory = GsonFactory.getDefaultInstance();
 
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if(isAddingExchange && isAddingExtraAcount) {
+            finish();
+        }
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,11 +90,13 @@ public class AddNewAccountActivity extends ActionBarActivity implements View.OnC
 
     public void onClick(View view) {
         if(view.getId() == R.id.exchangeButton || view.getId() == R.id.office365Button) {
+            isAddingExchange = true;
             Intent exchangeLoginIntent = new Intent(AddNewAccountActivity.this, ExchangeLoginActivity.class);
             exchangeLoginIntent.putExtra("AddingExtraAccount", isAddingExtraAcount);
             AddNewAccountActivity.this.startActivity(exchangeLoginIntent);
         }
         if(view.getId() == R.id.googleButton) {
+            service = null;
             googleLogin();
         }
     }
@@ -120,19 +131,24 @@ public class AddNewAccountActivity extends ActionBarActivity implements View.OnC
                 getEvents();
             }
             else {
-                showWarning("This account is already linked");
+                showWarning(getString(R.string.account_already_linked));
             }
+        }
 
+        if(requestCode == GoogleWebService.GOOGLE_PERMISSION_CODE) {
+            service.setPermissionPassed(true);
+            getEvents();
         }
     }
 
     public void getEvents() {
         progress = new ProgressDialog(this);
-        progress.setTitle("Google Calendar");
-        progress.setMessage("Syncing events");
+        progress.setTitle(getString(R.string.google_calendar));
+        progress.setMessage(getString(R.string.syncing_events));
         progress.show();
 
-        service = new GoogleWebService("", accountName, "", "", getApplicationContext(), AddNewAccountActivity.this);
+        if(service == null)
+           service = new GoogleWebService("", accountName, "", "", getApplicationContext(), AddNewAccountActivity.this);
 
             service.getEvents(new OperationCompleted() {
                 @Override
@@ -157,7 +173,9 @@ public class AddNewAccountActivity extends ActionBarActivity implements View.OnC
                             removeAccount(service);
                             finish();
                         }
-                        showWarning("Can't link this account");
+                        if(progress != null)
+                           progress.dismiss();
+                        showWarning(getString(R.string.cant_link_this_account));
                     }
                 }
             }, exGetEventsOperation);

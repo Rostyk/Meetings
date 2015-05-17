@@ -22,6 +22,7 @@ import com.google.android.gms.auth.UserRecoverableAuthException;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.accounts.GoogleAccountManager;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
+import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.calendar.CalendarScopes;
@@ -32,6 +33,9 @@ import com.google.api.services.calendar.model.EventDateTime;
 import com.google.api.services.calendar.model.Events;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -42,10 +46,13 @@ import java.util.List;
  * Created by ross on 3/21/15.
  */
 public class GoogleWebService extends WebService {
+    ProgressDialog progressDlg = null;
+    private Boolean permissionPassed = false;
     private  Boolean terminated = false;
     private final String STATUS_CANCELLED = "cancelled";
     private GoogleAccountCredential credential;
     private final int exGetEventsOperation = 11;
+    public static int GOOGLE_PERMISSION_CODE = 76;
     private String accountName;
     private Activity activity;
     private OperationCompleted completed;
@@ -89,6 +96,9 @@ public class GoogleWebService extends WebService {
     //-------------------------------------------------------------------------------
 
     public void getEvents(OperationCompleted completed, int id) {
+        if(permissionPassed) {
+            fetchEvents();
+        }
         accountName = getCredentials().getUser();
         this.completed = completed;
         this.id = id;
@@ -110,7 +120,7 @@ public class GoogleWebService extends WebService {
                 //public void run() {
 
                     AsyncTask<Account, String, String> task = new AsyncTask<Account, String, String>() {
-                        ProgressDialog progressDlg;
+
                         AsyncTask<Account, String, String> me = this;
 
                         @Override
@@ -165,26 +175,30 @@ public class GoogleWebService extends WebService {
         } catch (UserRecoverableAuthException e) {
             // Start the Approval Screen intent, if not run from an Activity, add the Intent.FLAG_ACTIVITY_NEW_TASK flag.
             if(activity != null) {
-                activity.startActivityForResult(e.getIntent(), 77);
+                activity.startActivityForResult(e.getIntent(), GOOGLE_PERMISSION_CODE);
             }
             e.printStackTrace();
             return null;
         } catch (GoogleAuthException e) {
             e.printStackTrace();
             return null;
-        } catch (IOException e) {
+        }
+
+        catch (IOException e) {
             e.printStackTrace();
             String sss =  e.getStackTrace().toString();
             String check = sss;
             return null;
         }
+
     }
 
     public void fetchEvents() {
             credential = GoogleAccountCredential.usingOAuth2(context, Collections.singleton(CalendarScopes.CALENDAR));
             credential.setSelectedAccountName(accountName);
             // Calendar client
-            client = ApplicationContextProvider.getClient();
+            //if(client == null)
+            //client = ApplicationContextProvider.getClient();
             //if(client == null) {
                 client = new com.google.api.services.calendar.Calendar.Builder(
                         transport, jsonFactory, credential).setApplicationName("Google-CalendarAndroidSample/1.0")
@@ -223,9 +237,24 @@ public class GoogleWebService extends WebService {
                 cpageToken = calendarList.getNextPageToken();
             } while (cpageToken != null);
         }
+        catch (UserRecoverableAuthIOException e) {
+            if(activity != null)
+               activity.startActivityForResult(e.getIntent(), 45);
+
+            allEvents = null;
+        }
         catch(Exception e) {
+            if(progressDlg != null)
+               progressDlg.dismiss();
             allEvents = null;
             e.printStackTrace();
+
+            Writer writer = new StringWriter();
+            PrintWriter printWriter = new PrintWriter(writer);
+            e.printStackTrace(printWriter);
+            String str = writer.toString();
+            Log.v("EXTR", str);
+
         }
 
        return allEvents;
@@ -322,6 +351,14 @@ public class GoogleWebService extends WebService {
         java.util.Date endDate = new java.util.Date(value);
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return formatter.format(endDate);
+    }
+
+    public Boolean getPermissionPassed() {
+        return permissionPassed;
+    }
+
+    public void setPermissionPassed(Boolean permissionPassed) {
+        this.permissionPassed = permissionPassed;
     }
 
     @Override

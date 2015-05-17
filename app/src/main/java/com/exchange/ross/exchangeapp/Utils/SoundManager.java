@@ -22,7 +22,7 @@ public class SoundManager {
         AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         if (context != null) {
             if (on) {
-                if(Settings.sharedSettings().getVibration()) {
+                if(Settings.getVibration()) {
                     audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_RINGER,
                             AudioManager.VIBRATE_SETTING_ON);
                 }

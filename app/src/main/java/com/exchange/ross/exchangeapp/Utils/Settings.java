@@ -2,6 +2,7 @@ package com.exchange.ross.exchangeapp.Utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 /**
  * Created by ross on 4/20/15.
@@ -9,24 +10,24 @@ import android.content.SharedPreferences;
 public class Settings {
     private static Settings instance;
 
-    private Boolean involvesEvensListReloadByChangingStatusBusy = false;
-    private Boolean involvesEvensListReloadByChangingIgnoreAllDayEvents = false;
+    private static Boolean involvesEvensListReloadByChangingStatusBusy = false;
+    private static Boolean involvesEvensListReloadByChangingIgnoreAllDayEvents = false;
 
-    private Boolean sound = false;
-    private String kSound = "sound";
-    private Boolean vibration  = false;
-    private String kVibration = "vibration";
-    private Boolean ignoreAllDayEvent = false;
-    private String kIgnoreAllDayEvent = "ignoreAllDayEvent";
-    private Boolean silentOnStatusBusy = false;
-    private String kSilentOnStatusBusy = "silentOnStatusBusy";
-    private Boolean listMeetingsForDay = false;
-    private String kListMeetingsForDay = "listMeetingsForDay";
-    private Boolean timer = false;
-    private String kTimer = "timer";
+    private static Boolean sound = false;
+    private static String kSound = "sound";
+    private static Boolean vibration  = false;
+    private static String kVibration = "vibration";
+    private static Boolean ignoreAllDayEvent = false;
+    private static String kIgnoreAllDayEvent = "ignoreAllDayEvent";
+    private static Boolean silentOnStatusBusy = false;
+    private static String kSilentOnStatusBusy = "silentOnStatusBusy";
+    private static Boolean listMeetingsForDay = false;
+    private static String kListMeetingsForDay = "listMeetingsForDay";
+    private static Boolean timer = false;
+    private static String kTimer = "timer";
 
-    private Context context;
-    private SharedPreferences preferences;
+    private static Context context;
+    private static SharedPreferences preferences;
 
     public static synchronized Settings sharedSettings() {
         if (instance == null)
@@ -35,74 +36,89 @@ public class Settings {
     }
 
     public Boolean getSound() {
-        return sound;
+        return this.sound;
     }
 
-    public Boolean getVibration() {
+    public static synchronized Boolean getVibration() {
+        if(context != null) {
+            Settings.setContext(context);
+        }
         return vibration;
     }
 
-    public Boolean getIgnoreAllDayEvent() {
+    public static synchronized Boolean getIgnoreAllDayEvent() {
+        if(context != null) {
+            Settings.setContext(context);
+        }
         return ignoreAllDayEvent;
     }
 
-    public Boolean getSilentOnStatusBusy() {
+    public static synchronized Boolean getSilentOnStatusBusy() {
+        if(context != null) {
+            Settings.setContext(context);
+        }
         return silentOnStatusBusy;
     }
 
-    public Boolean getListMeetingsForDay() {
+    public static synchronized Boolean getListMeetingsForDay() {
+        if(context != null) {
+            Settings.setContext(context);
+        }
         return listMeetingsForDay;
     }
 
     public Boolean getTimer() {
+        if(context != null) {
+            Settings.setContext(context);
+        }
         return timer;
     }
 
-    public void setSound(Boolean sound) {
-        this.sound = sound;
-        preferences.edit().putBoolean(kSound, sound).apply();
+    public void setSound(Boolean _sound) {
+        sound = _sound;
+        //preferences.edit().putBoolean(KSound, _sound).apply();
     }
 
-    public void setVibration(Boolean vibration) {
-        this.vibration = vibration;
+    public static synchronized void setVibration(Boolean _vibration) {
+        vibration = _vibration;
         preferences.edit().putBoolean(kVibration, vibration).apply();
     }
 
-    public void setIgnoreAllDayEvent(Boolean ignoreAllDayEvent) {
-        this.ignoreAllDayEvent = ignoreAllDayEvent;
-        this.involvesEvensListReloadByChangingIgnoreAllDayEvents = true;
-        preferences.edit().putBoolean(kIgnoreAllDayEvent, ignoreAllDayEvent).apply();
+    public static synchronized void setIgnoreAllDayEvent(Boolean _ignoreAllDayEvent) {
+        ignoreAllDayEvent = _ignoreAllDayEvent;
+        involvesEvensListReloadByChangingIgnoreAllDayEvents = true;
+        preferences.edit().putBoolean(kIgnoreAllDayEvent, ignoreAllDayEvent).commit();
     }
 
-    public void setSilentOnStatusBusy(Boolean silentOnStatusBusy) {
-        this.silentOnStatusBusy = silentOnStatusBusy;
-        this.involvesEvensListReloadByChangingStatusBusy = true;
+    public static synchronized void setSilentOnStatusBusy(Boolean _silentOnStatusBusy) {
+        silentOnStatusBusy = _silentOnStatusBusy;
+        involvesEvensListReloadByChangingStatusBusy = true;
         preferences.edit().putBoolean(kSilentOnStatusBusy, silentOnStatusBusy).apply();
     }
 
-    public Boolean getInvolvesEvensListReloadByChangingStatusBusy() {
+    public static synchronized Boolean getInvolvesEvensListReloadByChangingStatusBusy() {
         return involvesEvensListReloadByChangingStatusBusy;
     }
 
-    public void setInvolvesEvensListReloadByChangingStatusBusy(Boolean involvesEvensListReload) {
-        this.involvesEvensListReloadByChangingStatusBusy = involvesEvensListReload;
+    public static synchronized void setInvolvesEvensListReloadByChangingStatusBusy(Boolean involvesEvensListReload) {
+        involvesEvensListReloadByChangingStatusBusy = involvesEvensListReload;
     }
 
-    public Boolean getInvolvesEvensListReloadByChangingIgnoreAllDayEvents() {
+    public static synchronized Boolean getInvolvesEvensListReloadByChangingIgnoreAllDayEvents() {
         return involvesEvensListReloadByChangingIgnoreAllDayEvents;
     }
 
-    public void setInvolvesEvensListReloadByChangingIgnoreAllDayEvents(Boolean involvesEvensListReloadByChangingIgnoreAllDayEvents) {
-        this.involvesEvensListReloadByChangingIgnoreAllDayEvents = involvesEvensListReloadByChangingIgnoreAllDayEvents;
+    public static synchronized void setInvolvesEvensListReloadByChangingIgnoreAllDayEvents(Boolean _involvesEvensListReloadByChangingIgnoreAllDayEvents) {
+        involvesEvensListReloadByChangingIgnoreAllDayEvents = _involvesEvensListReloadByChangingIgnoreAllDayEvents;
     }
 
-    public void setListMeetingsForDay(Boolean listMeetingsForDay) {
-        this.listMeetingsForDay = listMeetingsForDay;
+    public static synchronized void setListMeetingsForDay(Boolean _listMeetingsForDay) {
+        listMeetingsForDay = _listMeetingsForDay;
         preferences.edit().putBoolean(kListMeetingsForDay, listMeetingsForDay).apply();
     }
 
-    public void setTimer(Boolean timer) {
-        this.timer = timer;
+    public static synchronized void setTimer(Boolean _timer) {
+        timer = _timer;
         preferences.edit().putBoolean(kTimer, timer).apply();
     }
 
@@ -110,29 +126,26 @@ public class Settings {
         return context;
     }
 
-    public void setContext(Context context) {
-        this.context = context;
+    public static synchronized void setContext(Context _context) {
+        context = _context;
 
         if(context != null) {
             Boolean readPreferences = false;
-            if(preferences == null) {
-                readPreferences = true;
-            }
+            readPreferences = true;
             preferences = context.getSharedPreferences(
-                    "com.example.app", Context.MODE_PRIVATE);
-
+                    "com.example.app", Context.MODE_MULTI_PROCESS);
             if(readPreferences) {
                 getAllSettings();
             }
         }
     }
 
-    private void getAllSettings() {
-        this.sound = preferences.getBoolean(kSound, false);
-        this.vibration = preferences.getBoolean(kVibration, true);
-        this.ignoreAllDayEvent = preferences.getBoolean(kIgnoreAllDayEvent, true);
-        this.silentOnStatusBusy = preferences.getBoolean(kSilentOnStatusBusy, false);
-        this.listMeetingsForDay = preferences.getBoolean(kListMeetingsForDay, true);
-        this.timer = preferences.getBoolean(kTimer, true);
+    private static synchronized void getAllSettings() {
+        sound = preferences.getBoolean(kSound, false);
+        vibration = preferences.getBoolean(kVibration, true);
+        ignoreAllDayEvent = preferences.getBoolean(kIgnoreAllDayEvent, true);
+        silentOnStatusBusy = preferences.getBoolean(kSilentOnStatusBusy, false);
+        listMeetingsForDay = preferences.getBoolean(kListMeetingsForDay, true);
+        timer = preferences.getBoolean(kTimer, true);
     }
 }

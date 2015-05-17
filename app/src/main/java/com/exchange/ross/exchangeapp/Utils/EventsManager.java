@@ -63,14 +63,26 @@ public class EventsManager {
     }
 
     public ArrayList<Event> eventsForDaySinceNow(int daySinceToday, ArrayList<Event>events) {
-
-
         Date date = DateUtils.dateSinceToday(daySinceToday);
 
         ArrayList<Event> filteredEvents = new ArrayList<Event>();
         for(Event event : events) {
             if(isSameDay(date, event.getStartDateInDate())) {
                 filteredEvents.add(event);
+            }
+        }
+        sort(filteredEvents);
+        return filteredEvents;
+    }
+
+    public ArrayList<Event> eventsForDaySinceNow(int startRange, int endRange, ArrayList<Event>events) {
+        ArrayList<Event> filteredEvents = new ArrayList<Event>();
+            for(int _start = startRange; _start<= endRange; _start++) {
+                Date date = DateUtils.dateSinceToday(_start);
+                for(Event event : events) {
+                if (isSameDay(date, event.getStartDateInDate())) {
+                    filteredEvents.add(event);
+                }
             }
         }
         sort(filteredEvents);
@@ -88,7 +100,8 @@ public class EventsManager {
     }
 
     public void countOngoingEvents() {
-        ArrayList<Event> events = EventsProxy.sharedProxy().getAllEvents();
+        ArrayList<Event> events = EventsProxy.sharedProxy().getAllEvents(1, 2);
+
         Date now = new Date();
         ongoingEvents = new ArrayList<Event>();
         for (Event event : events) {

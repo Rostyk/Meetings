@@ -31,7 +31,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Settings"
+            android:text="@string/title_activity_settings"
             android:textSize="28sp"
             android:layout_marginLeft="22dp"
             android:layout_marginBottom="4dp"
@@ -50,21 +50,7 @@
         android:id="@+id/settingSoundTextView"
         android:layout_marginTop="12dp"
         android:textSize="@dimen/settings_caption"
-        android:text="Sound" />
-    <!--
-    <Switch
-        android:layout_width="match_parent"
-        android:layout_height="42dp"
-        android:id="@+id/soundSwitch"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="2dp"
-        android:background="@drawable/setting_item_bg"
-        android:textSize="@dimen/settings_option"
-        android:text="Sound"
-        android:layout_gravity="left"
-        android:paddingLeft="15dp"/>
-        -->
+        android:text="@string/sound" />
 
     <Switch
         android:layout_width="match_parent"
@@ -74,7 +60,7 @@
         android:background="@drawable/setting_item_bg"
         android:textSize="@dimen/settings_option"
         android:switchPadding="39sp"
-        android:text="Vibration"
+        android:text="@string/vibro"
         android:paddingLeft="15dp"/>
 
 
@@ -82,7 +68,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/settingMeetingTextView"
-            android:text="Meeting"
+            android:text="@string/meeting"
             android:textSize="@dimen/settings_caption"
             android:layout_marginTop="22dp"/>
 
@@ -95,7 +81,7 @@
         android:layout_marginTop="2dp"
         android:background="@drawable/setting_item_bg"
         android:textSize="@dimen/settings_option"
-        android:text="Mute only 'Busy' meetings"
+        android:text="@string/mute_on_busy_meetings"
         android:paddingLeft="15dp"/>
 
         <Switch
@@ -108,13 +94,13 @@
         android:background="@drawable/setting_item_bg"
         android:textSize="@dimen/settings_option"
         android:switchPadding="8dp"
-        android:text="Ignore All Day events"
+        android:text="@string/ignore_all_day_events"
         android:paddingLeft="15dp"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Notification"
+            android:text="@string/notification"
             android:textSize="@dimen/settings_caption"
             android:id="@+id/settingNotificationTextView"
             android:layout_marginTop="22dp"/>
@@ -130,7 +116,7 @@
         android:textSize="@dimen/settings_option"
         android:switchPadding="8dp"
         android:background="@drawable/setting_item_bg"
-        android:text="Timer during meeting"
+        android:text="@string/timer_during_meeting"
         android:paddingLeft="15dp"/>
 
         <Switch
@@ -141,14 +127,14 @@
             android:layout_centerHorizontal="true"
             android:background="@drawable/setting_item_bg"
             android:textSize="@dimen/settings_option"
-            android:text="List of meeting for a day"
+            android:text="@string/list_of_meetings_for_day"
             android:paddingLeft="15dp"/>
 
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Manage accounts"
+            android:text="@string/manage_accounts"
             android:textSize="@dimen/settings_caption"
             android:id="@+id/settingManageAccountsTextView"
             android:layout_marginTop="22dp"/>
@@ -162,7 +148,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black_color"
-                android:text="Link new account"
+                android:text="@string/link_new_account"
                 android:textSize="@dimen/settings_option"
                 android:layout_marginTop="8dp"
                 android:layout_marginLeft="15dp"
@@ -187,7 +173,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black_color"
-                android:text="Unlink machine"
+                android:text="@string/unlink_machine"
                 android:textSize="@dimen/settings_option"
                 android:layout_gravity="center_vertical"
                 android:layout_marginTop="8dp"
@@ -211,7 +197,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Accounts"
+            android:text="@string/accounts"
             android:textSize="@dimen/settings_caption"
             android:id="@+id/settingAccountsTextView"
             android:layout_marginTop="22dp"/>
