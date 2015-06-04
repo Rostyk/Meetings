@@ -66,6 +66,7 @@
         <activity
             android:name="com.exchange.ross.exchangeapp.activity.EventsActivity"
             android:label="@string/title_activity_events"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait" >
         </activity>
         <activity
@@ -88,6 +89,10 @@
             android:label="@string/title_activity_settings"
             android:screenOrientation="portrait" >
         </activity>
+
+        <meta-data
+            android:name="com.google.android.gms.analytics.globalConfigResource"
+            android:resource="@xml/global_tracker" />
     </application>
 
 </manifest>

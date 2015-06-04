@@ -12,6 +12,7 @@
     <string name="syncing_events">Syncing data</string>
     <string name="cant_link_this_account">Service is not available. Please check your network connection and try again.</string>
     <string name="sign_in">Sign in</string>
+
     <!-- Main (events screen) -->
     <string name="events_will_be_synced_soon">The data will be updated within a minute</string>
 
@@ -28,4 +29,7 @@
     <string name="link_new_account">Link new account</string>
     <string name="unlink_machine">Log out</string>
     <string name="accounts">Accounts</string>
+
+    <!-- Notifications-->
+    <string name="of">of</string>
 </resources>

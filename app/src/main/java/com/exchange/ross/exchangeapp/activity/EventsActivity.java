@@ -15,6 +15,8 @@ import android.net.Uri;
 import android.os.IBinder;
 import com.exchange.ross.exchangeapp.IUpdateUIStart;
 import android.os.RemoteException;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
@@ -37,8 +39,8 @@ import com.exchange.ross.exchangeapp.R;
 import com.exchange.ross.exchangeapp.Utils.ApplicationContextProvider;
 import com.exchange.ross.exchangeapp.Utils.DateUtils;
 import com.exchange.ross.exchangeapp.Utils.EventsManager;
+import com.exchange.ross.exchangeapp.Utils.GATracker;
 import com.exchange.ross.exchangeapp.Utils.PurchaseManager;
-import com.exchange.ross.exchangeapp.Utils.Settings;
 import com.exchange.ross.exchangeapp.Utils.Typefaces;
 import com.exchange.ross.exchangeapp.core.service.TimeService;
 import com.exchange.ross.exchangeapp.core.model.MyPageAdapter;
@@ -67,11 +69,11 @@ public class EventsActivity extends ActionBarActivity implements EventsFragment.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_events);
 
+        checkIfAppLaunchedFromNotification(getIntent());
         this.activity = this;
 
         ApplicationContextProvider.setActivity(this);
-        pagerAdapter = new MyPageAdapter(
-                                getSupportFragmentManager());
+        pagerAdapter = new MyPageAdapter(getSupportFragmentManager());
 
         pagerAdapter.setActivity(this);
         mViewPager = (ViewPager) findViewById(R.id.pager);
@@ -100,6 +102,8 @@ public class EventsActivity extends ActionBarActivity implements EventsFragment.
         settingsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                GATracker.tracker().setScreenName("Events").sendEvent("UX", "Settings button clicked", "");
+
                 Intent settingsActivityIntent = new Intent(EventsActivity.this, SettingsActivity.class);
                 EventsActivity.this.startActivity(settingsActivityIntent);
             }
@@ -108,11 +112,11 @@ public class EventsActivity extends ActionBarActivity implements EventsFragment.
         PurchaseManager manager = PurchaseManager.sharedManager();
         manager.init(getApplicationContext());
 
-
         final ImageButton syncButton = (ImageButton)findViewById(R.id.syncButton);
         syncButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                GATracker.tracker().setScreenName("Events").sendEvent("UX", "Sync button clicked.", "");
                 showToast();
                 try {
                     if(syncService != null)
@@ -121,13 +125,20 @@ public class EventsActivity extends ActionBarActivity implements EventsFragment.
                 catch (RemoteException e) {
                     e.printStackTrace();
                 }
-
-
             }
         });
-        Settings.sharedSettings().setContext(getApplicationContext());
         registerServiceBroadcast();
         initConnection();
+    }
+
+    public void checkIfAppLaunchedFromNotification(Intent intent) {
+        int eventID = intent.getIntExtra("com.ross.exchange.eventID", 0);
+
+        EventsFragment fragment = getVisibleFragment();
+        if(fragment != null && eventID != 0) {
+            GATracker.tracker().setScreenName("Events").sendEvent("UX", "App launched from status bar", "");
+            fragment.selectEvent(eventID);
+        }
     }
 
     void initConnection() {
@@ -153,11 +164,8 @@ public class EventsActivity extends ActionBarActivity implements EventsFragment.
         };
         if (syncService == null) {
             Intent it = new Intent("com.ross.TimeService");
-            //it.setAction(EventsManager.FORCE_SYNC_EVENTS_IN_SERVICE);
-            //it.setPackage(".core.service.TimeService");
             // binding to remote service
             Boolean result = getApplicationContext().bindService(it, syncServiceConnection, Context.BIND_AUTO_CREATE);
-            Boolean check = result;
         }
     }
 
@@ -182,14 +190,18 @@ public class EventsActivity extends ActionBarActivity implements EventsFragment.
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode,
-                                    Intent data)
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         PurchaseManager manager = PurchaseManager.sharedManager();
         if (!manager.mHelper.handleActivityResult(requestCode,
                 resultCode, data)) {
             super.onActivityResult(requestCode, resultCode, data);
         }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        checkIfAppLaunchedFromNotification(intent);
     }
 
     public void displayDate(int daySinceNow) {
@@ -228,19 +240,16 @@ public class EventsActivity extends ActionBarActivity implements EventsFragment.
         catch (IllegalArgumentException e) {
             e.printStackTrace();
         }
-
         LocalBroadcastManager.getInstance(this.activity.getApplicationContext()).unregisterReceiver(serviceStateReceiver);
         PurchaseManager manager = PurchaseManager.sharedManager();
         if (manager.mHelper != null) manager.mHelper.dispose();
-          manager.mHelper = null;
-        //stopService(serviceIntent);
+            manager.mHelper = null;
     }
 
     public void onBackPressed() {
         Intent i = new Intent();
         i.setAction(Intent.ACTION_MAIN);
         i.addCategory(Intent.CATEGORY_HOME);
-
 
         this.startActivity(i);
     }
@@ -258,14 +267,23 @@ public class EventsActivity extends ActionBarActivity implements EventsFragment.
         }
     };
 
-    @Override
-    public void onFragmentInteraction(Uri uri) {
+    public EventsFragment getVisibleFragment(){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        List<Fragment> fragments = fragmentManager.getFragments();
+        if(fragments != null) {
+            for(Fragment fragment : fragments){
+                if(fragment != null && fragment.isVisible())
+                    return (EventsFragment)fragment;
+            }
+        }
+        return null;
+    }
 
+    public void onFragmentInteraction(Uri uri) {
     }
 
     @Override
     public void onPause() {
         super.onPause();
-
     }
 }

@@ -10,7 +10,6 @@ import com.exchange.ross.exchangeapp.db.dao.AccountDAO;
 import java.util.ArrayList;
 
 public class AccountsProxy {
-	private String sectionName;
 	private static AccountsProxy instance;
 	private AccountDAO accountDAO;
 

@@ -39,6 +39,7 @@ import com.exchange.ross.exchangeapp.APIs.operations.OperationCompleted;
 import com.exchange.ross.exchangeapp.APIs.operations.SyncEventCompleted;
 import com.exchange.ross.exchangeapp.Utils.ApplicationContextProvider;
 import com.exchange.ross.exchangeapp.Utils.EventsManager;
+import com.exchange.ross.exchangeapp.Utils.GATracker;
 import com.exchange.ross.exchangeapp.core.entities.Event;
 import com.exchange.ross.exchangeapp.core.service.TimeService;
 import com.exchange.ross.exchangeapp.db.AccountsProxy;
@@ -176,6 +177,8 @@ public class ExchangeLoginActivity extends ActionBarActivity {
     }
 
     public void login() {
+        GATracker.tracker().setScreenName("Login").sendEvent("API", "Start Sync Exchange Events", "");
+
         String userAndDomain = mUserView.getText().toString();
         String[] parts = userAndDomain.split("\\\\");
 
@@ -190,7 +193,7 @@ public class ExchangeLoginActivity extends ActionBarActivity {
             String password = mPasswordView.getText().toString();
 
             final ExchangeWebService service = new ExchangeWebService(mURLView.getText().toString(), user, password, domain);
-                service.getEvents(new OperationCompleted() {
+            service.getEvents(new OperationCompleted() {
                     @Override
                     public void onOperationCompleted(Object result, int id) {
                         if (id == exGetEvetsOperation && result != null) {

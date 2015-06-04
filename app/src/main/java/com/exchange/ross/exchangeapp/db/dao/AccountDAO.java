@@ -16,8 +16,7 @@ import com.exchange.ross.exchangeapp.db.DatabaseManager;
 import com.exchange.ross.exchangeapp.db.WHDatabaseHelper;
 
 public class AccountDAO implements BaseDAO<WebService> {
-	
-	private WHDatabaseHelper dbHelper;
+
 	private SQLiteDatabase database;
 	private String DATABASE_TABLE = "Accounts";
 

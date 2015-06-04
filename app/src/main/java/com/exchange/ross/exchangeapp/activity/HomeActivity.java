@@ -8,6 +8,7 @@ import android.view.MenuItem;
 
 import com.exchange.ross.exchangeapp.Utils.ApplicationContextProvider;
 import com.exchange.ross.exchangeapp.R;
+import com.exchange.ross.exchangeapp.Utils.GATracker;
 import com.exchange.ross.exchangeapp.db.AccountsProxy;
 import com.exchange.ross.exchangeapp.db.DatabaseManager;
 import com.exchange.ross.exchangeapp.db.WHDatabaseHelper;
@@ -26,6 +27,8 @@ public class HomeActivity extends ActionBarActivity {
     }
 
     public void start() {
+
+        GATracker.tracker().sendEvent("App", "Launch", "");
         //no accounts linked
         if(AccountsProxy.sharedProxy().getAllAccounts(getApplicationContext()).size() == 0) {
             Intent addNewAccountIntent = new Intent(HomeActivity.this, AddNewAccountActivity.class);

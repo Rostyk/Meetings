@@ -12,6 +12,7 @@ import android.support.v4.view.ViewPager;
 import android.util.SparseArray;
 import android.view.ViewGroup;
 
+import com.exchange.ross.exchangeapp.Utils.GATracker;
 import com.exchange.ross.exchangeapp.activity.Views.EventsFragment;
 
 /**
@@ -92,6 +93,7 @@ public class MyPageAdapter extends FragmentStatePagerAdapter implements ViewPage
     }
 
     public void loadList() {
+        GATracker.tracker().setScreenName("Events").sendEvent("UX", "Page scrolled idle", "");
 
         new Handler().postDelayed(new Runnable() {
             public void run() {
@@ -118,7 +120,6 @@ public class MyPageAdapter extends FragmentStatePagerAdapter implements ViewPage
                 loadList();
                 firstPageLoad = false;
             }
-
         }
         else {
             dontLoadList = true; // To avoid loading content for list after swiping the pager.
@@ -129,9 +130,4 @@ public class MyPageAdapter extends FragmentStatePagerAdapter implements ViewPage
     public void onPageSelected(int position) {
 
     }
-
-
-
-
-
 }

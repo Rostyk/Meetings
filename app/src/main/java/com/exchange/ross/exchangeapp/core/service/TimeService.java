@@ -17,7 +17,6 @@ import com.exchange.ross.exchangeapp.APIs.operations.SyncEventCompleted;
 import com.exchange.ross.exchangeapp.ISync;
 import com.exchange.ross.exchangeapp.IUpdateUIStart;
 import com.exchange.ross.exchangeapp.Utils.ApplicationContextProvider;
-import com.exchange.ross.exchangeapp.Utils.Settings;
 import com.exchange.ross.exchangeapp.core.entities.Event;
 import com.exchange.ross.exchangeapp.Utils.EventsManager;
 import com.exchange.ross.exchangeapp.db.AccountsProxy;
@@ -84,7 +83,6 @@ public class TimeService extends Service {
     private void startService() {
         scheduleSyncTimer(560000);
         scheduleOngoingTimer();
-        Settings.sharedSettings().setContext(this);
     }
 
     public void scheduleSyncTimer(int time) {

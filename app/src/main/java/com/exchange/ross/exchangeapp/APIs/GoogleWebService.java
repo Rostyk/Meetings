@@ -13,6 +13,7 @@ import android.util.Log;
 import com.exchange.ross.exchangeapp.APIs.operations.OperationCompleted;
 import com.exchange.ross.exchangeapp.APIs.operations.OperationCredentials;
 import com.exchange.ross.exchangeapp.Utils.ApplicationContextProvider;
+import com.exchange.ross.exchangeapp.Utils.GATracker;
 import com.exchange.ross.exchangeapp.core.entities.Event;
 import com.exchange.ross.exchangeapp.db.EventsProxy;
 import com.exchange.ross.exchangeapp.db.ServiceType;
@@ -152,6 +153,7 @@ public class GoogleWebService extends WebService {
                             if (s == null) {
                                 // Wait for the extra intent
                             } else {
+                                GATracker.tracker().setScreenName(null).sendEvent("API.Google", "Google auth token received", "");
                                 fetchEvents();
                             }
                             if(activity != null)
@@ -180,14 +182,14 @@ public class GoogleWebService extends WebService {
             e.printStackTrace();
             return null;
         } catch (GoogleAuthException e) {
+            GATracker.tracker().setScreenName(null).sendEvent("API.Google.GoogleAuthException", e.getMessage(), "");
             e.printStackTrace();
             return null;
         }
 
         catch (IOException e) {
+            GATracker.tracker().setScreenName(null).sendEvent("API.Google.IOException", e.getMessage(), "");
             e.printStackTrace();
-            String sss =  e.getStackTrace().toString();
-            String check = sss;
             return null;
         }
 
@@ -238,12 +240,14 @@ public class GoogleWebService extends WebService {
             } while (cpageToken != null);
         }
         catch (UserRecoverableAuthIOException e) {
+            GATracker.tracker().setScreenName(null).sendEvent("API.Google.UserRecoverableAuthIOException", e.getMessage(), "");
             if(activity != null)
                activity.startActivityForResult(e.getIntent(), 45);
 
             allEvents = null;
         }
         catch(Exception e) {
+            GATracker.tracker().setScreenName(null).sendEvent("API.Google.Exception", e.getMessage(), "");
             if(progressDlg != null)
                progressDlg.dismiss();
             allEvents = null;
@@ -254,7 +258,6 @@ public class GoogleWebService extends WebService {
             e.printStackTrace(printWriter);
             String str = writer.toString();
             Log.v("EXTR", str);
-
         }
 
        return allEvents;

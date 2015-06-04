@@ -11,10 +11,11 @@ import java.util.TimeZone;
 import com.exchange.ross.exchangeapp.APIs.operations.OperationCompleted;
 import com.exchange.ross.exchangeapp.APIs.operations.OperationCredentials;
 import com.exchange.ross.exchangeapp.Utils.DateUtils;
-import com.exchange.ross.exchangeapp.Utils.Settings;
+import com.exchange.ross.exchangeapp.Utils.GATracker;
 import com.exchange.ross.exchangeapp.core.entities.Event;
 import com.exchange.ross.exchangeapp.db.EventsProxy;
 import com.exchange.ross.exchangeapp.db.ServiceType;
+import com.exchange.ross.exchangeapp.db.SettingsProxy;
 
 import android.os.AsyncTask;
 import android.os.Looper;
@@ -97,6 +98,7 @@ public class ExchangeWebService extends WebService {
                 service.setUrl(new URI(getCredentials().getUrl()));
             }
             catch (URISyntaxException e) {
+                GATracker.tracker().setScreenName(null).sendEvent("API.Exchange.URISyntaxException", e.getMessage(), "");
                 e.printStackTrace();
             }
             Date startDate = DateUtils.dateWithDaySinceNow(-2);
@@ -116,7 +118,7 @@ public class ExchangeWebService extends WebService {
                             busy = true;
 
                             //if we set mute busy events in settings this event should be automatically muted
-                            if(Settings.sharedSettings().getSilentOnStatusBusy()) {
+                            if(SettingsProxy.sharedProxy().getStatusBusy()) {
                                 mute = true;
                             }
                         }
@@ -172,6 +174,7 @@ public class ExchangeWebService extends WebService {
             }
         }
         catch(Exception e) {
+            GATracker.tracker().setScreenName(null).sendEvent("API.Exchange.URISyntaxException", e.getMessage(), "");
             events = null;
             if(e != null)
                e.printStackTrace();

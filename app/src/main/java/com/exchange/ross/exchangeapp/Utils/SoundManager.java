@@ -3,6 +3,8 @@ package com.exchange.ross.exchangeapp.Utils;
 import android.content.Context;
 import android.media.AudioManager;
 
+import com.exchange.ross.exchangeapp.db.SettingsProxy;
+
 /**
  * Created by ross on 5/1/15.
  */
@@ -22,7 +24,7 @@ public class SoundManager {
         AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         if (context != null) {
             if (on) {
-                if(Settings.getVibration()) {
+                if(SettingsProxy.sharedProxy().getVibro()) {
                     audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_RINGER,
                             AudioManager.VIBRATE_SETTING_ON);
                 }

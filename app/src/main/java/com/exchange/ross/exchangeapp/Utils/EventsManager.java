@@ -2,6 +2,7 @@ package com.exchange.ross.exchangeapp.Utils;
 
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +12,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 
 import com.exchange.ross.exchangeapp.APIs.operations.SyncEventCompleted;
+import com.exchange.ross.exchangeapp.activity.EventsActivity;
 import com.exchange.ross.exchangeapp.core.entities.Event;
 import com.exchange.ross.exchangeapp.core.service.TimeService;
 import com.exchange.ross.exchangeapp.db.DatabaseManager;
@@ -28,6 +30,7 @@ import java.util.concurrent.TimeUnit;
  * Created by ross on 3/31/15.
  */
 public class EventsManager {
+
     private ArrayList<String> displayedNotificationIDs = new ArrayList<String>();
     public static final String KILL_SERVICE = "com.ross.exchangeapp.kill_service";
     public static final String START_SERVICE = "com.ross.exchangeapp.start_service";
@@ -160,7 +163,7 @@ public class EventsManager {
            }
         }
         for(Event event : events) {
-            int notificationId = event.getId().hashCode();
+            int notificationId = Math.abs(event.getId().hashCode());
             index++;
             NotificationCompat.Builder builder = new NotificationCompat.Builder(ApplicationContextProvider.getContext());
             double minutesElapsed = getDateDiff(event.getStartDateInDate(), new Date(), TimeUnit.MINUTES);
@@ -170,12 +173,18 @@ public class EventsManager {
             int res = 0 + (int)(progress * 100.0);
             int drawableResourceId = ApplicationContextProvider.getsContext().getResources().getIdentifier("progress" + res + "", "drawable", ApplicationContextProvider.getsContext().getPackageName());
 
+            // The PendingIntent will launch activity if the user selects this notification
+            Intent intent = new Intent(ApplicationContextProvider.getContext(), EventsActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra("com.ross.exchange.eventID", notificationId);
+            PendingIntent contentIntent = PendingIntent.getActivity(ApplicationContextProvider.getContext(), notificationId, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
-            Notification notification = builder
+            Notification notification = builder.setContentIntent(contentIntent)
                     .setSmallIcon(drawableResourceId)
                     .setContentTitle(event.getSubject())
-                    .setContentText("Meeting started: " + minutesElapsed + " minutes elapsed of " + duration)
+                    .setContentText(minutesElapsed + " " + ApplicationContextProvider.getContext().getResources().getString(R.string.of) + " " + duration)
                     .build();
+            //notification.flags |= Notification.FLAG_ONGOING_EVENT;
             notificationManager.notify(notificationId , notification);
             displayedNotificationIDs.clear();
             displayedNotificationIDs.add(event.getId());

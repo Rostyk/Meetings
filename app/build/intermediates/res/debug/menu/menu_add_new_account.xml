@@ -1,6 +1,0 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.exchange.ross.exchangeapp.activity.AddNewAccountActivity">
-</menu>
-<!-- From: file:/Users/ross/Work/AndroidStudioProjects/Meetings/app/src/main/res/menu/menu_add_new_account.xml -->

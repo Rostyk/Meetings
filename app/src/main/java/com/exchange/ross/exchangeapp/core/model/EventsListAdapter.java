@@ -13,13 +13,13 @@ import android.widget.TextView;
 import com.exchange.ross.exchangeapp.APIs.WebService;
 import com.exchange.ross.exchangeapp.Utils.ApplicationContextProvider;
 import com.exchange.ross.exchangeapp.Utils.EventsManager;
-import com.exchange.ross.exchangeapp.Utils.Settings;
 import com.exchange.ross.exchangeapp.Utils.Typefaces;
 import com.exchange.ross.exchangeapp.core.entities.Event;
 import com.exchange.ross.exchangeapp.R;
 import com.exchange.ross.exchangeapp.db.AccountsProxy;
 import com.exchange.ross.exchangeapp.db.EventsProxy;
 import com.exchange.ross.exchangeapp.db.ServiceType;
+import com.exchange.ross.exchangeapp.db.SettingsProxy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -155,8 +155,8 @@ public class EventsListAdapter extends BaseAdapter{
     }
 
     private void setButtonImage(ImageButton button, Event e) {
-        Settings.sharedSettings().setInvolvesEvensListReloadByChangingStatusBusy(false);
-        Settings.sharedSettings().setInvolvesEvensListReloadByChangingIgnoreAllDayEvents(false);
+        SettingsProxy.sharedProxy().setInvolvesEvensListReloadByChangingStatusBusy(false);
+        SettingsProxy.sharedProxy().setInvolvesEvensListReloadByChangingIgnoreAllDayEvents(false);
         if(e.getMute()) {
             button.setBackgroundResource(R.drawable.mute);
         }
@@ -167,14 +167,21 @@ public class EventsListAdapter extends BaseAdapter{
 
     private void setInitialButtonImage(ImageButton button, Event e) {
         e.checkIfAllDayEvent();
-        if((e.getAllDay() && Settings.sharedSettings().getIgnoreAllDayEvent()) && Settings.sharedSettings().getInvolvesEvensListReloadByChangingIgnoreAllDayEvents()) {
+        if((e.getAllDay() && SettingsProxy.sharedProxy().getInvolvesEvensListReloadByChangingIgnoreAllDayEvents()) && SettingsProxy.sharedProxy().getInvolvesEvensListReloadByChangingIgnoreAllDayEvents()) {
             button.setBackgroundResource(R.drawable.unmute);
             e.setMute(false);
             EventsProxy.sharedProxy().updateEvent(e);
         }
-        else if((e.getBusy() && Settings.sharedSettings().getSilentOnStatusBusy()) && Settings.sharedSettings().getInvolvesEvensListReloadByChangingStatusBusy()) {
-            button.setBackgroundResource(R.drawable.mute);
-            e.setMute(true);
+        else if((e.getBusy()) && SettingsProxy.sharedProxy().getInvolvesEvensListReloadByChangingStatusBusy() && !e.getAllDay()) {
+            if(SettingsProxy.sharedProxy().getStatusBusy()) {
+                button.setBackgroundResource(R.drawable.mute);
+                e.setMute(true);
+            }
+            else {
+                button.setBackgroundResource(R.drawable.unmute);
+                e.setMute(false);
+            }
+
             EventsProxy.sharedProxy().updateEvent(e);
         }
         else {

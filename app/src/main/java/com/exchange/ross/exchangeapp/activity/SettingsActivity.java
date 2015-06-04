@@ -21,11 +21,12 @@ import android.widget.TextView;
 import com.exchange.ross.exchangeapp.APIs.WebService;
 import com.exchange.ross.exchangeapp.R;
 import com.exchange.ross.exchangeapp.Utils.EventsManager;
+import com.exchange.ross.exchangeapp.Utils.GATracker;
 import com.exchange.ross.exchangeapp.Utils.PurchaseManager;
-import com.exchange.ross.exchangeapp.Utils.Settings;
 import com.exchange.ross.exchangeapp.Utils.Typefaces;
 import com.exchange.ross.exchangeapp.Utils.billing.OnPurchased;
 import com.exchange.ross.exchangeapp.db.AccountsProxy;
+import com.exchange.ross.exchangeapp.db.SettingsProxy;
 
 import java.util.ArrayList;
 
@@ -99,38 +100,43 @@ public class SettingsActivity extends ActionBarActivity {
          Switch listSwitch = (Switch)findViewById(R.id.listSwitch);
          listSwitch.setTypeface(light);
 
-        final Settings settings = Settings.sharedSettings();
+        final SettingsProxy settings = SettingsProxy.sharedProxy();
 
 
-        vibrationSwitch.setChecked(Settings.getVibration());
+        vibrationSwitch.setChecked(settings.getVibro());
         vibrationSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Settings.setVibration(isChecked);
+                settings.setVibro(isChecked);
+                GATracker.tracker().setScreenName("Settings").sendEvent("UX", "Vibration changed " + isChecked, "");
         }
         });
 
-        statusBusySwitch.setChecked(Settings.getSilentOnStatusBusy());
+        statusBusySwitch.setChecked(settings.getStatusBusy());
         statusBusySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Settings.setSilentOnStatusBusy(isChecked);
+                settings.setStatusBusy(isChecked);
+                GATracker.tracker().setScreenName("Settings").sendEvent("UX", "Status busy changed " + isChecked, "");
+
             }
         });
 
-        ignoreAllDaySwitch.setChecked(Settings.getIgnoreAllDayEvent());
+        ignoreAllDaySwitch.setChecked(settings.getIgnoreAllDay());
         ignoreAllDaySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Settings.setIgnoreAllDayEvent(isChecked);
+                settings.setIgnoreAllday(isChecked);
+                GATracker.tracker().setScreenName("Settings").sendEvent("UX", "Ignore all day  changed " + isChecked, "");
             }
         });
 
-        listSwitch.setChecked(Settings.getListMeetingsForDay());
+        listSwitch.setChecked(settings.getListMeetingsForDay());
         listSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Settings.setListMeetingsForDay(isChecked);
+                settings.setListMeetingsForDay(isChecked);
+                GATracker.tracker().setScreenName("Settings").sendEvent("UX", "Show all meetings for the day changed " + isChecked, "");
             }
         });
 
@@ -138,7 +144,8 @@ public class SettingsActivity extends ActionBarActivity {
         timerSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Settings.setTimer(isChecked);
+                settings.setTimer(isChecked);
+                GATracker.tracker().setScreenName("Settings").sendEvent("UX", "Timer during meeting changed " + isChecked, "");
             }
         });
 
@@ -191,9 +198,11 @@ public class SettingsActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 if(PurchaseManager.sharedManager().getAlreadyOwned()) {
+                    GATracker.tracker().setScreenName("Settings").sendEvent("UX", "Link new account clicked. Purchased", "");
                     addNewAccount();
                 }
                 else {
+                    GATracker.tracker().setScreenName("Settings").sendEvent("UX", "Link new account clicked. Not Purchased", "");
                     PurchaseManager manager = PurchaseManager.sharedManager();
                     manager.buy(new OnPurchased() {
                         @Override
@@ -202,7 +211,6 @@ public class SettingsActivity extends ActionBarActivity {
                         }
                     }, activity);
                 }
-
             }
         });
 
@@ -210,6 +218,7 @@ public class SettingsActivity extends ActionBarActivity {
         unlinkAccountsView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                GATracker.tracker().setScreenName("Settings").sendEvent("UX", "Unlink all clicked", "");
 
                 EventsManager.sharedManager().unlinkAllAccounts();
 
