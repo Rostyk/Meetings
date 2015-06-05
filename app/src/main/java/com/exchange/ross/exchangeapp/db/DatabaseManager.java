@@ -35,6 +35,15 @@ public class DatabaseManager {
         return instance;
     }
 
+    public static synchronized DatabaseManager getInstance(Context context) {
+        if (instance == null) {
+            instance = new DatabaseManager();
+            mDatabaseHelper = new WHDatabaseHelper(context);
+        }
+
+        return instance;
+    }
+
     public synchronized SQLiteDatabase openDatabase() {
         if(mOpenCounter.incrementAndGet() == 1) {
             // Opening new database
@@ -52,5 +61,9 @@ public class DatabaseManager {
 
     public static synchronized void unlink() {
         mDatabaseHelper.clear();
+    }
+
+    public WHDatabaseHelper helper() {
+        return mDatabaseHelper;
     }
 }

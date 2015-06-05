@@ -261,7 +261,7 @@ public class EventDAO implements BaseDAO<Event>{
          database = DatabaseManager.getInstance().openDatabase();
     }
     private void closeDB() {
-         DatabaseManager.getInstance().closeDatabase();
+         //DatabaseManager.getInstance().closeDatabase();
     }
 }
 

@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 
 import com.exchange.ross.exchangeapp.APIs.ExchangeWebService;
 import com.exchange.ross.exchangeapp.APIs.GoogleWebService;
@@ -17,206 +18,194 @@ import java.util.ArrayList;
  * Created by ross on 6/4/15.
  */
 public class SettingsDAO {
-    private SQLiteDatabase database;
-    private String DATABASE_TABLE = "Settings";
+    private Context context;
+    private String DATABASE_TABLE = "AppInternalSettings";
+    private String[] projection = new String[] { "_id", "sound", "vibro",
+            "status_busy", "ignore_allday", "day_meetings", "timer", "reload_events_by_changing_status_busy", "reload_events_by_changing_ignore_allday" };
 
-    public SettingsDAO() {
+    public SettingsDAO(Context context) {
+        this.context = context;
         insertInitialRecord();
     }
 
     private void insertInitialRecord() {
-        initDB();
         ContentValues cv = new ContentValues();
         cv.put("_id", 1);
         cv.put("sound", 0);
-        cv.put("vibration", 1);
+        cv.put("vibro", 1);
         cv.put("status_busy", 0);
         cv.put("ignore_allday", 1);
         cv.put("day_meetings", 1);
         cv.put("timer", 1);
 
-        database.insert(DATABASE_TABLE, null, cv);
-        closeDB();
+        Uri contentUri = Uri.withAppendedPath(SettingsContentProvider.CONTENT_URI, DATABASE_TABLE);
+        Uri resultUri = context.getContentResolver().insert(contentUri, cv);
     }
 
     public Boolean getSound() {
-        initDB();
+        Uri contentUri = Uri.withAppendedPath(SettingsContentProvider.CONTENT_URI, DATABASE_TABLE);
+        Cursor cursor = context.getContentResolver().query(contentUri, projection, null, null, null);
+
         Boolean sound = false;
-        Cursor cursor = database.rawQuery("select * from " + DATABASE_TABLE,null);
         if (cursor.moveToFirst()) {
             sound = cursor.getInt(cursor
                     .getColumnIndex("sound")) > 0;
         }
-        cursor.close();
-        closeDB();
         return sound;
     }
 
     public void setSound(Boolean sound) {
-        initDB();
         String filter = "_id = " + 1;
         ContentValues args = new ContentValues();
         args.put("sound", sound);
-        database.update(DATABASE_TABLE, args, filter, null);
-        closeDB();
+        Uri contentUri = Uri.withAppendedPath(SettingsContentProvider.CONTENT_URI, DATABASE_TABLE);
+        context.getContentResolver().update(contentUri, args,null,null);
     }
 
     public Boolean getVibro() {
-        initDB();
+        Uri contentUri = Uri.withAppendedPath(SettingsContentProvider.CONTENT_URI, DATABASE_TABLE);
+        Cursor cursor = context.getContentResolver().query(contentUri, projection, null, null, null);
+
         Boolean vibro = false;
-        Cursor cursor = database.rawQuery("select * from " + DATABASE_TABLE,null);
         if (cursor.moveToFirst()) {
             vibro = cursor.getInt(cursor
-                    .getColumnIndex("vibration")) > 0;
+                    .getColumnIndex("vibro")) > 0;
         }
         cursor.close();
-        closeDB();
         return vibro;
     }
 
     public void setVibro(Boolean vibro) {
-        initDB();
         String filter = "_id = " + 1;
         ContentValues args = new ContentValues();
         args.put("vibro", vibro);
-        database.update(DATABASE_TABLE, args, filter, null);
-        closeDB();
+        Uri contentUri = Uri.withAppendedPath(SettingsContentProvider.CONTENT_URI, DATABASE_TABLE);
+        context.getContentResolver().update(contentUri, args,null,null);
     }
 
     public Boolean getStatusBusy() {
-        initDB();
+        Uri contentUri = Uri.withAppendedPath(SettingsContentProvider.CONTENT_URI, DATABASE_TABLE);
+        Cursor cursor = context.getContentResolver().query(contentUri, projection, null, null, null);
         Boolean statusBusy = false;
-        Cursor cursor = database.rawQuery("select * from " + DATABASE_TABLE,null);
         if (cursor.moveToFirst()) {
             statusBusy = cursor.getInt(cursor
                     .getColumnIndex("status_busy")) > 0;
         }
         cursor.close();
-        closeDB();
         return statusBusy;
     }
 
     public void setStatusBusy(Boolean statusBusy) {
-        initDB();
         String filter = "_id = " + 1;
         ContentValues args = new ContentValues();
         args.put("status_busy", statusBusy);
-        database.update(DATABASE_TABLE, args, filter, null);
-        closeDB();
+        Uri contentUri = Uri.withAppendedPath(SettingsContentProvider.CONTENT_URI, DATABASE_TABLE);
+        context.getContentResolver().update(contentUri, args,null,null);
     }
 
     public Boolean getIgnoreAllDay() {
-        initDB();
+        Uri contentUri = Uri.withAppendedPath(SettingsContentProvider.CONTENT_URI, DATABASE_TABLE);
+        Cursor cursor = context.getContentResolver().query(contentUri, projection, null, null, null);
         Boolean ignoreAllDay = false;
-        Cursor cursor = database.rawQuery("select * from " + DATABASE_TABLE,null);
         if (cursor.moveToFirst()) {
             ignoreAllDay = cursor.getInt(cursor
                     .getColumnIndex("ignore_allday")) > 0;
         }
         cursor.close();
-        closeDB();
         return ignoreAllDay;
     }
 
     public void setIgnoreAllday(Boolean ignoreAllDay) {
-        initDB();
         String filter = "_id = " + 1;
         ContentValues args = new ContentValues();
         args.put("ignore_allday", ignoreAllDay);
-        database.update(DATABASE_TABLE, args, filter, null);
-        closeDB();
+        Uri contentUri = Uri.withAppendedPath(SettingsContentProvider.CONTENT_URI, DATABASE_TABLE);
+        context.getContentResolver().update(contentUri, args,null,null);
     }
 
     public Boolean getListMeetingsForDay() {
-        initDB();
+        Uri contentUri = Uri.withAppendedPath(SettingsContentProvider.CONTENT_URI, DATABASE_TABLE);
+        Cursor cursor = context.getContentResolver().query(contentUri, projection, null, null, null);
+
         Boolean ignoreAllDay = false;
-        Cursor cursor = database.rawQuery("select * from " + DATABASE_TABLE,null);
         if (cursor.moveToFirst()) {
             ignoreAllDay = cursor.getInt(cursor
                     .getColumnIndex("day_meetings")) > 0;
         }
         cursor.close();
-        closeDB();
         return ignoreAllDay;
     }
 
     public void setListMeetingsForDay(Boolean listMeetingsForDay) {
-        initDB();
         String filter = "_id = " + 1;
         ContentValues args = new ContentValues();
         args.put("day_meetings", listMeetingsForDay);
-        database.update(DATABASE_TABLE, args, filter, null);
-        closeDB();
+        Uri contentUri = Uri.withAppendedPath(SettingsContentProvider.CONTENT_URI, DATABASE_TABLE);
+        context.getContentResolver().update(contentUri, args,null,null);
     }
 
     public Boolean getTimer() {
-        initDB();
+        Uri contentUri = Uri.withAppendedPath(SettingsContentProvider.CONTENT_URI, DATABASE_TABLE);
+        Cursor cursor = context.getContentResolver().query(contentUri, projection, null, null, null);
         Boolean timer = false;
-        Cursor cursor = database.rawQuery("select * from " + DATABASE_TABLE,null);
         if (cursor.moveToFirst()) {
             timer = cursor.getInt(cursor
                     .getColumnIndex("timer")) > 0;
         }
         cursor.close();
-        closeDB();
         return timer;
     }
 
     public void setTimer(Boolean timer) {
-        initDB();
         String filter = "_id = " + 1;
         ContentValues args = new ContentValues();
         args.put("timer", timer);
-        database.update(DATABASE_TABLE, args, filter, null);
-        closeDB();
+        Uri contentUri = Uri.withAppendedPath(SettingsContentProvider.CONTENT_URI, DATABASE_TABLE);
+        context.getContentResolver().update(contentUri, args,null,null);
     }
 
     public Boolean getInvolvesEvensListReloadByChangingStatusBusy() {
-        initDB();
+        Uri contentUri = Uri.withAppendedPath(SettingsContentProvider.CONTENT_URI, DATABASE_TABLE);
+        Cursor cursor = context.getContentResolver().query(contentUri, projection, null, null, null);
         Boolean involvesEvensListReloadByChangingStatusBusy = false;
-        Cursor cursor = database.rawQuery("select * from " + DATABASE_TABLE,null);
         if (cursor.moveToFirst()) {
             involvesEvensListReloadByChangingStatusBusy = cursor.getInt(cursor
                     .getColumnIndex("reload_events_by_changing_status_busy")) > 0;
         }
         cursor.close();
-        closeDB();
         return involvesEvensListReloadByChangingStatusBusy;
     }
 
     public void setInvolvesEvensListReloadByChangingStatusBusy(Boolean involvesEvensListReloadByChangingStatusBusy) {
-        initDB();
         String filter = "_id = " + 1;
         ContentValues args = new ContentValues();
-        args.put("timer", involvesEvensListReloadByChangingStatusBusy);
-        database.update(DATABASE_TABLE, args, filter, null);
-        closeDB();
+        args.put("reload_events_by_changing_status_busy", involvesEvensListReloadByChangingStatusBusy);
+        Uri contentUri = Uri.withAppendedPath(SettingsContentProvider.CONTENT_URI, DATABASE_TABLE);
+        context.getContentResolver().update(contentUri, args,null,null);
     }
 
     public Boolean getInvolvesEvensListReloadByChangingIgnoreAllDayEvents() {
-        initDB();
+        Uri contentUri = Uri.withAppendedPath(SettingsContentProvider.CONTENT_URI, DATABASE_TABLE);
+        Cursor cursor = context.getContentResolver().query(contentUri, projection, null, null, null);
         Boolean involvesEvensListReloadByChangingIgnoreAllDayEvents = false;
-        Cursor cursor = database.rawQuery("select * from " + DATABASE_TABLE,null);
         if (cursor.moveToFirst()) {
             involvesEvensListReloadByChangingIgnoreAllDayEvents = cursor.getInt(cursor
                     .getColumnIndex("reload_events_by_changing_ignore_allday")) > 0;
         }
         cursor.close();
-        closeDB();
         return involvesEvensListReloadByChangingIgnoreAllDayEvents;
     }
 
     public void setInvolvesEvensListReloadByChangingIgnoreAllDayEvents(Boolean involvesEvensListReloadByChangingIgnoreAllDayEvents) {
-        initDB();
         String filter = "_id = " + 1;
         ContentValues args = new ContentValues();
         args.put("reload_events_by_changing_ignore_allday", involvesEvensListReloadByChangingIgnoreAllDayEvents);
-        database.update(DATABASE_TABLE, args, filter, null);
-        closeDB();
+        Uri contentUri = Uri.withAppendedPath(SettingsContentProvider.CONTENT_URI, DATABASE_TABLE);
+        context.getContentResolver().update(contentUri, args,null,null);
     }
 
     private void initDB() {
-        database = DatabaseManager.getInstance().openDatabase();
+        //database = DatabaseManager.getInstance().openDatabase();
     }
     private void closeDB() {
         //database.close();

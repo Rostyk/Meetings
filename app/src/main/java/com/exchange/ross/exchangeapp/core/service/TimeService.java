@@ -22,6 +22,7 @@ import com.exchange.ross.exchangeapp.Utils.EventsManager;
 import com.exchange.ross.exchangeapp.db.AccountsProxy;
 import com.exchange.ross.exchangeapp.db.DatabaseManager;
 import com.exchange.ross.exchangeapp.db.EventsProxy;
+import com.exchange.ross.exchangeapp.db.SettingsProxy;
 import com.exchange.ross.exchangeapp.db.WHDatabaseHelper;
 
 import java.util.ArrayList;
@@ -81,6 +82,7 @@ public class TimeService extends Service {
     }
 
     private void startService() {
+        //SettingsProxy.initializeProxy(ctx);
         scheduleSyncTimer(560000);
         scheduleOngoingTimer();
     }

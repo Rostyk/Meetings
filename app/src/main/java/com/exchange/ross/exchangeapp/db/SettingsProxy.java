@@ -1,26 +1,32 @@
 package com.exchange.ross.exchangeapp.db;
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 
+import com.exchange.ross.exchangeapp.Utils.ApplicationContextProvider;
 import com.exchange.ross.exchangeapp.db.dao.SettingsDAO;
 
 /**
  * Created by ross on 6/4/15.
  */
 public class SettingsProxy {
-    private static SettingsProxy instance;
+    private static SettingsProxy instance = null;
     private SettingsDAO settingsDAO;
+    private static Context mContext;
+
 
     public static synchronized SettingsProxy sharedProxy() {
-        if (instance == null)
-            instance = new SettingsProxy();
+        if(instance == null) {
+            instance = new SettingsProxy(ApplicationContextProvider.getContext());
+        }
         return instance;
     }
 
-    private SettingsProxy() {
+    private SettingsProxy(Context context) {
         if(settingsDAO == null) {
-            settingsDAO = new SettingsDAO();
+            settingsDAO = new SettingsDAO(context);
         }
+        mContext = context;
     }
 
     public Boolean getSound() {
