@@ -81,10 +81,12 @@ public class PurchaseManager {
             }
 
             if (result.isFailure()) {
+               GATracker.tracker().setScreenName("Settings").sendEvent("Purchase", "Failure. " + result.getMessage(), "");
                return;
             }
 
             alreadyOwned = true;
+            GATracker.tracker().setScreenName("Settings").sendEvent("Purchase", "Success", "");
             purchased.onPurchaseComplete(true);
         }
 

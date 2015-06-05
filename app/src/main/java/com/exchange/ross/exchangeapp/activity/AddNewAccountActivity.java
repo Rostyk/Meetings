@@ -22,6 +22,7 @@ import com.exchange.ross.exchangeapp.APIs.operations.SyncEventCompleted;
 import com.exchange.ross.exchangeapp.R;
 import com.exchange.ross.exchangeapp.Utils.ApplicationContextProvider;
 import com.exchange.ross.exchangeapp.Utils.EventsManager;
+import com.exchange.ross.exchangeapp.Utils.GATracker;
 import com.exchange.ross.exchangeapp.core.entities.Event;
 import com.exchange.ross.exchangeapp.core.service.TimeService;
 import com.exchange.ross.exchangeapp.db.AccountsProxy;
@@ -63,6 +64,9 @@ public class AddNewAccountActivity extends ActionBarActivity implements View.OnC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_account);
 
+        //Google analitics
+        GATracker.tracker().setScreenName("Login").sendEvent("Model", "Show", "");
+
         checkIfAddingExtraAccount();
         setupView();
     }
@@ -90,12 +94,16 @@ public class AddNewAccountActivity extends ActionBarActivity implements View.OnC
 
     public void onClick(View view) {
         if(view.getId() == R.id.exchangeButton || view.getId() == R.id.office365Button) {
+            GATracker.tracker().setScreenName("Login").sendEvent("UX", "Exchange button click", "");
+
             isAddingExchange = true;
             Intent exchangeLoginIntent = new Intent(AddNewAccountActivity.this, ExchangeLoginActivity.class);
             exchangeLoginIntent.putExtra("AddingExtraAccount", isAddingExtraAcount);
             AddNewAccountActivity.this.startActivity(exchangeLoginIntent);
         }
         if(view.getId() == R.id.googleButton) {
+            GATracker.tracker().setScreenName("Login").sendEvent("UX", "Google button click", "");
+
             service = null;
             googleLogin();
         }
@@ -118,6 +126,7 @@ public class AddNewAccountActivity extends ActionBarActivity implements View.OnC
     }
 
     public void googleLogin() {
+        GATracker.tracker().setScreenName("Login").sendEvent("API", "Star Google Login", "");
         // Google Accounts
         credential = GoogleAccountCredential.usingOAuth2(getApplicationContext(), Collections.singleton(CalendarScopes.CALENDAR));
         startActivityForResult(credential.newChooseAccountIntent(), GOOGLE_CHOOSE_ACCOUNT_ACTIVITY);
@@ -128,9 +137,11 @@ public class AddNewAccountActivity extends ActionBarActivity implements View.OnC
             accountName = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
 
             if(AccountsProxy.sharedProxy().isUnique(accountName)) {
+                GATracker.tracker().setScreenName("Login").sendEvent("API", "Start Sync Google Events", "");
                 getEvents();
             }
             else {
+                GATracker.tracker().setScreenName("Login").sendEvent("API", "Google Login Failed. Account already linked", "");
                 showWarning(getString(R.string.account_already_linked));
             }
         }
