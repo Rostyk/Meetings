@@ -11,7 +11,6 @@ import com.exchange.ross.exchangeapp.R;
 import com.exchange.ross.exchangeapp.Utils.GATracker;
 import com.exchange.ross.exchangeapp.db.AccountsProxy;
 import com.exchange.ross.exchangeapp.db.DatabaseManager;
-import com.exchange.ross.exchangeapp.db.SettingsProxy;
 import com.exchange.ross.exchangeapp.db.WHDatabaseHelper;
 
 public class HomeActivity extends ActionBarActivity {
@@ -23,7 +22,6 @@ public class HomeActivity extends ActionBarActivity {
         ApplicationContextProvider.setActivity(this);
         ApplicationContextProvider.setApplicationContext(getApplicationContext());
         DatabaseManager.initializeInstance(new WHDatabaseHelper(getApplicationContext()));
-        //SettingsProxy.initializeProxy(getApplicationContext());
         setContentView(R.layout.activity_home);
         start();
     }

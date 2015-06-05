@@ -20,6 +20,7 @@ import com.exchange.ross.exchangeapp.APIs.operations.OperationCompleted;
 import com.exchange.ross.exchangeapp.Utils.ApplicationContextProvider;
 import com.exchange.ross.exchangeapp.R;
 import com.exchange.ross.exchangeapp.Utils.DateUtils;
+import com.exchange.ross.exchangeapp.Utils.GATracker;
 import com.exchange.ross.exchangeapp.Utils.Settings;
 import com.exchange.ross.exchangeapp.activity.EventDetailsActivity;
 import com.exchange.ross.exchangeapp.activity.EventsActivity;
@@ -28,6 +29,7 @@ import com.exchange.ross.exchangeapp.core.model.EventsListAdapter;
 import com.exchange.ross.exchangeapp.Utils.EventsManager;
 import com.exchange.ross.exchangeapp.core.service.TimeService;
 import com.exchange.ross.exchangeapp.db.EventsProxy;
+
 import android.widget.AdapterView;
 import android.widget.TextView;
 
@@ -47,7 +49,7 @@ public class EventsFragment extends android.support.v4.app.Fragment {
     private ProgressDialog progress = null;
     private Boolean paused = false;
     private int position = 0;
-    private ArrayList eventList = new ArrayList<Event>();
+    private ArrayList<Event> eventList = new ArrayList<Event>();
     private ListView listView;
     private EventsListAdapter adapter;
     private Activity activity;
@@ -101,9 +103,6 @@ public class EventsFragment extends android.support.v4.app.Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //if (getArguments() != null) {
-          //    position  = getArguments().getInt(ARG_PARAM1);
-        //}
     }
 
     @Override
@@ -118,15 +117,12 @@ public class EventsFragment extends android.support.v4.app.Fragment {
     }
 
     public void setupEvents() {
-        int daySinceNow = this.position;
-
             EventsProxy.sharedProxy().getAllEventsInBackground(new OperationCompleted() {
                 @Override
                 public void onOperationCompleted(Object result, int id) {
                     if(!paused) {
                         eventList = (ArrayList<Event>)result;
                         _setupEvents(eventList);
-                        //loaded = true;
                     }
                 }
             },this.position);
@@ -134,7 +130,6 @@ public class EventsFragment extends android.support.v4.app.Fragment {
 
     private void _setupEvents(ArrayList<Event> events) {
             eventList = (ArrayList<Event>)events;
-            EventsManager.sharedManager().countOngoingEvents();
             adapter = new EventsListAdapter((LayoutInflater)this.activity.getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE), eventList, this.activity.getApplicationContext());
             adapter.setActivity(activity);
 
@@ -168,18 +163,34 @@ public class EventsFragment extends android.support.v4.app.Fragment {
     }
 
     private void setupListViewSelection() {
-        final int daySinceNow = this.position;
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position,
+            public void onItemClick(AdapterView<?> parent, View view, int itemNumber,
                                     long id) {
-                Intent intent = new Intent(activity, EventDetailsActivity.class);
-                intent.putExtra("number", position);
-                Event selectedEvent = (Event)eventList.get(position);
-                EventsManager.sharedManager().setSelectedEventId(selectedEvent.getId());
-                startActivity(intent);
+                showDetails(itemNumber);
             }
         });
+    }
+
+    public void selectEvent(int eventHash) {
+        int itemNumber = 0;
+        for(Event event : eventList) {
+            if(Math.abs(event.getId().hashCode()) == eventHash) {
+                break;
+            }
+            itemNumber++;
+        }
+        showDetails(itemNumber);
+    }
+
+    public void showDetails(int itemNumber) {
+        Intent intent = new Intent(activity, EventDetailsActivity.class);
+        intent.putExtra("number", itemNumber);
+        Event selectedEvent = (Event)eventList.get(itemNumber);
+        EventsManager.sharedManager().setSelectedEventId(selectedEvent.getId());
+
+        GATracker.tracker().setScreenName("Events").sendEvent("UX", "Event selected.", "Event Details. " + selectedEvent.getStartDate() + " - " + selectedEvent.getEndDate() + " Status Busy: " + selectedEvent.getBusy() + " All day: " + selectedEvent.getAllDay());
+        startActivity(intent);
     }
 
     private void updateListView() {
@@ -188,8 +199,6 @@ public class EventsFragment extends android.support.v4.app.Fragment {
         }
         setupListViewSelection();
     }
-
-
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -222,7 +231,6 @@ public class EventsFragment extends android.support.v4.app.Fragment {
         if(registered)
             return;
 
-
         registered = true;
         IntentFilter filter = new IntentFilter(TimeService.TIMER_BR);
         filter.addAction(TimeService.SYNC_NEW_EVENTS_BR);
@@ -247,9 +255,9 @@ public class EventsFragment extends android.support.v4.app.Fragment {
             this.paused = false;
         }
 
-        if(EventsManager.sharedManager().getListNeedsRefresh() || Settings.sharedSettings().getInvolvesEvensListReloadByChangingStatusBusy() || Settings.sharedSettings().getInvolvesEvensListReloadByChangingIgnoreAllDayEvents()) {
+        if(EventsManager.sharedManager().getListNeedsRefresh() || Settings.getInvolvesEvensListReloadByChangingStatusBusy() || Settings.getInvolvesEvensListReloadByChangingIgnoreAllDayEvents()) {
             EventsManager.sharedManager().setListNeedsRefresh(false);
-            updateEventsUI();
+            updateListView();
         }
 
         this.paused = false;
@@ -275,5 +283,4 @@ public class EventsFragment extends android.support.v4.app.Fragment {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
     }
-
 }

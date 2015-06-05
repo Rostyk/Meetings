@@ -18,13 +18,13 @@ import com.exchange.ross.exchangeapp.R;
 import com.exchange.ross.exchangeapp.Utils.ApplicationContextProvider;
 import com.exchange.ross.exchangeapp.Utils.DateUtils;
 import com.exchange.ross.exchangeapp.Utils.GATracker;
+import com.exchange.ross.exchangeapp.Utils.Settings;
 import com.exchange.ross.exchangeapp.Utils.Typefaces;
 import com.exchange.ross.exchangeapp.core.entities.Event;
 import com.exchange.ross.exchangeapp.Utils.EventsManager;
 import com.exchange.ross.exchangeapp.db.AccountsProxy;
 import com.exchange.ross.exchangeapp.db.EventsProxy;
 import com.exchange.ross.exchangeapp.db.ServiceType;
-import com.exchange.ross.exchangeapp.db.SettingsProxy;
 
 import java.util.List;
 
@@ -189,8 +189,8 @@ public class EventDetailsActivity extends ActionBarActivity {
         //Google analytic
         GATracker.tracker().setScreenName("Details").sendEvent("UX", "Mute button clicked." + muted, "");
 
-        SettingsProxy.sharedProxy().setInvolvesEvensListReloadByChangingStatusBusy(false);
-        SettingsProxy.sharedProxy().setInvolvesEvensListReloadByChangingIgnoreAllDayEvents(false);
+        Settings.setInvolvesEvensListReloadByChangingStatusBusy(false);
+        Settings.setInvolvesEvensListReloadByChangingIgnoreAllDayEvents(false);
 
         event.setMute(muted);
         EventsProxy.sharedProxy().updateEvent(event);
