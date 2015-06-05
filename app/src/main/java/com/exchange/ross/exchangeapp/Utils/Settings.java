@@ -87,7 +87,7 @@ public class Settings {
     public static synchronized void setIgnoreAllDayEvent(Boolean _ignoreAllDayEvent) {
         ignoreAllDayEvent = _ignoreAllDayEvent;
         involvesEvensListReloadByChangingIgnoreAllDayEvents = true;
-        preferences.edit().putBoolean(kIgnoreAllDayEvent, ignoreAllDayEvent).commit();
+        preferences.edit().putBoolean(kIgnoreAllDayEvent, ignoreAllDayEvent).apply();
     }
 
     public static synchronized void setSilentOnStatusBusy(Boolean _silentOnStatusBusy) {

@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import com.exchange.ross.exchangeapp.Utils.ApplicationContextProvider;
 import com.exchange.ross.exchangeapp.R;
 import com.exchange.ross.exchangeapp.Utils.GATracker;
+import com.exchange.ross.exchangeapp.Utils.Settings;
 import com.exchange.ross.exchangeapp.db.AccountsProxy;
 import com.exchange.ross.exchangeapp.db.DatabaseManager;
 import com.exchange.ross.exchangeapp.db.WHDatabaseHelper;
@@ -21,6 +22,7 @@ public class HomeActivity extends ActionBarActivity {
 
         ApplicationContextProvider.setActivity(this);
         ApplicationContextProvider.setApplicationContext(getApplicationContext());
+        Settings.setContext(getApplicationContext());
         DatabaseManager.initializeInstance(new WHDatabaseHelper(getApplicationContext()));
         setContentView(R.layout.activity_home);
         start();
