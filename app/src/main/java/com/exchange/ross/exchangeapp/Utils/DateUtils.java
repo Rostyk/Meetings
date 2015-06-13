@@ -31,7 +31,7 @@ public class DateUtils {
         c.add(Calendar.DATE, numberOfDays);
         date = c.getTime();
 
-        DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         return format.format(date);
     }
     public static String meetingTimeFromEvent(Event event) {

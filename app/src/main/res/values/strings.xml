@@ -28,4 +28,8 @@
     <string name="link_new_account">Link new account</string>
     <string name="unlink_machine">Log out</string>
     <string name="accounts">Accounts</string>
+
+    <!-- Notifications-->
+    <string name="of">of</string>
+
 </resources>

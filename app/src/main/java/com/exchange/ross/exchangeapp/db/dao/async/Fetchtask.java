@@ -24,15 +24,13 @@ public class Fetchtask extends AsyncTask<Integer, Float, ArrayList<Event>> {
     protected ArrayList<Event> doInBackground(Integer ...params) {
         ArrayList<Event> allEvents = new ArrayList<Event>();
         try{
-
-            allEvents = (ArrayList<Event>) EventsProxy.sharedProxy().getEventDAO().getAll();
+            allEvents = (ArrayList<Event>) EventsProxy.sharedProxy().getAllEvents(daySinceNow, daySinceNow + 1);
             if(daySinceNow == -1) {
                 //return all events
             }
             else {
                 ArrayList<Event> todayEvents = EventsManager.sharedManager().eventsForDaySinceNow(daySinceNow, allEvents);
                 allEvents = todayEvents;
-
             }
         }
         catch(Exception e) {

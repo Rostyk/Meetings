@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.exchange.ross.exchangeapp.Utils.DateUtils;
 import com.exchange.ross.exchangeapp.core.entities.Event;
 import com.exchange.ross.exchangeapp.Utils.ApplicationContextProvider;
 import com.exchange.ross.exchangeapp.Utils.EventsManager;
@@ -177,6 +178,35 @@ public class EventDAO implements BaseDAO<Event>{
 
     }
 
+    public Iterable<Event> getAll(int startDate, int endDate) {
+        initDB();
+
+        String start = DateUtils.dateSinceTodayWithString(startDate-1);
+        String end = DateUtils.dateSinceTodayWithString(endDate-1);
+
+        //ArrayList<Event> cached = EventsManager.sharedManager().getCachedEvents();
+        //if(cached != null) {
+        //return cached;
+        //}
+
+        Cursor cursor = database.rawQuery("select * from " + DATABASE_TABLE + " where start_date like '" + start + "%' OR start_date like '" + end + "%'", null);
+        ArrayList<Event> allEvents = new ArrayList<Event>();
+        if (cursor.moveToFirst()) {
+            while (cursor.isAfterLast() == false) {
+                Event event = getEventFromCursor(cursor);
+                allEvents.add(event);
+                cursor.moveToNext();
+            }
+        }
+        cursor.close();
+        closeDB();
+        //Collections.sort(allEvents);
+
+        //EventsManager.sharedManager().setCachedEvents(allEvents);
+        return allEvents;
+
+    }
+
     public Iterable<Event> getAll(String accountName) {
         initDB();
 
@@ -200,7 +230,6 @@ public class EventDAO implements BaseDAO<Event>{
 
         //EventsManager.sharedManager().setCachedEvents(allEvents);
         return allEvents;
-
     }
 
     private Event getEventFromCursor(Cursor cursor) {

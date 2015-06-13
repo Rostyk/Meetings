@@ -50,9 +50,9 @@ public class EventsProxy {
     }
 
     public ArrayList<Event> getAllEvents(int startRange, int endRange) {
-        ArrayList<Event> allEvents = (ArrayList<Event>)eventDAO.getAll();
-        ArrayList<Event> todayEvents = EventsManager.sharedManager().eventsForDaySinceNow(startRange, endRange, allEvents);
-        return todayEvents;
+        ArrayList<Event> allEvents = (ArrayList<Event>)eventDAO.getAll(startRange, endRange);
+        //ArrayList<Event> todayEvents = EventsManager.sharedManager().eventsForDaySinceNow(startRange, endRange, allEvents);
+        return allEvents;
     }
 
     public ArrayList<ArrayList<Event>> getSyncEvents(ArrayList<Event> events, String accountName) {

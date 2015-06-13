@@ -10,6 +10,7 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Handler;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +35,9 @@ import android.widget.AdapterView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -44,6 +48,7 @@ import java.util.ArrayList;
  * create an instance of this fragment.
  */
 public class EventsFragment extends android.support.v4.app.Fragment {
+    private Boolean isVisibleToUSer;
     private Boolean loaded = false;
     private Boolean registered = false;
     private ProgressDialog progress = null;
@@ -210,6 +215,7 @@ public class EventsFragment extends android.support.v4.app.Fragment {
     @Override
     public void setMenuVisibility(final boolean visible) {
         super.setMenuVisibility(visible);
+        isVisibleToUSer = visible;
         if (visible) {
             EventsActivity eventsActivity = (EventsActivity)activity;
             eventsActivity.displayDate(position);
@@ -257,7 +263,15 @@ public class EventsFragment extends android.support.v4.app.Fragment {
 
         if(EventsManager.sharedManager().getListNeedsRefresh() || Settings.getInvolvesEvensListReloadByChangingStatusBusy() || Settings.getInvolvesEvensListReloadByChangingIgnoreAllDayEvents()) {
             EventsManager.sharedManager().setListNeedsRefresh(false);
-            updateListView();
+            if(getIsVisibleToUSer()) {
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        setupEvents();
+                    }
+                }, 5);
+            }
         }
 
         this.paused = false;
@@ -277,6 +291,14 @@ public class EventsFragment extends android.support.v4.app.Fragment {
         catch(Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void setIsVisibleToUSer(Boolean isVisibleToUSer) {
+        this.isVisibleToUSer = isVisibleToUSer;
+    }
+
+    public Boolean getIsVisibleToUSer() {
+        return isVisibleToUSer;
     }
 
     public interface OnFragmentInteractionListener {
