@@ -1,6 +1,6 @@
 /*
  * This file is auto-generated.  DO NOT MODIFY.
- * Original file: /Users/ross/Work/AndroidStudioProjects/Meetings/app/src/main/aidl/com/android/vending/billing/IInAppBillingService.aidl
+ * Original file: /Users/rstepanyak/Work/android/Meetings/app/src/main/aidl/com/android/vending/billing/IInAppBillingService.aidl
  */
 package com.android.vending.billing;
 /**

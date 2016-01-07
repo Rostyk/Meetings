@@ -1,6 +1,6 @@
 /*
  * This file is auto-generated.  DO NOT MODIFY.
- * Original file: /Users/ross/Work/AndroidStudioProjects/Meetings/app/src/main/aidl/com/exchange/ross/exchangeapp/IUpdateUIStart.aidl
+ * Original file: /Users/rstepanyak/Work/android/Meetings/app/src/main/aidl/com/exchange/ross/exchangeapp/IUpdateUIStart.aidl
  */
 package com.exchange.ross.exchangeapp;
 // Declare any non-default types here with import statements

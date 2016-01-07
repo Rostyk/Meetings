@@ -12,4 +12,4 @@
             android:layout_marginLeft="15dp"
             android:id="@+id/settingsAccountTextView"/>
     </RelativeLayout>
-<!-- From: file:/Users/ross/Work/AndroidStudioProjects/Meetings/app/src/main/res/layout/account_view.xml -->
+<!-- From: file:/Users/rstepanyak/Work/android/Meetings/app/src/main/res/layout/account_view.xml -->
