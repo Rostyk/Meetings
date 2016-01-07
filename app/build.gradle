@@ -6,7 +6,7 @@ android {
             keyAlias 'maliwan'
             keyPassword 'rostyk199100'
             storePassword 'rostyk199100'
-            storeFile file('/Users/ross/myKey.jks')
+            storeFile file('/Users/rstepanyak/Work/jks/myKey.jks')
         }
     }
     compileSdkVersion 21

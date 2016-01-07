@@ -2,326 +2,270 @@
 <items version="2" >
 
     <item
-        jar="/Users/ross/Work/AndroidStudioProjects/Meetings/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.0.0/libs/internal_impl-22.0.0.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="b5b92f469d515a13d778900f6d50c03d12f35504">
-        <dex dex="/Users/ross/Work/AndroidStudioProjects/Meetings/app/build/intermediates/pre-dexed/release/internal_impl-22.0.0-61d80848dc49f023b1aa05e43c86ed53bdcde867.jar" />
-    </item>
-    <item
-        jar="/Users/ross/Work/AndroidStudioProjects/Meetings/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-wallet/7.3.0/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="6046e5cdaf799120b7c56a5a061d80e8854c4d34">
-        <dex dex="/Users/ross/Work/AndroidStudioProjects/Meetings/app/build/intermediates/pre-dexed/release/classes-a6794131bff947b581dc92634d91a905274ad9a6.jar" />
-    </item>
-    <item
-        jar="/Users/ross/Work/AndroidStudioProjects/Meetings/app/libs/jcifs-1.3.15.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="6e41e4b78a70637b62c0bb2e50965e72267c0004">
-        <dex dex="/Users/ross/Work/AndroidStudioProjects/Meetings/app/build/intermediates/pre-dexed/release/jcifs-1.3.15-9f922717bcf149d25c3578b231285e95b2f121f8.jar" />
-    </item>
-    <item
-        jar="/Users/ross/.gradle/caches/modules-2/files-2.1/com.google.http-client/google-http-client-gson/1.17.0-rc/3696033c14cc5ce68fe3ac818bade2707df9c2cd/google-http-client-gson-1.17.0-rc.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="3696033c14cc5ce68fe3ac818bade2707df9c2cd">
-        <dex dex="/Users/ross/Work/AndroidStudioProjects/EWSForAndroid/app/build/intermediates/pre-dexed/debug/google-http-client-gson-1.17.0-rc-ffbb4a0fd8f5f91626de2ec26b33ed2a0f8b74a1.jar" />
-    </item>
-    <item
-        jar="/Users/ross/Work/AndroidStudioProjects/EWSForAndroid/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.0.0/classes.jar"
+        jar="/Users/rstepanyak/Work/android/Meetings/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.0.0/classes.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="d84409890828e07d344a3b9b1da545dba9897b51">
-        <dex dex="/Users/ross/Work/AndroidStudioProjects/EWSForAndroid/app/build/intermediates/pre-dexed/debug/classes-04cc0d760f7018f4bfbd0fd64181223b868675d9.jar" />
+        <dex dex="/Users/rstepanyak/Work/android/Meetings/app/build/intermediates/pre-dexed/debug/classes-03a0265d3385a825dc3dc2f79685c03c39095fec.jar" />
     </item>
     <item
-        jar="/Users/ross/Work/AndroidStudioProjects/EWSForAndroid/app/libs/commons-codec-1.4.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="4216af16d38465bbab0f3dff8efa14204f7a399a">
-        <dex dex="/Users/ross/Work/AndroidStudioProjects/EWSForAndroid/app/build/intermediates/pre-dexed/debug/commons-codec-1.4-eadcdaad1a3734db6794c1e90cbdd987787fbc9c.jar" />
-    </item>
-    <item
-        jar="/Users/ross/.gradle/caches/modules-2/files-2.1/com.google.api-client/google-api-client-android/1.17.0-rc/cfef30e5d361e2fd2892eed93a183db48dcae153/google-api-client-android-1.17.0-rc.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="cfef30e5d361e2fd2892eed93a183db48dcae153">
-        <dex dex="/Users/ross/Work/AndroidStudioProjects/EWSForAndroid/app/build/intermediates/pre-dexed/debug/google-api-client-android-1.17.0-rc-3cb0bbf4ef46b298b320b04e93b0617032fe325f.jar" />
-    </item>
-    <item
-        jar="/Users/ross/Work/AndroidStudioProjects/Meetings/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-drive/7.3.0/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="a0ce76dfaccbfbd6c551ed2174280aaabe60fe47">
-        <dex dex="/Users/ross/Work/AndroidStudioProjects/Meetings/app/build/intermediates/pre-dexed/release/classes-eaf47d53ca1d5300a45dc8caf70a7d066177d1b6.jar" />
-    </item>
-    <item
-        jar="/Users/ross/Work/AndroidStudioProjects/Meetings/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/7.3.0/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="f2f7ec211ce4d244ee97a57523eeb4526dc3cf8a">
-        <dex dex="/Users/ross/Work/AndroidStudioProjects/Meetings/app/build/intermediates/pre-dexed/release/classes-c21394fb82a894220fb4e25636c26e2f62ef1d36.jar" />
-    </item>
-    <item
-        jar="/Users/ross/Work/AndroidStudioProjects/Meetings/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-panorama/7.3.0/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="565a01f90f1529f73362707c4c185d0623a68782">
-        <dex dex="/Users/ross/Work/AndroidStudioProjects/Meetings/app/build/intermediates/pre-dexed/release/classes-fc2fe9fcff61efcef24e1d1364a66c6bfde0cb8f.jar" />
-    </item>
-    <item
-        jar="/Users/ross/Work/AndroidStudioProjects/Meetings/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-appinvite/7.3.0/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="bb36004beb02b69562cbec9aa7d6a3cf16bf5d1b">
-        <dex dex="/Users/ross/Work/AndroidStudioProjects/Meetings/app/build/intermediates/pre-dexed/release/classes-4d96b24791bf32fd408f61d0939cf74fa0899426.jar" />
-    </item>
-    <item
-        jar="/Users/ross/Work/AndroidStudioProjects/Meetings/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-games/7.3.0/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="3b4ff5c39dace8f3b4ab4cab8191785547a0815f">
-        <dex dex="/Users/ross/Work/AndroidStudioProjects/Meetings/app/build/intermediates/pre-dexed/release/classes-5cd542be15bdd0ce93410e000772e7e5d56bc57b.jar" />
-    </item>
-    <item
-        jar="/Users/ross/Work/AndroidStudioProjects/Meetings/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-analytics/7.3.0/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="9c9dea9e85aceb09d95df5e6f7bc8a43fc286068">
-        <dex dex="/Users/ross/Work/AndroidStudioProjects/Meetings/app/build/intermediates/pre-dexed/release/classes-4632f8da6d9d99fb2a2d99cbffed60e08eb5a067.jar" />
-    </item>
-    <item
-        jar="/Users/ross/Work/AndroidStudioProjects/Meetings/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-wearable/7.3.0/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="e5bf453b070c1e39297986144960e45afa0fdfad">
-        <dex dex="/Users/ross/Work/AndroidStudioProjects/Meetings/app/build/intermediates/pre-dexed/release/classes-7abbd08dfe206a7bb1d9d523a81c87248dd07975.jar" />
-    </item>
-    <item
-        jar="/Users/ross/Work/AndroidStudioProjects/Meetings/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.0.0/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="d84409890828e07d344a3b9b1da545dba9897b51">
-        <dex dex="/Users/ross/Work/AndroidStudioProjects/Meetings/app/build/intermediates/pre-dexed/release/classes-483d9681de95dcb7d4af5a34d04be07afb345f5b.jar" />
-    </item>
-    <item
-        jar="/Users/ross/.gradle/caches/modules-2/files-2.1/com.google.http-client/google-http-client/1.17.0-rc/637da6cca16f4a97c4771137bce02e7c291e67af/google-http-client-1.17.0-rc.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="637da6cca16f4a97c4771137bce02e7c291e67af">
-        <dex dex="/Users/ross/Work/AndroidStudioProjects/EWSForAndroid/app/build/intermediates/pre-dexed/debug/google-http-client-1.17.0-rc-378cec3c638516142771d07712a67600ed386df3.jar" />
-    </item>
-    <item
-        jar="/Users/ross/Work/AndroidStudioProjects/Meetings/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-appstate/7.3.0/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="0180d031a7b54dabb93b4af3869468b55dc938bd">
-        <dex dex="/Users/ross/Work/AndroidStudioProjects/Meetings/app/build/intermediates/pre-dexed/release/classes-68d2586162a9eaf436ed7aab6a86c283e5cd8585.jar" />
-    </item>
-    <item
-        jar="/Users/ross/Work/AndroidStudioProjects/Meetings/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-fitness/7.3.0/classes.jar"
+        jar="/Users/rstepanyak/Work/android/Meetings/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-fitness/7.3.0/classes.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="4f4fe3c23776540625f3c2844152a7510fddf9f1">
-        <dex dex="/Users/ross/Work/AndroidStudioProjects/Meetings/app/build/intermediates/pre-dexed/release/classes-497ed1d9e3308eff7a11e2a1ab08708862f61bc3.jar" />
+        <dex dex="/Users/rstepanyak/Work/android/Meetings/app/build/intermediates/pre-dexed/debug/classes-134a2a194c577367b936d846002e16cd6a087109.jar" />
     </item>
     <item
-        jar="/Users/ross/Work/AndroidStudioProjects/Meetings/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-maps/7.3.0/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="fe3e0c6de7cceed888b277487238b6af9a1cc299">
-        <dex dex="/Users/ross/Work/AndroidStudioProjects/Meetings/app/build/intermediates/pre-dexed/release/classes-637e6465e71373e09b2fe0a66e5c8428230189ba.jar" />
-    </item>
-    <item
-        jar="/Users/ross/Work/AndroidStudioProjects/EWSForAndroid/app/build/intermediates/exploded-aar/com.google.android.gms/play-services/4.2.42/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="e5f81129dfb3d02df80126512bc98278ed2bb40a">
-        <dex dex="/Users/ross/Work/AndroidStudioProjects/EWSForAndroid/app/build/intermediates/pre-dexed/debug/classes-ee4c71e8b0eede1a33d836aa08a3823f4281de03.jar" />
-    </item>
-    <item
-        jar="/Users/ross/Work/AndroidStudioProjects/Meetings/app/libs/commons-httpclient-3.1.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="964cd74171f427720480efdec40a7c7f6e58426a">
-        <dex dex="/Users/ross/Work/AndroidStudioProjects/Meetings/app/build/intermediates/pre-dexed/release/commons-httpclient-3.1-13a1d06b0ce86f5a0d7fb8121b70c31819596b0b.jar" />
-    </item>
-    <item
-        jar="/Users/ross/Work/AndroidStudioProjects/Meetings/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-location/7.3.0/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="b2c07cdb814fe988ad05f7b4d767a841514a5991">
-        <dex dex="/Users/ross/Work/AndroidStudioProjects/Meetings/app/build/intermediates/pre-dexed/release/classes-b2dc1939d1c4253828d0e632dc3f3758795b5cf3.jar" />
-    </item>
-    <item
-        jar="/Users/ross/Work/AndroidStudioProjects/EWSForAndroid/app/libs/commons-httpclient-3.1.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="964cd74171f427720480efdec40a7c7f6e58426a">
-        <dex dex="/Users/ross/Work/AndroidStudioProjects/EWSForAndroid/app/build/intermediates/pre-dexed/debug/commons-httpclient-3.1-d5eb92e6736676de8c6fa264425f7075fe7fac2d.jar" />
-    </item>
-    <item
-        jar="/Users/ross/.gradle/caches/modules-2/files-2.1/com.google.http-client/google-http-client-android/1.17.0-rc/f3fc9acc57c2a55fd17a421710f564b73dabda21/google-http-client-android-1.17.0-rc.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="f3fc9acc57c2a55fd17a421710f564b73dabda21">
-        <dex dex="/Users/ross/Work/AndroidStudioProjects/EWSForAndroid/app/build/intermediates/pre-dexed/debug/google-http-client-android-1.17.0-rc-50aadf106e4e072176c62b8b6f2844cbaa88983a.jar" />
-    </item>
-    <item
-        jar="/Users/ross/Work/AndroidStudioProjects/Meetings/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-cast/7.3.0/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="e5b9f5b0aa8dee788beb63d23832cb29ce771343">
-        <dex dex="/Users/ross/Work/AndroidStudioProjects/Meetings/app/build/intermediates/pre-dexed/release/classes-01977d48ffbf3897d5c81c1229154db5f15e3c60.jar" />
-    </item>
-    <item
-        jar="/Users/ross/Work/AndroidStudioProjects/Meetings/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-nearby/7.3.0/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="5ea948d825957be6c4358c48422bee60eef2d487">
-        <dex dex="/Users/ross/Work/AndroidStudioProjects/Meetings/app/build/intermediates/pre-dexed/release/classes-3483e16edca0e8a3fdf60cafc8d27576de945bd7.jar" />
-    </item>
-    <item
-        jar="/Users/ross/.gradle/caches/modules-2/files-2.1/com.google.oauth-client/google-oauth-client/1.17.0-rc/76bcfba455c5a053d532bbac2cf30a2b2c341cf3/google-oauth-client-1.17.0-rc.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="76bcfba455c5a053d532bbac2cf30a2b2c341cf3">
-        <dex dex="/Users/ross/Work/AndroidStudioProjects/EWSForAndroid/app/build/intermediates/pre-dexed/debug/google-oauth-client-1.17.0-rc-3180a9a33f8847417b0c15ccec44e597cc61e416.jar" />
-    </item>
-    <item
-        jar="/Users/ross/.gradle/caches/modules-2/files-2.1/com.google.code.findbugs/jsr305/1.3.9/40719ea6961c0cb6afaeb6a921eaa1f6afd4cfdf/jsr305-1.3.9.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="40719ea6961c0cb6afaeb6a921eaa1f6afd4cfdf">
-        <dex dex="/Users/ross/Work/AndroidStudioProjects/EWSForAndroid/app/build/intermediates/pre-dexed/debug/jsr305-1.3.9-cca686c92041bfef8b210375809868cfb99110d0.jar" />
-    </item>
-    <item
-        jar="/Users/ross/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/22.0.0/support-annotations-22.0.0.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="685d0b2c590447e85284ed84712cb363ba04eff8">
-        <dex dex="/Users/ross/Work/AndroidStudioProjects/EWSForAndroid/app/build/intermediates/pre-dexed/debug/support-annotations-22.0.0-0a11758201ffc616caeddbf96deccd56c5e54f21.jar" />
-    </item>
-    <item
-        jar="/Users/ross/Work/AndroidStudioProjects/Meetings/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-ads/7.3.0/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="3988694bf9d8186ff97ad5cdfa4ed88b5010fe08">
-        <dex dex="/Users/ross/Work/AndroidStudioProjects/Meetings/app/build/intermediates/pre-dexed/release/classes-751e0a6ae85544982e0fc1e1327c1542d8c2a319.jar" />
-    </item>
-    <item
-        jar="/Users/ross/Work/AndroidStudioProjects/EWSForAndroid/app/libs/jcifs-1.3.15.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="6e41e4b78a70637b62c0bb2e50965e72267c0004">
-        <dex dex="/Users/ross/Work/AndroidStudioProjects/EWSForAndroid/app/build/intermediates/pre-dexed/debug/jcifs-1.3.15-6ee75397f75f140f25e3b4284ec6ea0063379860.jar" />
-    </item>
-    <item
-        jar="/Users/ross/Work/AndroidStudioProjects/Meetings/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-identity/7.3.0/classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="b48d5c51a9a9e329005106b4667f54948de4d4d8">
-        <dex dex="/Users/ross/Work/AndroidStudioProjects/Meetings/app/build/intermediates/pre-dexed/release/classes-e39a428a04a3dc530449a3f3431ef3740989cd35.jar" />
-    </item>
-    <item
-        jar="/Users/ross/.gradle/caches/modules-2/files-2.1/com.google.apis/google-api-services-oauth2/v2-rev63-1.17.0-rc/107d863edad1a9b7639a44cafcb19535baf92255/google-api-services-oauth2-v2-rev63-1.17.0-rc.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="107d863edad1a9b7639a44cafcb19535baf92255">
-        <dex dex="/Users/ross/Work/AndroidStudioProjects/EWSForAndroid/app/build/intermediates/pre-dexed/debug/google-api-services-oauth2-v2-rev63-1.17.0-rc-d7a71f3a4cb1a3432723c30bddc9a32f3f015b0e.jar" />
-    </item>
-    <item
-        jar="/Users/ross/.gradle/caches/modules-2/files-2.1/com.google.apis/google-api-services-calendar/v3-rev75-1.17.0-rc/f922256c8a1668352bcdfd694b5b7bfe13610bfe/google-api-services-calendar-v3-rev75-1.17.0-rc.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="f922256c8a1668352bcdfd694b5b7bfe13610bfe">
-        <dex dex="/Users/ross/Work/AndroidStudioProjects/EWSForAndroid/app/build/intermediates/pre-dexed/debug/google-api-services-calendar-v3-rev75-1.17.0-rc-2d8bdec15622b4174812308907e8342cb2e2ebd9.jar" />
-    </item>
-    <item
-        jar="/Users/ross/.gradle/caches/modules-2/files-2.1/com.google.api-client/google-api-client/1.17.0-rc/f01974c9ec3e5570d8c75ecf7fce004e06757e03/google-api-client-1.17.0-rc.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="f01974c9ec3e5570d8c75ecf7fce004e06757e03">
-        <dex dex="/Users/ross/Work/AndroidStudioProjects/EWSForAndroid/app/build/intermediates/pre-dexed/debug/google-api-client-1.17.0-rc-c44909caa64e3ba25e006d55f1e89570358bebce.jar" />
-    </item>
-    <item
-        jar="/Users/ross/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.1/2e66da15851f9f5b5079228f856c2f090ba98c38/gson-2.1.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="2e66da15851f9f5b5079228f856c2f090ba98c38">
-        <dex dex="/Users/ross/Work/AndroidStudioProjects/EWSForAndroid/app/build/intermediates/pre-dexed/debug/gson-2.1-6bd1fc6de39a0bb698c25b707d54ccf739a5ec47.jar" />
-    </item>
-    <item
-        jar="/Users/ross/Work/AndroidStudioProjects/Meetings/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-gcm/7.3.0/classes.jar"
+        jar="/Users/rstepanyak/Work/android/Meetings/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-gcm/7.3.0/classes.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="7215ac1f2fca947b9415a6ee2a1bf991364aab24">
-        <dex dex="/Users/ross/Work/AndroidStudioProjects/Meetings/app/build/intermediates/pre-dexed/release/classes-cee6a50e5ec2bd4a1a80a0c0d91f83d858446a1e.jar" />
+        <dex dex="/Users/rstepanyak/Work/android/Meetings/app/build/intermediates/pre-dexed/debug/classes-c8cb0fd3f9832497e36ddd0572604045f7ff3173.jar" />
     </item>
     <item
-        jar="/Users/ross/Work/AndroidStudioProjects/EWSForAndroid/app/libs/volley.jar"
+        jar="/Users/rstepanyak/.gradle/caches/modules-2/files-2.1/com.google.code.findbugs/jsr305/1.3.9/40719ea6961c0cb6afaeb6a921eaa1f6afd4cfdf/jsr305-1.3.9.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="d4aaa36e04ee71a83444f8367c97a46fda662d2c">
-        <dex dex="/Users/ross/Work/AndroidStudioProjects/EWSForAndroid/app/build/intermediates/pre-dexed/debug/volley-12747107c572423a29af8c7037a98f8898556157.jar" />
+        sha1="40719ea6961c0cb6afaeb6a921eaa1f6afd4cfdf">
+        <dex dex="/Users/rstepanyak/Work/android/Meetings/app/build/intermediates/pre-dexed/debug/jsr305-1.3.9-5fbdcc2abd7d8c6a01ace414f74a76e80a892364.jar" />
     </item>
     <item
-        jar="/Users/ross/Work/AndroidStudioProjects/Meetings/app/libs/commons-codec-1.4.jar"
+        jar="/Users/rstepanyak/.gradle/caches/modules-2/files-2.1/com.google.apis/google-api-services-oauth2/v2-rev63-1.17.0-rc/107d863edad1a9b7639a44cafcb19535baf92255/google-api-services-oauth2-v2-rev63-1.17.0-rc.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="4216af16d38465bbab0f3dff8efa14204f7a399a">
-        <dex dex="/Users/ross/Work/AndroidStudioProjects/Meetings/app/build/intermediates/pre-dexed/release/commons-codec-1.4-ebee411c06040df7f1029d3ef56ba92c2b0ed70c.jar" />
+        sha1="107d863edad1a9b7639a44cafcb19535baf92255">
+        <dex dex="/Users/rstepanyak/Work/android/Meetings/app/build/intermediates/pre-dexed/debug/google-api-services-oauth2-v2-rev63-1.17.0-rc-5514d0503546ef66e3fce1f337eda05718371270.jar" />
     </item>
     <item
-        jar="/Users/ross/Work/AndroidStudioProjects/EWSForAndroid/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.0.0/classes.jar"
+        jar="/Users/rstepanyak/Work/android/Meetings/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-games/7.3.0/classes.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="4e86306289ace4aa0cfec44a05ed2b410d36989d">
-        <dex dex="/Users/ross/Work/AndroidStudioProjects/EWSForAndroid/app/build/intermediates/pre-dexed/debug/classes-bafc42710df7b75a8ae9b345d4610ae0fed55707.jar" />
+        sha1="3b4ff5c39dace8f3b4ab4cab8191785547a0815f">
+        <dex dex="/Users/rstepanyak/Work/android/Meetings/app/build/intermediates/pre-dexed/debug/classes-403c04f1cc2f6d85b506ecd1a6bbadb3ebb40bdd.jar" />
     </item>
     <item
-        jar="/Users/ross/Work/AndroidStudioProjects/Meetings/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-plus/7.3.0/classes.jar"
+        jar="/Users/rstepanyak/Work/android/Meetings/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/7.3.0/classes.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="59652857a825fff0de62166fca1bc9553cc01abb">
-        <dex dex="/Users/ross/Work/AndroidStudioProjects/Meetings/app/build/intermediates/pre-dexed/release/classes-321513f1a1d580bed024aa2fab552814a336cf15.jar" />
+        sha1="f2f7ec211ce4d244ee97a57523eeb4526dc3cf8a">
+        <dex dex="/Users/rstepanyak/Work/android/Meetings/app/build/intermediates/pre-dexed/debug/classes-c3e70f1971f763e8f11d76ed2916404abf0b9ca8.jar" />
     </item>
     <item
-        jar="/Users/ross/Work/AndroidStudioProjects/EWSForAndroid/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.0.0/libs/internal_impl-22.0.0.jar"
+        jar="/Users/rstepanyak/.gradle/caches/modules-2/files-2.1/com.google.http-client/google-http-client-gson/1.17.0-rc/3696033c14cc5ce68fe3ac818bade2707df9c2cd/google-http-client-gson-1.17.0-rc.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="3696033c14cc5ce68fe3ac818bade2707df9c2cd">
+        <dex dex="/Users/rstepanyak/Work/android/Meetings/app/build/intermediates/pre-dexed/debug/google-http-client-gson-1.17.0-rc-2b045e4d2ad588a178a33724f6907f06f0799711.jar" />
+    </item>
+    <item
+        jar="/Users/rstepanyak/Work/android/Meetings/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.0.0/libs/internal_impl-22.0.0.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="b5b92f469d515a13d778900f6d50c03d12f35504">
-        <dex dex="/Users/ross/Work/AndroidStudioProjects/EWSForAndroid/app/build/intermediates/pre-dexed/debug/internal_impl-22.0.0-b0bf5251a31770864f46b5b16c896e54794a910f.jar" />
+        <dex dex="/Users/rstepanyak/Work/android/Meetings/app/build/intermediates/pre-dexed/debug/internal_impl-22.0.0-a206f364b35f31feecb6d0fd56cca0c534e6ce24.jar" />
     </item>
     <item
-        jar="/Users/ross/Work/AndroidStudioProjects/Meetings/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-appindexing/7.3.0/classes.jar"
+        jar="/Users/rstepanyak/Work/android/Meetings/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-panorama/7.3.0/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="565a01f90f1529f73362707c4c185d0623a68782">
+        <dex dex="/Users/rstepanyak/Work/android/Meetings/app/build/intermediates/pre-dexed/debug/classes-ab930f97e470f42115a9e8313ad1bb8baae9112f.jar" />
+    </item>
+    <item
+        jar="/Users/rstepanyak/Work/android/Meetings/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-identity/7.3.0/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="b48d5c51a9a9e329005106b4667f54948de4d4d8">
+        <dex dex="/Users/rstepanyak/Work/android/Meetings/app/build/intermediates/pre-dexed/debug/classes-ef1ef94df705f5e6b10ce5a71b61ecee49c002ed.jar" />
+    </item>
+    <item
+        jar="/Users/rstepanyak/Work/android/Meetings/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-maps/7.3.0/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="fe3e0c6de7cceed888b277487238b6af9a1cc299">
+        <dex dex="/Users/rstepanyak/Work/android/Meetings/app/build/intermediates/pre-dexed/debug/classes-05519827628c37b60f7fe8e47d94271cb7847b89.jar" />
+    </item>
+    <item
+        jar="/Users/rstepanyak/.gradle/caches/modules-2/files-2.1/com.google.http-client/google-http-client/1.17.0-rc/637da6cca16f4a97c4771137bce02e7c291e67af/google-http-client-1.17.0-rc.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="637da6cca16f4a97c4771137bce02e7c291e67af">
+        <dex dex="/Users/rstepanyak/Work/android/Meetings/app/build/intermediates/pre-dexed/debug/google-http-client-1.17.0-rc-3f6cbca084168e54837cd27548aebadb36e370a5.jar" />
+    </item>
+    <item
+        jar="/Users/rstepanyak/Work/android/Meetings/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-appinvite/7.3.0/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="bb36004beb02b69562cbec9aa7d6a3cf16bf5d1b">
+        <dex dex="/Users/rstepanyak/Work/android/Meetings/app/build/intermediates/pre-dexed/debug/classes-d658c61ae1523933b87a38e61ebcb15c074fe27e.jar" />
+    </item>
+    <item
+        jar="/Users/rstepanyak/Work/android/Meetings/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-appindexing/7.3.0/classes.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="e35fae1b377c23aa5fd2d309a190c2d0f73d54ec">
-        <dex dex="/Users/ross/Work/AndroidStudioProjects/Meetings/app/build/intermediates/pre-dexed/release/classes-eb8a4908d3b8c92826a53535abc533b91d3e45ba.jar" />
+        <dex dex="/Users/rstepanyak/Work/android/Meetings/app/build/intermediates/pre-dexed/debug/classes-fd7857ef887befe57fbf220d840a96bd3077ecdf.jar" />
     </item>
     <item
-        jar="/Users/ross/Work/AndroidStudioProjects/Meetings/app/libs/volley.jar"
+        jar="/Users/rstepanyak/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/22.0.0/support-annotations-22.0.0.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="d4aaa36e04ee71a83444f8367c97a46fda662d2c">
-        <dex dex="/Users/ross/Work/AndroidStudioProjects/Meetings/app/build/intermediates/pre-dexed/release/volley-712dd7fdb6db4853660b0ae8eb3609ff5e8ba22f.jar" />
+        sha1="685d0b2c590447e85284ed84712cb363ba04eff8">
+        <dex dex="/Users/rstepanyak/Work/android/Meetings/app/build/intermediates/pre-dexed/debug/support-annotations-22.0.0-d82a533ccac9771b2ba1ec489581c00c4df4ec6a.jar" />
     </item>
     <item
-        jar="/Users/ross/Work/AndroidStudioProjects/Meetings/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-safetynet/7.3.0/classes.jar"
+        jar="/Users/rstepanyak/.gradle/caches/modules-2/files-2.1/com.google.apis/google-api-services-calendar/v3-rev75-1.17.0-rc/f922256c8a1668352bcdfd694b5b7bfe13610bfe/google-api-services-calendar-v3-rev75-1.17.0-rc.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="0708ef60917bf94913fe9ef972a655b99462dca7">
-        <dex dex="/Users/ross/Work/AndroidStudioProjects/Meetings/app/build/intermediates/pre-dexed/release/classes-8271f1eaca71c232270cf79caa8ea0023cc64bef.jar" />
+        sha1="f922256c8a1668352bcdfd694b5b7bfe13610bfe">
+        <dex dex="/Users/rstepanyak/Work/android/Meetings/app/build/intermediates/pre-dexed/debug/google-api-services-calendar-v3-rev75-1.17.0-rc-3a744b112d3092b1278bf1384c599cc01b5bca4e.jar" />
     </item>
     <item
-        jar="/Users/ross/Work/AndroidStudioProjects/Meetings/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.0.0/classes.jar"
+        jar="/Users/rstepanyak/Work/android/Meetings/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-nearby/7.3.0/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="5ea948d825957be6c4358c48422bee60eef2d487">
+        <dex dex="/Users/rstepanyak/Work/android/Meetings/app/build/intermediates/pre-dexed/debug/classes-44d6d9592fc52d79d243f3ca2e2e071dd2f48df3.jar" />
+    </item>
+    <item
+        jar="/Users/rstepanyak/Work/android/Meetings/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-wallet/7.3.0/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="6046e5cdaf799120b7c56a5a061d80e8854c4d34">
+        <dex dex="/Users/rstepanyak/Work/android/Meetings/app/build/intermediates/pre-dexed/debug/classes-180c654404ea3e0b94af9e9bd3f43af4419e63d0.jar" />
+    </item>
+    <item
+        jar="/Users/rstepanyak/Work/android/Meetings/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-wearable/7.3.0/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="e5bf453b070c1e39297986144960e45afa0fdfad">
+        <dex dex="/Users/rstepanyak/Work/android/Meetings/app/build/intermediates/pre-dexed/debug/classes-29b8fa5d07ea0caef27f1b231cbb0608ba77f754.jar" />
+    </item>
+    <item
+        jar="/Users/rstepanyak/.gradle/caches/modules-2/files-2.1/com.google.api-client/google-api-client/1.17.0-rc/f01974c9ec3e5570d8c75ecf7fce004e06757e03/google-api-client-1.17.0-rc.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="f01974c9ec3e5570d8c75ecf7fce004e06757e03">
+        <dex dex="/Users/rstepanyak/Work/android/Meetings/app/build/intermediates/pre-dexed/debug/google-api-client-1.17.0-rc-bf600a0403b8aee3556c6b51953148fc13cee2f5.jar" />
+    </item>
+    <item
+        jar="/Users/rstepanyak/Work/android/Meetings/app/libs/jcifs-1.3.15.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="6e41e4b78a70637b62c0bb2e50965e72267c0004">
+        <dex dex="/Users/rstepanyak/Work/android/Meetings/app/build/intermediates/pre-dexed/debug/jcifs-1.3.15-bdd42a4f986e4768b4b904aa531453513f152081.jar" />
+    </item>
+    <item
+        jar="/Users/rstepanyak/Work/android/Meetings/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-appstate/7.3.0/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="0180d031a7b54dabb93b4af3869468b55dc938bd">
+        <dex dex="/Users/rstepanyak/Work/android/Meetings/app/build/intermediates/pre-dexed/debug/classes-10b2d6ddbb123f7d3313c4396fda2363014d701c.jar" />
+    </item>
+    <item
+        jar="/Users/rstepanyak/Work/android/Meetings/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-cast/7.3.0/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="e5b9f5b0aa8dee788beb63d23832cb29ce771343">
+        <dex dex="/Users/rstepanyak/Work/android/Meetings/app/build/intermediates/pre-dexed/debug/classes-6eb7313ebc379b977457f44d316e304ffca18788.jar" />
+    </item>
+    <item
+        jar="/Users/rstepanyak/.gradle/caches/modules-2/files-2.1/com.google.api-client/google-api-client-android/1.17.0-rc/cfef30e5d361e2fd2892eed93a183db48dcae153/google-api-client-android-1.17.0-rc.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="cfef30e5d361e2fd2892eed93a183db48dcae153">
+        <dex dex="/Users/rstepanyak/Work/android/Meetings/app/build/intermediates/pre-dexed/debug/google-api-client-android-1.17.0-rc-a5dad8154257905c601dd38d9aa9dec44d753350.jar" />
+    </item>
+    <item
+        jar="/Users/rstepanyak/.gradle/caches/modules-2/files-2.1/com.google.http-client/google-http-client-android/1.17.0-rc/f3fc9acc57c2a55fd17a421710f564b73dabda21/google-http-client-android-1.17.0-rc.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="f3fc9acc57c2a55fd17a421710f564b73dabda21">
+        <dex dex="/Users/rstepanyak/Work/android/Meetings/app/build/intermediates/pre-dexed/debug/google-http-client-android-1.17.0-rc-4b77f5b86f36c154fd5611326a86a7bb8019fb58.jar" />
+    </item>
+    <item
+        jar="/Users/rstepanyak/Work/android/Meetings/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.0.0/classes.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="4e86306289ace4aa0cfec44a05ed2b410d36989d">
-        <dex dex="/Users/ross/Work/AndroidStudioProjects/Meetings/app/build/intermediates/pre-dexed/release/classes-1610ecee6bdafafb7216caf1907cfbcb1b2a7038.jar" />
+        <dex dex="/Users/rstepanyak/Work/android/Meetings/app/build/intermediates/pre-dexed/debug/classes-93401177acba0ade40c7aa9ed1972af1b6bc3012.jar" />
+    </item>
+    <item
+        jar="/Users/rstepanyak/.gradle/caches/modules-2/files-2.1/com.google.oauth-client/google-oauth-client/1.17.0-rc/76bcfba455c5a053d532bbac2cf30a2b2c341cf3/google-oauth-client-1.17.0-rc.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="76bcfba455c5a053d532bbac2cf30a2b2c341cf3">
+        <dex dex="/Users/rstepanyak/Work/android/Meetings/app/build/intermediates/pre-dexed/debug/google-oauth-client-1.17.0-rc-3342a8db2a995cfce44d2ebe307399dce5d60492.jar" />
+    </item>
+    <item
+        jar="/Users/rstepanyak/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.1/2e66da15851f9f5b5079228f856c2f090ba98c38/gson-2.1.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="2e66da15851f9f5b5079228f856c2f090ba98c38">
+        <dex dex="/Users/rstepanyak/Work/android/Meetings/app/build/intermediates/pre-dexed/debug/gson-2.1-bd2df3b09ecfaf59c2fecae5fa0c1ffb8b1c8d12.jar" />
+    </item>
+    <item
+        jar="/Users/rstepanyak/Work/android/Meetings/app/libs/commons-codec-1.4.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="4216af16d38465bbab0f3dff8efa14204f7a399a">
+        <dex dex="/Users/rstepanyak/Work/android/Meetings/app/build/intermediates/pre-dexed/debug/commons-codec-1.4-8db8b2f1393ea6c20dd6a967e5e4931459d4e7e1.jar" />
+    </item>
+    <item
+        jar="/Users/rstepanyak/Work/android/Meetings/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-plus/7.3.0/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="59652857a825fff0de62166fca1bc9553cc01abb">
+        <dex dex="/Users/rstepanyak/Work/android/Meetings/app/build/intermediates/pre-dexed/debug/classes-a1fbd8877d561ec4df2c28840b2311ada437a660.jar" />
+    </item>
+    <item
+        jar="/Users/rstepanyak/Work/android/Meetings/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-analytics/7.3.0/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="9c9dea9e85aceb09d95df5e6f7bc8a43fc286068">
+        <dex dex="/Users/rstepanyak/Work/android/Meetings/app/build/intermediates/pre-dexed/debug/classes-4c7a93e015e7e16edf34eeb37db1727592787b75.jar" />
+    </item>
+    <item
+        jar="/Users/rstepanyak/Work/android/Meetings/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-drive/7.3.0/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="a0ce76dfaccbfbd6c551ed2174280aaabe60fe47">
+        <dex dex="/Users/rstepanyak/Work/android/Meetings/app/build/intermediates/pre-dexed/debug/classes-0f37cbebe0cd96d1e8471d2e1db948c0273ae140.jar" />
+    </item>
+    <item
+        jar="/Users/rstepanyak/Work/android/Meetings/app/libs/volley.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="d4aaa36e04ee71a83444f8367c97a46fda662d2c">
+        <dex dex="/Users/rstepanyak/Work/android/Meetings/app/build/intermediates/pre-dexed/debug/volley-27942c14d8a50f19bd10fc2b5659abd38cbf9602.jar" />
+    </item>
+    <item
+        jar="/Users/rstepanyak/Work/android/Meetings/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-safetynet/7.3.0/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="0708ef60917bf94913fe9ef972a655b99462dca7">
+        <dex dex="/Users/rstepanyak/Work/android/Meetings/app/build/intermediates/pre-dexed/debug/classes-89b5acae22580d0cc11a70bf81a77812a345c493.jar" />
+    </item>
+    <item
+        jar="/Users/rstepanyak/Work/android/Meetings/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-location/7.3.0/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="b2c07cdb814fe988ad05f7b4d767a841514a5991">
+        <dex dex="/Users/rstepanyak/Work/android/Meetings/app/build/intermediates/pre-dexed/debug/classes-d678573cf922ef6b24f84e13128ce483a2fa0891.jar" />
+    </item>
+    <item
+        jar="/Users/rstepanyak/Work/android/Meetings/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-ads/7.3.0/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="3988694bf9d8186ff97ad5cdfa4ed88b5010fe08">
+        <dex dex="/Users/rstepanyak/Work/android/Meetings/app/build/intermediates/pre-dexed/debug/classes-df3948184ee3e49ddf0296b8acb3b613f7dd8766.jar" />
+    </item>
+    <item
+        jar="/Users/rstepanyak/Work/android/Meetings/app/libs/commons-httpclient-3.1.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="964cd74171f427720480efdec40a7c7f6e58426a">
+        <dex dex="/Users/rstepanyak/Work/android/Meetings/app/build/intermediates/pre-dexed/debug/commons-httpclient-3.1-822122b2fe5043e9ac393c5f0a5412668ebe6684.jar" />
     </item>
 
 </items>

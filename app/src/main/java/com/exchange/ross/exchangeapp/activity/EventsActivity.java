@@ -128,7 +128,7 @@ public class EventsActivity extends ActionBarActivity implements EventsFragment.
             }
         });
         registerServiceBroadcast();
-        //initConnection();
+        initConnection();
     }
 
     public void checkIfAppLaunchedFromNotification(Intent intent) {
